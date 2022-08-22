@@ -20,7 +20,9 @@ export const setMenu = (win: BrowserWindow) => {
     },
   ];
 
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+  // Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+
+  // Menu.setApplicationMenu(null)
   // Menu.setApplicationMenu(null);
 };
 
@@ -28,16 +30,42 @@ export const openDevToolsByEvent = (win: BrowserWindow) => {
   ipcMain.on("openDevtools", () => {
     win.webContents.openDevTools();
   });
+  win.setMenu(null);
 };
 
 const bindEvent = (win: BrowserWindow) => {
   ipcMain.on("reload", () => {
-    win.reload()
+    win.reload();
+  });
+
+  // 最小化窗口
+  ipcMain.on("window-min", () => {
+    win.minimize();
+  });
+  // 最大化窗口
+  ipcMain.on("window-max", () => {
+    // 如果已经是最大化窗口就还原
+    if (win.isMaximized()) {
+      win.restore();
+    } else {
+      win.maximize();
+    }
+  });
+  // 关闭窗口
+  ipcMain.on("window-close", () => {
+    win.close();
+  });
+  // 窗口最大化了
+  win.on("maximize", () => {
+    win.webContents.send("maximize");
+  });
+  win.on('unmaximize', () => {
+    win.webContents.send("unmaximize");
   });
 };
 
 export const initConfig = (win: BrowserWindow) => {
   openDevToolsByEvent(win);
   setMenu(win);
-  bindEvent(win)
+  bindEvent(win);
 };

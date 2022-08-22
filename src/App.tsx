@@ -1,8 +1,10 @@
 import { useState } from "react";
+import Header from "./components/Header";
 
 const App: React.FC = () => {
   return (
-    <div>
+    <div className="main-container">
+      <Header />
       <h1>my app</h1>
       <button
         onClick={() => {

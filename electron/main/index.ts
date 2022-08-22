@@ -33,12 +33,14 @@ const indexHtml = join(ROOT_PATH.dist, "index.html");
 async function createWindow() {
   win = new BrowserWindow({
     title: "Main window",
-    icon: join(ROOT_PATH.public, "favicon.svg"),
+    icon: join(ROOT_PATH.public, "favicon.ico"),
     webPreferences: {
       preload,
-      // nodeIntegration: true,
-      // contextIsolation: false,
     },
+
+    titleBarStyle: 'hidden',
+    // transparent: true,
+
   });
 
   if (app.isPackaged) {
@@ -83,6 +85,7 @@ app.on("activate", () => {
     createWindow();
   }
 });
+
 
 // new window example arg: new windows url
 ipcMain.handle("open-win", (event, arg) => {
