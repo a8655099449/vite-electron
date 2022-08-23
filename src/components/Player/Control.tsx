@@ -27,7 +27,7 @@ const Control: FC<IProps> = (): ReactElement => {
         <Icon type="next" size={24} className={`prov`} />
         <Icon type="play" size={24} />
         <Icon type="next" size={24} />
-        <Icon type="next" size={24} />
+        <Icon type={'songWord'} size={22} />
       </div>
       <div className="progress-box">
         <div className="progress"></div>
