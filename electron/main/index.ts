@@ -39,7 +39,7 @@ async function createWindow() {
     },
 
     titleBarStyle: 'hidden',
-    // transparent: true,
+
 
   });
 
