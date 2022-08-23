@@ -1,12 +1,16 @@
+import { Button } from "@mantine/core";
 import { useEffect, useState } from "react";
 import Icon, { IconProps, IconType } from "../icon/Icon";
 import styles from "./index.module.less";
+import Logo from "./Logo";
+import Setting from "./Setting";
 import { TitleBar } from "./TItleBar";
 export default function Header() {
   return (
     <div className={`${styles["header"]}`}>
       {/* <TitleBar title="title" /> */}
       <div></div>
+      <Logo />
       <DragBar />
       <HandleWindowBar />
     </div>
@@ -22,8 +26,6 @@ const HandleWindowBar = () => {
   const [full, setFull] = useState(false);
 
   const handleClick = (key: IconType) => {
-
-
     const keyMap: Partial<{
       [K in IconType]: string;
     }> = {
@@ -39,13 +41,22 @@ const HandleWindowBar = () => {
     api.on("maximize", () => {
       setFull(true);
     });
-    api.on('unmaximize', () => {
+    api.on("unmaximize", () => {
       setFull(false);
     });
   }, []);
 
   return (
     <div className={`${styles["HandleWindowBar"]}`}>
+      <Icon
+        type="reload"
+        size={18}
+        button
+        onClick={(e) => {
+          api.send("reload");
+        }}
+      />
+      <Setting />
       {keys.map((item) => {
         let type = item;
         if (item === "full" && full) {
@@ -53,7 +64,13 @@ const HandleWindowBar = () => {
         }
 
         return (
-          <Icon type={type} key={item} onClick={() => handleClick(item)} />
+          <Icon
+            type={type}
+            key={item}
+            onClick={() => handleClick(item)}
+            button
+            size={18}
+          />
         );
       })}
     </div>

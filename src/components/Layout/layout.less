@@ -1,0 +1,21 @@
+.layout {
+  --h: calc(100vh - var(--head-height) - var(--player-height));
+
+  height: var(--h);
+  display: flex;
+  .sidebar {
+    width: var(--sidebar-width);
+    height: var(--h);
+    // overflow-y: scroll;
+  }
+  .content {
+    height: var(--h);
+    overflow-y: scroll;
+    width: calc(100% - var(--sidebar-width));
+    padding: 10px;
+  }
+}
+
+.border-right-1 {
+  border-right: 1px solid var(--border-color-1);
+}

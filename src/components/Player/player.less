@@ -1,0 +1,68 @@
+.player {
+  height: var(--player-height);
+  max-height: var(--player-height);
+  border-top: 1px solid var(--border-color-1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  .music-info {
+    font-size: 14px;
+    display: flex;
+    img {
+      width: 50px;
+      border-radius: 4px;
+    }
+    .text-box {
+      padding-left: 10px;
+    }
+  }
+}
+.control {
+  width: 400px;
+  .control-handle {
+    width: 200px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    .prov {
+      transform: rotate(180deg);
+    }
+  }
+  .progress-box {
+    height: 5px;
+    display: flex;
+    align-items: center;
+    .progress {
+      width: 100%;
+      cursor: pointer;
+      transition: height 0.1s;
+      position: relative;
+      &:hover {
+        height: 5px;
+        border-radius: 2.5px;
+        &::after {
+          visibility: visible;
+        }
+      }
+      height: 3px;
+      border-radius: 1.5px;
+      width: 100%;
+      // background-color: #e5e5e5;#39393b
+      background-color: var(--bg-color-2);
+      &::after {
+        content: "";
+        position: absolute;
+        visibility: hidden;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+      }
+    }
+  }
+}

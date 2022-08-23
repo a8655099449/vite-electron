@@ -1,6 +1,6 @@
 import { contextBridge, ipcRenderer } from "electron";
 
 contextBridge.exposeInMainWorld("api", {
-  send: (key: string, params = {}) => ipcRenderer.send(key, params),
+  send: (key: string, ...args: any[]) => ipcRenderer.send(key, ...args),
   on: (eventKey: string, cb = () => {}) => ipcRenderer.on(eventKey, cb),
 });

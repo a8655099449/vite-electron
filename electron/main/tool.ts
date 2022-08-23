@@ -59,6 +59,7 @@ const bindEvent = (win: BrowserWindow) => {
     win.close();
   });
   ipcMain.on("toggle-theme", (e , cb) => {
+    console.log('toggle-theme',)
     if (nativeTheme.shouldUseDarkColors) {
       nativeTheme.themeSource = "light";
     } else {
