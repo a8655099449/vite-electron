@@ -21,6 +21,7 @@ button {
 .drag {
   -webkit-app-region: drag;
 }
+
 .main-container {
   width: 100vw;
   height: 100vh;
@@ -64,5 +65,44 @@ img {
   transition: color 0.3s;
   &:hover {
     color: var(--primary-color);
+  }
+}
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tooltip {
+  position: relative;
+  // border-bottom: 1px dotted black;
+  cursor: pointer;
+  &.end {
+    &:before {
+      right: 0;
+    }
+  }
+
+  &:before {
+    content: attr(data-tooltip);
+    position: absolute;
+    // left: 50%;
+    // transform: translateX(-50%);
+    right: 0;
+    background: #f00;
+    bottom: 120%;
+    border-radius: 4px;
+    padding: 4px 10px;
+    // max-width: 200px;
+    visibility: hidden;
+    transition: visibility 0.3s;
+  }
+
+  // &:after {
+  //   content: "";
+
+  // }
+
+  &:hover:before {
+    visibility: visible;
   }
 }

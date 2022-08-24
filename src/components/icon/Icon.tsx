@@ -10,13 +10,14 @@ const typeMap = {
   setting: "icon-setting",
   zoomOut: "icon-suoxiao1",
   play: "icon-bofang",
-  voice: "icon-soound-min",
-  disabledVoice: "icon--jinyan",
+  volume: "icon-volume",
+  disabledVolume: "icon-volume_close",
   next: "icon-M_bofangkuaijin",
   randomPlay: "icon-suijibofang",
   onceLoop: "icon-danquxunhuan",
   listLoop: "icon-24gl-repeat2",
   songWord: "icon-geciweidianji",
+  list: "icon-list",
 };
 export type IconType = keyof typeof typeMap;
 export interface IconProps extends React.HTMLAttributes<HTMLElement> {

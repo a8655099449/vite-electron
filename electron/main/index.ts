@@ -39,6 +39,8 @@ async function createWindow() {
     },
     titleBarStyle: "hidden",
     hasShadow: false,
+    minWidth: 1020,
+    minHeight: 670,
   });
 
   if (app.isPackaged) {

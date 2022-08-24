@@ -5,6 +5,7 @@ import { ICONFONT_URL } from "./common/consts";
 import Header from "./components/Header";
 import Layout from "./components/Layout/Layout";
 import lazyLoad from "./components/lazyLoad";
+import Login from "./components/Login/Login";
 import Player from "./components/Player/Player";
 import SideBar from "./components/SideBar/SideBar";
 import routes from "./config/routes";
@@ -36,8 +37,10 @@ const App: React.FC = () => {
       <MantineProvider
         withGlobalStyles
         withNormalizeCSS
-        theme={{ colorScheme: theme }}
+        theme={{ colorScheme: theme, primaryColor: "red" }}
       >
+        <Login />
+
         <Header />
         <Layout sideBar={<SideBar />}>
           <Routes>

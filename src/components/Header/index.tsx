@@ -1,3 +1,4 @@
+import { useBaseContext } from "@/context/useBaseContent";
 import { Button } from "@mantine/core";
 import { useEffect, useState } from "react";
 import Icon, { IconProps, IconType } from "../icon/Icon";
@@ -24,6 +25,7 @@ const DragBar = () => {
 const HandleWindowBar = () => {
   const keys: IconType[] = ["minus", "full", "close"];
   const [full, setFull] = useState(false);
+  const { toggleLoginVisible } = useBaseContext();
 
   const handleClick = (key: IconType) => {
     const keyMap: Partial<{
@@ -48,6 +50,14 @@ const HandleWindowBar = () => {
 
   return (
     <div className={`${styles["HandleWindowBar"]}`}>
+      <Button
+        onClick={() => {
+          toggleLoginVisible(true);
+        }}
+        size="xs"
+      >
+        登录
+      </Button>
       <Icon
         type="reload"
         size={18}

@@ -3,7 +3,9 @@ import React, { useState, createContext, useContext } from "react";
 
 type BaseContextProps = {
   theme: "dark" | "light";
+  loginVisible: boolean;
   toggleTheme(): void;
+  toggleLoginVisible(v: boolean): void;
 };
 
 export const Context = createContext<BaseContextProps>({} as any);
@@ -23,10 +25,16 @@ const initContext = () => {
     setTheme((t) => (t === "dark" ? "light" : "dark"));
   };
 
-  return {
+  const [loginVisible, toggleLoginVisible] = useState(false);
 
+  // const toggleLoginVisible = (v) => {}
+
+  return {
     toggleTheme,
     theme,
+    loginVisible,
+    toggleLoginVisible,
+    // setLoginVisible
   };
 };
 
