@@ -20,9 +20,10 @@ type APISendKeys = [
   "openDevtools"
 ];
 
-type ListenerKeys = "maximize" | "minimize" | "unmaximize";
+type ListenerKeys = "maximize" | "minimize" | "unmaximize" | "LOGIN_SUCCESS";
 
 declare module "@loadable/component";
+declare module "qrcode.react";
 
 type API = {
   send(key: TupleToUnion<APISendKeys>, ...args: any[]);
@@ -30,6 +31,7 @@ type API = {
     key: ListenerKeys,
     listener: (event: Electron.IpcRendererEvent, ...args: any[]) => void
   );
+  emit(key: ListenerKeys, ...args: any[]);
 };
 
 declare var api: API;

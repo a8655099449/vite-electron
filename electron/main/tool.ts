@@ -58,16 +58,18 @@ const bindEvent = (win: BrowserWindow) => {
   ipcMain.on("window-close", () => {
     win.close();
   });
-  ipcMain.on("toggle-theme", (e , cb) => {
-    console.log('toggle-theme',)
+  ipcMain.on("EMIT_EVENT", (e, key, ...args) => {
+    win.webContents.send(key, ...args);
+  });
+  ipcMain.on("toggle-theme", (e, cb) => {
+    console.log("toggle-theme");
     if (nativeTheme.shouldUseDarkColors) {
       nativeTheme.themeSource = "light";
     } else {
       nativeTheme.themeSource = "dark";
     }
 
-    cb?.(nativeTheme.shouldUseDarkColors)
-
+    cb?.(nativeTheme.shouldUseDarkColors);
   });
 
   // 窗口最大化事件

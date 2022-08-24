@@ -1,5 +1,6 @@
 import { MantineProvider, Button } from "@mantine/core";
 import { useMemo, useState } from "react";
+import { Toaster } from "react-hot-toast";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { ICONFONT_URL } from "./common/consts";
 import Header from "./components/Header";
@@ -7,6 +8,7 @@ import Layout from "./components/Layout/Layout";
 import lazyLoad from "./components/lazyLoad";
 import Login from "./components/Login/Login";
 import Player from "./components/Player/Player";
+// @ts-ignore
 import SideBar from "./components/SideBar/SideBar";
 import routes from "./config/routes";
 import BaseContext from "./context/BaseContext";
@@ -40,7 +42,7 @@ const App: React.FC = () => {
         theme={{ colorScheme: theme, primaryColor: "red" }}
       >
         <Login />
-
+        <Toaster />
         <Header />
         <Layout sideBar={<SideBar />}>
           <Routes>

@@ -6,10 +6,32 @@ import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
 import Image from "../Image/Image";
 import { QRCodeSVG } from "qrcode.react";
 interface IProps {}
+import styles from "./login.module.less";
+import Icon from "../icon/Icon";
+import { IMAGE_AVATAR } from "@/common/images";
+import { useLocalStorage } from "@mantine/hooks";
+import { message } from "@/common/utils";
+import FromLogin from "./FromLogin";
+
 const Login: FC<IProps> = (): ReactElement => {
   const { loginVisible, toggleLoginVisible } = useBaseContext();
   // const
   const [qrCodeSrc, setQrCodeSrc] = useState("");
+  const [value, setCookie] = useLocalStorage({
+    key: "cookie",
+  });
+
+  const [loginMode, setLoginMode] = useLocalStorage({
+    defaultValue: 0,
+    key: "loginMode",
+  });
+
+  const [loginUserInfo, setLoginUserInfo] = useState({
+    nickname: "nick",
+    avatar: IMAGE_AVATAR,
+  });
+
+  const [qrCodeStatus, setQrCodeStatus] = useState(0);
 
   const ref = useRef({
     key: "",
@@ -17,6 +39,8 @@ const Login: FC<IProps> = (): ReactElement => {
   });
 
   const createQrCode = async () => {
+    setQrCodeStatus(0);
+    clearCheckQrLoginStatusTimer();
     // const [err, res] = await to(getLoginQrKey());
     const [err, res] = await to(getLoginQrKey());
     if (err) {
@@ -31,39 +55,111 @@ const Login: FC<IProps> = (): ReactElement => {
     ref.current.timer = setInterval(checkQrLoginStatus, 3000) as any;
   };
   const checkQrLoginStatus = async () => {
+    /**
+     * 801=待验证
+     * 802=已经扫码
+     * 803=登录成功
+     */
     const { key, timer } = ref.current;
     const [err, res] = await to(checkQrLogin(key));
+    console.log("👴2022-08-24 20:28:58 Login.tsx line:53", res);
     if (err) {
       clearCheckQrLoginStatusTimer();
       return;
     }
+    if (res.code === 800) {
+      clearCheckQrLoginStatusTimer();
+      setQrCodeStatus(2);
+    }
+    if (res.code === 802) {
+      setQrCodeStatus(1);
+      setLoginUserInfo({
+        avatar: res.avatarUrl,
+        nickname: res.nickname,
+      });
+    }
     if (res.code === 803) {
       clearCheckQrLoginStatusTimer();
-      
+      setCookie(res.cookie);
+      api.emit("LOGIN_SUCCESS", res);
+      close();
+    }
+
+    // console.log('👴res',res)
+    if (res.code === 803) {
+      clearCheckQrLoginStatusTimer();
+      message.success("登录成功");
     }
   };
   const clearCheckQrLoginStatusTimer = () => {
-    const { key, timer } = ref.current;
+    const { timer } = ref.current;
     clearInterval(timer);
+  };
+  const close = () => {
+    clearCheckQrLoginStatusTimer();
+    setQrCodeStatus(0);
+    toggleLoginVisible(false);
   };
 
   useEffect(() => {
-    if (loginVisible) {
+    if (loginVisible && loginMode === 0) {
       createQrCode();
-    } else {
-      clearCheckQrLoginStatusTimer();
     }
   }, [loginVisible]);
 
   return (
     <Modal
       opened={loginVisible}
-      onClose={() => toggleLoginVisible(false)}
-      title="扫码登录"
+      onClose={close}
+      title={loginMode === 0 ? "扫码登录" : "账号密码登录"}
     >
-      <div>
-        <div className="center">
-          {qrCodeSrc && <QRCodeSVG value={qrCodeSrc} />}
+      <div className={`${styles["login"]}`}>
+        {loginMode === 0 && (
+          <div>
+            {qrCodeStatus == 0 && (
+              <div className="center mb-20">
+                {qrCodeSrc && <QRCodeSVG value={qrCodeSrc} />}
+              </div>
+            )}
+            {qrCodeStatus == 1 && (
+              <div className={`${styles["user"]}`}>
+                <div className="center">
+                  <Image src={loginUserInfo.avatar} />
+                </div>
+                <div className="center ">{loginUserInfo.nickname}</div>
+              </div>
+            )}
+            {qrCodeStatus == 2 && (
+              <div className={`${styles["user"]}`}>
+                <div className="center">二维码过期</div>
+                <div className="center">
+                  <Button onClick={createQrCode} >刷新</Button>
+                </div>
+              </div>
+            )}
+
+            <div
+              className="center underline"
+              onClick={() => {
+                clearCheckQrLoginStatusTimer();
+                setLoginMode(1);
+              }}
+            >
+              账号密码登录
+            </div>
+          </div>
+        )}
+        <div
+          style={{
+            display: loginMode === 1 ? "block" : "none",
+          }}
+        >
+          <FromLogin
+            backScanCode={() => {
+              createQrCode();
+              setLoginMode(0);
+            }}
+          />
         </div>
       </div>
     </Modal>

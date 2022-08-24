@@ -4,11 +4,13 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 // import './samples/node-api'
 import "./assets/styles/global.less";
+import event from "./common/event";
 import BaseContext from "./context/BaseContext";
 if (!window.api) {
   window.api = {
     send() {},
-    on() {},
+    on: event.on as any,
+    emit: event.emit,
   };
 }
 

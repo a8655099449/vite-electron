@@ -1,5 +1,5 @@
 import { useLocalStorage } from "@mantine/hooks";
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext, useContext, useEffect } from "react";
 
 type BaseContextProps = {
   theme: "dark" | "light";
@@ -24,6 +24,17 @@ const initContext = () => {
   const toggleTheme = () => {
     setTheme((t) => (t === "dark" ? "light" : "dark"));
   };
+
+
+
+  // 登录成功的回调函数
+  const loginSuccess = (...e:any) => {
+    console.log('👴登录成功',e)
+  };
+
+  useEffect(() => {
+    api.on("LOGIN_SUCCESS", loginSuccess);
+  }, []);
 
   const [loginVisible, toggleLoginVisible] = useState(false);
 

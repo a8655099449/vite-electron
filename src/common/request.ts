@@ -8,6 +8,7 @@ function request<T = {}>(
 ): Promise<{
   code: number;
   data: T;
+  [K: string]: any;
 }> {
   const instance = axios.create({
     // 公用的网络请求路径

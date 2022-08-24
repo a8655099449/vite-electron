@@ -19,3 +19,4 @@ export const checkQrLogin = (key: string) => {
     params: { key },
   });
 };
+// 账号密码登录

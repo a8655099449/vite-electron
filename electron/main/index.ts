@@ -39,7 +39,7 @@ async function createWindow() {
     },
     titleBarStyle: "hidden",
     hasShadow: false,
-    minWidth: 1020,
+    minWidth: 1000,
     minHeight: 670,
   });
 
@@ -50,7 +50,6 @@ async function createWindow() {
     // win.webContents.openDevTools()
   }
 
-  // Test actively push message to the Electron-Renderer
   win.webContents.on("did-finish-load", () => {
     win?.webContents.send("main-process-message", new Date().toLocaleString());
   });
