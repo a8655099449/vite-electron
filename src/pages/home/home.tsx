@@ -1,26 +1,63 @@
 import { homepageData } from "@/api/songList";
+import { HOME_PAGE_DATA } from "@/common/consts";
 import { IMAGE_BANNER } from "@/common/images";
 import to from "@/common/to";
+import { getStore, setStorage } from "@/common/utils";
 import PageWrap from "@/components/Container/PageWrap";
 import Image from "@/components/Image/Image";
 import Swiper from "@/components/Swiper/Swiper";
-import { Tabs } from "@mantine/core";
+import { Skeleton, Tabs } from "@mantine/core";
 import { useRequest } from "ahooks";
 import React from "react";
 // import Swiper from "swiper";
 
 import styles from "./home.module.less";
 import RecommendSongList from "./RecommendSongList";
+
+type BlockKeys = [
+  "HOMEPAGE_BANNER",
+  "HOMEPAGE_BLOCK_PLAYLIST_RCMD",
+  "HOMEPAGE_BLOCK_STYLE_RCMD",
+  "HOMEPAGE_MUSIC_MLOG",
+  "HOMEPAGE_BLOCK_MGC_PLAYLIST",
+  "HOMEPAGE_BLOCK_HOT_TOPIC"
+];
+type homeData = {
+  [K in TupleToUnion<BlockKeys>]: any;
+};
 const home = () => {
-  const {} = useRequest(async () => {
-    const home = await to(homepageData());
+  const { data, loading } = useRequest(async () => {
+    const data = getStore(HOME_PAGE_DATA);
+    if (data) {
+      return data;
+    }
+
+    const [err, res] = await to(homepageData());
+    if (err || res.code !== 200) {
+      return {} as homeData;
+    }
+
+    const blocks: homeData = {} as any;
+    res.data.blocks.forEach((item) => {
+      blocks[item.blockCode as TupleToUnion<BlockKeys>] = item as any;
+    });
+
+    setStorage(HOME_PAGE_DATA, blocks, 24 * 60 * 60 * 1000);
+    return blocks;
   });
+  console.log('👴',data)
 
   return (
     <PageWrap className={`${styles["home"]}`}>
-      <HomeTabs />
-      <BannerSwiper />
-      <RecommendSongList />
+      {loading ? (
+        <Skeleton />
+      ) : (
+        <>
+          <HomeTabs />
+          <BannerSwiper data={data?.HOMEPAGE_BANNER.extInfo} />
+          <RecommendSongList />
+        </>
+      )}
     </PageWrap>
   );
 };
@@ -56,10 +93,16 @@ const HomeTabs = () => {
   );
 };
 
-const BannerSwiper = () => {
+const BannerSwiper = ({ data }: any) => {
   return (
     <div className={`${styles["banner"]}`}>
-      <Swiper />
+      <Swiper>
+        {data.banners.map((item: any) => (
+          <div className={`${styles["banner-item"]}`} key={item.pic}>
+            <Image src={item.pic} />
+          </div>
+        ))}
+      </Swiper>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { FC, ReactElement, ReactNode } from "react";
-import './layout.less'
+import ErrorCatch from "../Container/ErrorCatch";
+import "./layout.less";
 interface IProps {
   // Header: ReactNode;
   sideBar: ReactNode;
@@ -9,7 +10,9 @@ const Layout: FC<IProps> = ({ sideBar, children }): ReactElement => {
   return (
     <div className="layout">
       <div className="sidebar border-right-1">{sideBar}</div>
-      <div className="content">{children}</div>
+      <div className="content">
+        <ErrorCatch>{children}</ErrorCatch>
+      </div>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { getLoginStatus } from "@/api/user";
 import { COOKIE_KEY } from "@/common/consts";
 import to from "@/common/to";
+import { setStorage } from "@/common/utils";
 import { useLocalStorage } from "@mantine/hooks";
 import { useEffect } from "react";
 
@@ -17,6 +18,7 @@ const useProfile = () => {
 
     const [err, res] = await to(getLoginStatus());
     if (err) {
+      // setStorage)
       return;
     }
     setUserInfo(res.data.profile);

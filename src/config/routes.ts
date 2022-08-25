@@ -9,6 +9,10 @@ const routes: RouteItem[] = [
     name: "直播",
     isMenu: true,
   },
+  {
+    path: "/songList",
+    name: "歌单详情",
+  },
 ];
 
 export default routes;

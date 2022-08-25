@@ -76,12 +76,20 @@ type SongListItem = {
   id: number;
   type: number;
   name: string;
+  coverImgUrl: string;
   copywriter: string;
   picUrl: string;
   playcount: number;
   createTime: number;
-  creator: {};
   trackCount: number;
   userId: number;
   alg: string;
+  description: string;
+  tags: string[];
+  creator: UserProfile;
+};
+type SongItem = {
+  id: number;
+  name: string;
+  ar: UserProfile[];
 };

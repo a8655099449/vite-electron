@@ -23,6 +23,7 @@
     "ahooks": "^3.7.0",
     "axios": "^0.27.2",
     "blueimp-md5": "^2.19.0",
+    "dayjs": "^1.11.5",
     "http-proxy-middleware": "^2.0.6",
     "koa": "^2.13.4",
     "koa2-connect": "^1.0.2",
