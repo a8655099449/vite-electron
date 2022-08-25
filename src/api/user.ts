@@ -16,8 +16,7 @@ export const checkQrLogin = (key: string) => {
   return request<{ qrurl: string }>({
     url: "/login/qr/check",
     params: { key },
-    method:'post'
-
+    method: "post",
   });
 };
 // 账号密码登录
@@ -25,11 +24,23 @@ export const checkQrLogin = (key: string) => {
 export const loginByPhone = (data: {
   phone: string;
   md5_password?: string;
-  password?:string
+  password?: string;
+  captcha?: string;
 }) => {
   return request<{ qrurl: string }>({
     url: "/login/cellphone",
     data,
-    method:'post'
+    method: "post",
   });
 };
+
+// /login/status
+export const getLoginStatus = () =>
+  request<{ qrurl: string }>({
+    url: "/login/status",
+  });
+export const captchaSent = (phone:string) =>
+  request<{ qrurl: string }>({
+    url: "/captcha/sent",
+    params:{phone}
+  });

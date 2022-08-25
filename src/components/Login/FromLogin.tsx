@@ -1,4 +1,4 @@
-import { loginByPhone } from "@/api/user";
+import { captchaSent, loginByPhone } from "@/api/user";
 import to from "@/common/to";
 import { Button, Input, PasswordInput } from "@mantine/core";
 import { IconDeviceMobile, IconLockAccess } from "@tabler/icons";
@@ -21,7 +21,7 @@ const FromLogin: FC<IProps> = ({ backScanCode }): ReactElement => {
     const [err, res] = await to(
       loginByPhone({
         phone: loginInput.phone,
-        password: loginInput.password,
+        captcha: loginInput.password,
         // md5_password: md5(loginInput.password),
       })
     );
@@ -30,6 +30,14 @@ const FromLogin: FC<IProps> = ({ backScanCode }): ReactElement => {
     }
 
     console.log("👴2022-08-25 07:19:39 FromLogin.tsx line:31", res);
+  };
+
+  const getPhoneCode = async () => {
+    const [err, res] = await to(captchaSent(loginInput.phone));
+    if (err) {
+      return;
+    }
+    console.log("👴2022-08-25 10:08:57 FromLogin.tsx line:40", res);
   };
 
   return (
@@ -46,17 +54,20 @@ const FromLogin: FC<IProps> = ({ backScanCode }): ReactElement => {
           }}
         />
       </div>
-      <div className={`${styles["input"]}`}>
-        <PasswordInput
-          placeholder="输入密码"
-          icon={<IconLockAccess size={20} />}
-          onChange={(e: any) => {
-            setLoginInput({
-              ...loginInput,
-              password: e.target.value,
-            });
-          }}
-        />
+      <div className={`${styles["input"]} ${styles["password"]}`}>
+        <div>
+          <PasswordInput
+            placeholder="输入密码"
+            icon={<IconLockAccess size={20} />}
+            onChange={(e: any) => {
+              setLoginInput({
+                ...loginInput,
+                password: e.target.value,
+              });
+            }}
+          />
+        </div>
+        <Button onClick={getPhoneCode}>获取验证码</Button>
       </div>
       <div className={`${styles["input"]}`}>
         <Button fullWidth onClick={login}>
