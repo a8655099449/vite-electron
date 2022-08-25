@@ -1,9 +1,8 @@
+import { loginByPhone } from "@/api/user";
+import to from "@/common/to";
 import { Button, Input, PasswordInput } from "@mantine/core";
-import {
-  IconDeviceMobile,
-  IconLockAccess,
-
-} from "@tabler/icons";
+import { IconDeviceMobile, IconLockAccess } from "@tabler/icons";
+import md5 from "blueimp-md5";
 import React, { FC, ReactElement, useState } from "react";
 import Icon from "../icon/Icon";
 
@@ -18,8 +17,19 @@ const FromLogin: FC<IProps> = ({ backScanCode }): ReactElement => {
     password: "",
   });
 
-  const login = () => {
-    console.log("👴2022-08-24 21:56:09 FromLogin.tsx line:24", loginInput);
+  const login = async () => {
+    const [err, res] = await to(
+      loginByPhone({
+        phone: loginInput.phone,
+        password: loginInput.password,
+        // md5_password: md5(loginInput.password),
+      })
+    );
+    if (err) {
+      return;
+    }
+
+    console.log("👴2022-08-25 07:19:39 FromLogin.tsx line:31", res);
   };
 
   return (
