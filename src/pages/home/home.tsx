@@ -1,17 +1,26 @@
+import { homepageData } from "@/api/songList";
 import { IMAGE_BANNER } from "@/common/images";
+import to from "@/common/to";
 import PageWrap from "@/components/Container/PageWrap";
 import Image from "@/components/Image/Image";
 import Swiper from "@/components/Swiper/Swiper";
 import { Tabs } from "@mantine/core";
+import { useRequest } from "ahooks";
 import React from "react";
 // import Swiper from "swiper";
 
 import styles from "./home.module.less";
+import RecommendSongList from "./RecommendSongList";
 const home = () => {
+  const {} = useRequest(async () => {
+    const home = await to(homepageData());
+  });
+
   return (
     <PageWrap className={`${styles["home"]}`}>
       <HomeTabs />
       <BannerSwiper />
+      <RecommendSongList />
     </PageWrap>
   );
 };

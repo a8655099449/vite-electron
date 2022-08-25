@@ -12,13 +12,14 @@ import { IMAGE_AVATAR } from "@/common/images";
 import { useLocalStorage } from "@mantine/hooks";
 import { message } from "@/common/utils";
 import FromLogin from "./FromLogin";
+import { COOKIE_KEY } from "@/common/consts";
 
 const Login: FC<IProps> = (): ReactElement => {
   const { loginVisible, toggleLoginVisible } = useBaseContext();
   // const
   const [qrCodeSrc, setQrCodeSrc] = useState("");
   const [value, setCookie] = useLocalStorage({
-    key: "cookie",
+    key: COOKIE_KEY,
   });
 
   const [loginMode, setLoginMode] = useLocalStorage({
@@ -60,9 +61,9 @@ const Login: FC<IProps> = (): ReactElement => {
      * 802=已经扫码
      * 803=登录成功
      */
-    const { key, timer } = ref.current;
+    const { key } = ref.current;
     const [err, res] = await to(checkQrLogin(key));
-    console.log("👴2022-08-24 20:28:58 Login.tsx line:53", res);
+
     if (err) {
       clearCheckQrLoginStatusTimer();
       return;
@@ -80,15 +81,7 @@ const Login: FC<IProps> = (): ReactElement => {
     }
     if (res.code === 803) {
       clearCheckQrLoginStatusTimer();
-      setCookie(res.cookie);
-      api.emit("LOGIN_SUCCESS", res);
-      close();
-    }
-
-    // console.log('👴res',res)
-    if (res.code === 803) {
-      clearCheckQrLoginStatusTimer();
-      message.success("登录成功");
+      loginSuccess(res);
     }
   };
   const clearCheckQrLoginStatusTimer = () => {
@@ -99,6 +92,12 @@ const Login: FC<IProps> = (): ReactElement => {
     clearCheckQrLoginStatusTimer();
     setQrCodeStatus(0);
     toggleLoginVisible(false);
+  };
+  const loginSuccess = (res: any) => {
+    message.success("登录成功");
+    setCookie(res.cookie);
+    api.emit("LOGIN_SUCCESS", res);
+    close();
   };
 
   useEffect(() => {
@@ -133,7 +132,7 @@ const Login: FC<IProps> = (): ReactElement => {
               <div className={`${styles["user"]}`}>
                 <div className="center">二维码过期</div>
                 <div className="center">
-                  <Button onClick={createQrCode} >刷新</Button>
+                  <Button onClick={createQrCode}>刷新</Button>
                 </div>
               </div>
             )}
@@ -159,6 +158,7 @@ const Login: FC<IProps> = (): ReactElement => {
               createQrCode();
               setLoginMode(0);
             }}
+            loginSuccess={loginSuccess}
           />
         </div>
       </div>

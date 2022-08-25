@@ -36,11 +36,11 @@ export const loginByPhone = (data: {
 
 // /login/status
 export const getLoginStatus = () =>
-  request<{ qrurl: string }>({
+  request<{ profile: UserProfile }>({
     url: "/login/status",
   });
-export const captchaSent = (phone:string) =>
+export const captchaSent = (phone: string) =>
   request<{ qrurl: string }>({
     url: "/captcha/sent",
-    params:{phone}
+    params: { phone },
   });

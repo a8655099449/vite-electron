@@ -28,7 +28,6 @@ const App: React.FC = () => {
     });
   }, [routes]);
 
-  // console.log("👴", components);
   return (
     <div className={`main-container ${theme}`}>
       <style>

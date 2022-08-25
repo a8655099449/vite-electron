@@ -51,13 +51,14 @@ export default defineConfig({
   server: {
     host: pkg.env.VITE_DEV_SERVER_HOST,
     port: pkg.env.VITE_DEV_SERVER_PORT,
-    // proxy: {
-    //   "/apis": {
-    //     target: "http://47.107.81.99:3000",
-    //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/apis/, ""),
-    //   },
-    // },
+    proxy: {
+      "/apis": {
+        // target: "http://47.107.81.99:3000",
+        target: "http://localhost:3021/",
+        changeOrigin: true,
+        // rewrite: (path) => path.replace(/^\/apis/, ""),
+      },
+    },
   },
   build: {
     minify: false

@@ -1,20 +1,35 @@
 import { captchaSent, loginByPhone } from "@/api/user";
+import { COOKIE_KEY } from "@/common/consts";
 import to from "@/common/to";
+import { message } from "@/common/utils";
 import { Button, Input, PasswordInput } from "@mantine/core";
 import { IconDeviceMobile, IconLockAccess } from "@tabler/icons";
 import md5 from "blueimp-md5";
-import React, { FC, ReactElement, useState } from "react";
+import React, { FC, ReactElement, useRef, useState } from "react";
 import Icon from "../icon/Icon";
 
 import styles from "./login.module.less";
 
 interface IProps {
   backScanCode(): void;
+  loginSuccess(res: any): void;
 }
-const FromLogin: FC<IProps> = ({ backScanCode }): ReactElement => {
+const FromLogin: FC<IProps> = ({
+  backScanCode,
+  loginSuccess,
+}): ReactElement => {
   const [loginInput, setLoginInput] = useState({
     phone: "",
     password: "",
+    readOny: true,
+  });
+
+  // const c = () => {}
+  const [count, setCount] = useState(60);
+
+  const [readOnly, setReadOnly] = useState(false);
+  const ref = useRef({
+    timer: 0 as any,
   });
 
   const login = async () => {
@@ -28,8 +43,10 @@ const FromLogin: FC<IProps> = ({ backScanCode }): ReactElement => {
     if (err) {
       return;
     }
-
-    console.log("👴2022-08-25 07:19:39 FromLogin.tsx line:31", res);
+    if (res.code === 200) {
+      loginSuccess(res);
+      // localStorage.setItem(COOKIE_KEY, res.cookie);
+    }
   };
 
   const getPhoneCode = async () => {
@@ -37,7 +54,23 @@ const FromLogin: FC<IProps> = ({ backScanCode }): ReactElement => {
     if (err) {
       return;
     }
-    console.log("👴2022-08-25 10:08:57 FromLogin.tsx line:40", res);
+    if (res.code === 200) {
+      setReadOnly(true);
+      startCountDown();
+      message.success("验证码已发送");
+      ref.current.timer = setInterval(startCountDown, 1000);
+    }
+  };
+  const startCountDown = () => {
+    setCount((c) => {
+      if (c - 1 === 60) {
+        setReadOnly(false);
+        clearInterval(ref.current.timer);
+        c = 61;
+      }
+
+      return c - 1;
+    });
   };
 
   return (
@@ -56,7 +89,7 @@ const FromLogin: FC<IProps> = ({ backScanCode }): ReactElement => {
       </div>
       <div className={`${styles["input"]} ${styles["password"]}`}>
         <div>
-          <PasswordInput
+          <Input
             placeholder="输入密码"
             icon={<IconLockAccess size={20} />}
             onChange={(e: any) => {
@@ -65,9 +98,14 @@ const FromLogin: FC<IProps> = ({ backScanCode }): ReactElement => {
                 password: e.target.value,
               });
             }}
+            style={{
+              borderRadius: 0,
+            }}
           />
         </div>
-        <Button onClick={getPhoneCode}>获取验证码</Button>
+        <Button onClick={getPhoneCode} disabled={readOnly}>
+          {readOnly ? count + "s" : "获取验证码"}
+        </Button>
       </div>
       <div className={`${styles["input"]}`}>
         <Button fullWidth onClick={login}>

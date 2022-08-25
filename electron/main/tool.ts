@@ -55,9 +55,7 @@ const bindEvent = (win: BrowserWindow) => {
   ipcMain.on("window-close", () => {
     win.close();
   });
-  ipcMain.on("window-close", () => {
-    win.close();
-  });
+
   ipcMain.on("EMIT_EVENT", (e, key, ...args) => {
     win.webContents.send(key, ...args);
   });

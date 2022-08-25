@@ -6,6 +6,7 @@ import App from "./App";
 import "./assets/styles/global.less";
 import event from "./common/event";
 import BaseContext from "./context/BaseContext";
+
 if (!window.api) {
   window.api = {
     send() {},

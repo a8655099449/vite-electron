@@ -1,15 +1,17 @@
 import axios from "axios";
 
 import type { AxiosRequestConfig } from "axios";
+import { COOKIE_KEY } from "./consts";
 
-const baseURL = `http://47.107.81.99:3000`;
-function request<T = {}>(
+// const baseURL = `http://47.107.81.99:3000`;
+const baseURL = `/apis`;
+function request<T = any>(
   config: AxiosRequestConfig
 ): Promise<{
   code: number;
   data: T;
   [K: string]: any;
-}> {
+} & T> {
   const instance = axios.create({
     // 公用的网络请求路径
     baseURL: baseURL,
@@ -23,6 +25,17 @@ function request<T = {}>(
   instance.interceptors.request.use(
     //  请求前的拦截
     (config: AxiosRequestConfig) => {
+      const cookie = localStorage.getItem(COOKIE_KEY);
+
+      if (!config.params) {
+        config.params = {};
+      }
+      if (cookie) {
+        config.params.cookie = encodeURIComponent(cookie);
+      }
+
+      config.params.timerstamp = Date.now();
+
       return config;
     },
     // 请求错误前的拦截
@@ -30,10 +43,6 @@ function request<T = {}>(
       return Promise.reject(error);
     }
   );
-  if (!config.params) {
-    config.params = {};
-  }
-  config.params.timerstamp = Date.now();
 
   // ! 响应拦截
   instance.interceptors.response.use(
