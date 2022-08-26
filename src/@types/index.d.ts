@@ -20,7 +20,12 @@ type APISendKeys = [
   "openDevtools"
 ];
 
-type ListenerKeys = "maximize" | "minimize" | "unmaximize" | "LOGIN_SUCCESS";
+type ListenerKeys =
+  | "maximize"
+  | "minimize"
+  | "unmaximize"
+  | "LOGIN_SUCCESS"
+  | "PLAY";
 
 declare module "@loadable/component";
 declare module "qrcode.react";
@@ -28,6 +33,10 @@ declare module "qrcode.react";
 type API = {
   send(key: TupleToUnion<APISendKeys>, ...args: any[]);
   on(
+    key: ListenerKeys,
+    listener: (event: Electron.IpcRendererEvent, ...args: any[]) => void
+  );
+  off(
     key: ListenerKeys,
     listener: (event: Electron.IpcRendererEvent, ...args: any[]) => void
   );
@@ -70,7 +79,17 @@ type UserProfile = Partial<{
   avatarDetail: null;
   playlistCount: number;
   playlistBeSubscribedCount: number;
+  name: string;
 }>;
+
+type Album = {
+  id: number;
+  name: string;
+  picUrl: string;
+  tns: any[];
+  pic_str: string;
+  pic: number;
+};
 
 type SongListItem = {
   id: number;
@@ -80,6 +99,8 @@ type SongListItem = {
   copywriter: string;
   picUrl: string;
   playcount: number;
+  playCount: number;
+  trackCount: number;
   createTime: number;
   trackCount: number;
   userId: number;
@@ -92,4 +113,6 @@ type SongItem = {
   id: number;
   name: string;
   ar: UserProfile[];
+  al: Album;
+  dt: number;
 };

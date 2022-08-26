@@ -12,6 +12,7 @@ if (!window.api) {
     send() {},
     on: event.on as any,
     emit: event.emit,
+    off: event.off as any,
   };
 }
 

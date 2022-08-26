@@ -12,19 +12,15 @@ const RecommendSongList: FC<IProps> = (): ReactElement => {
 
   return (
     <div className={`${styles["recommend-list"]}`}>
-      <h2 >
-        推荐歌单 <Icon type="arrow-right" size={20}  />
+      <h2>
+        推荐歌单 <Icon type="arrow-right" size={20} />
       </h2>
       <div>
-        {loading ? (
-          <Skeleton />
-        ) : (
-          <div className={`${styles["list"]}`}>
-            {data?.recommend.map((item, index) =>
-              index > 9 ? <SongListItem item={item} key={item.id} /> : null
-            )}
-          </div>
-        )}
+        <div className={`${styles["list"]}`}>
+          {data?.recommend.map((item, index) =>
+            index < 9 ? <SongListItem item={item} key={item.id} /> : null
+          )}
+        </div>
       </div>
     </div>
   );

@@ -18,7 +18,12 @@ const typeMap = {
   listLoop: "icon-24gl-repeat2",
   songWord: "icon-geciweidianji",
   list: "icon-list",
-  'arrow-right': "icon-arrow-right",
+  "arrow-right": "icon-arrow-right",
+  download: "icon-download",
+  share: "icon-share",
+  collect: "icon-folder-add",
+  like: "icon-fabulous",
+  pause: "icon-pause1",
 };
 export type IconType = keyof typeof typeMap;
 export interface IconProps extends React.HTMLAttributes<HTMLElement> {

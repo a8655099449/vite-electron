@@ -36,7 +36,7 @@
     display: flex;
     align-items: center;
     span {
-      margin: 5px;
+      margin: 15px;
       font-size: 12px;
     }
     .progress {
@@ -44,21 +44,36 @@
       cursor: pointer;
       transition: height 0.1s;
       position: relative;
+      height: 3px;
+      border-radius: 1.5px;
+      .loadProgress,
+      .playProgress {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        transition: width 0.1s;
+        // background-color: #4d4d50;
+        background-color: var(--load-bg-color);
+        border-radius: 1.5px;
+      }
+      .playProgress {
+        background: var(--primary-color);
+      }
+
       &:hover {
         height: 5px;
         border-radius: 2.5px;
-        &::after {
+        .circle {
           visibility: visible;
         }
       }
-      height: 3px;
-      border-radius: 1.5px;
+
       width: 100%;
       background-color: var(--bg-color-2);
-      &::after {
-        content: "";
+      .circle {
         position: absolute;
-        visibility: hidden;
+        visibility: visible;
         top: 50%;
         transform: translateY(-50%);
         width: 8px;
@@ -69,7 +84,7 @@
     }
   }
 }
-.right-bar{
+.right-bar {
   .volumeWrap {
     margin-right: 20px;
     position: relative;
@@ -104,4 +119,27 @@
   display: flex;
   align-items: center;
 }
+.play-list-drawer {
+  position: fixed;
+  top: var(--head-height);
+  bottom: var(--player-height);
+  background-color: var(--bg-color-1);
+  width: 531px;
+  // left: auto;
+  transform: right 0.3s;
+  padding: 20px;
+  &.hidden {
+    right: -531px;
+  }
+  box-shadow: var(--box-shadow-1);
 
+  &.show {
+    right: 0;
+  }
+}
+
+// @keyframes to-left {
+//   100% {
+//     right: 0;
+//   }
+// }

@@ -29,8 +29,10 @@ class Event {
     if (store) {
       store = store.slice(0);
       args = [].slice.call(arguments, 1);
+      // @ts-ignore
+      args.unshift({});
       for (var i = 0, len = store.length; i < len; i++) {
-        store[i].cb.apply(store[i].ctx, {}, args);
+        store[i].cb.apply(store[i].ctx, args);
       }
     }
   }
