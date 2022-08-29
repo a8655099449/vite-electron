@@ -9,8 +9,8 @@ const NotPlayInfo: FC<IProps> = (): ReactElement => {
         <img src={IMAGE_ALBUM} alt="" />
       </div>
       <div className="text-box">
-        <div>贝加尔湖畔</div>
-        <div>李建</div>
+        <div></div>
+        <div></div>
       </div>
     </div>
   );

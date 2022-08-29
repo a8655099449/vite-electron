@@ -25,6 +25,7 @@ const Player: FC<IProps> = (): ReactElement => {
     playNext,
     playMode,
     setPlayMode,
+    clearList
   } = usePlayer();
 
   return (
@@ -48,7 +49,7 @@ const Player: FC<IProps> = (): ReactElement => {
         list={playList}
         isPlay={isPlay}
         currentSong={currentSong}
-        playOne={playOne}
+        clearList={clearList}
       />
       <Control
         song={currentSong}
@@ -59,8 +60,6 @@ const Player: FC<IProps> = (): ReactElement => {
         setPlayProgress={setPlayProgress}
         playNext={playNext}
         {...{ playMode, setPlayMode }}
-
-        // {...{ playListVisible, setPlayListVisible }}
       />
       <PlayerRight
         clickListIcon={() => {

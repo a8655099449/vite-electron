@@ -38,14 +38,26 @@ const usePlayer = () => {
 
   const [playListVisible, setPlayListVisible] = useState(false);
 
-  const [currentTime, setCurrentTime] = useLocalStorage({
+  const [currentTime, _setCurrentTime] = useLocalStorage({
     key: "currentTime",
     defaultValue: 0,
   });
+  const setCurrentTime = (currentTime: number) => {
+    _setCurrentTime(currentTime);
+    audioInstance.current!.currentTime = currentTime;
+  };
+
   // 加载的进度条
   const [loadProgress, setLoadProgress] = useState(0);
 
   const [isPlay, setIsPlay] = useState(false);
+
+  const clearList = () => {
+    setCurrentTime(0);
+    setCurrentSong({} as SongItem);
+    setPlayList([]);
+    pause();
+  };
 
   const playOne = async (e: any, id: number) => {
     getSongUrlAndPlay(id);
@@ -68,7 +80,6 @@ const usePlayer = () => {
 
   const addPlayListItem = (item: SongItem) => {
     const { playList } = store.current;
-    console.log("👴", playList);
     if (!playList.some((it) => it.id === item.id)) {
       playList.push(item);
       setPlayList([...playList]);
@@ -78,17 +89,15 @@ const usePlayer = () => {
   const getSongUrlAndPlay = async (id: number) => {
     audioInstance.current?.pause();
 
-    setCurrentTime(0);
-    // return
     const [err, res] = await to(getSongUrl(id));
     if (err || res.code !== 200) {
       return;
     }
     setCurrentSongUrl(res.data[0].url);
     setTimeout(() => {
-      // audioInstance.current!.currentTime = 0;
       play();
-      backStart();
+      // backStart();
+      setCurrentTime(0);
     }, 500);
   };
 
@@ -98,14 +107,13 @@ const usePlayer = () => {
       let loadLength = player?.buffered.end(player.buffered.length - 1);
       const loadProgress = loadLength / player.duration;
       setLoadProgress(loadProgress);
-      console.log("👴loadLength", loadProgress);
     }
   };
   const handleMusicPlayProgressChange = () => {
     const player = audioInstance.current as HTMLAudioElement;
 
     if (!player.paused) {
-      setCurrentTime(Math.floor(player.currentTime));
+      _setCurrentTime(Math.floor(player.currentTime));
     }
   };
 
@@ -123,12 +131,10 @@ const usePlayer = () => {
       handleMusicPlayProgressChange
     );
     audioInstance.current?.addEventListener("ended", (e) => {
-      console.log("👴播放结束");
       playNext(1);
     });
   };
   const play = () => {
-    audioInstance.current!.currentTime = currentTime;
     audioInstance.current?.play();
     setIsPlay(true);
   };
@@ -147,14 +153,9 @@ const usePlayer = () => {
   const setPlayProgress = (p: number) => {
     const currentTime = p * (currentSong.dt / 1000);
     setCurrentTime(currentTime);
-    audioInstance.current!.currentTime = currentTime;
-    // play();
   };
 
-  const backStart = () => (audioInstance.current!.currentTime = 0);
-
   const playNext = (count: number) => {
-    console.log("👴playMode", playMode);
     const { playList, currentSong } = store.current;
     if (playList.length <= 1) {
       return;
@@ -168,7 +169,6 @@ const usePlayer = () => {
       return;
     }
 
-    // console.log("👴currentIndex", currentIndex, currentSong);
     let playIndex;
     if (count > 0) {
       if (currentIndex === playList.length - 1) {
@@ -184,13 +184,10 @@ const usePlayer = () => {
         playIndex = currentIndex - 1;
       }
     }
-    // console.log("👴playNext", playList[playIndex].id);
-    audioInstance.current!.currentTime = 0;
-    // audioInstance.current.
+
     playOne({}, playList[playIndex].id);
   };
   const getRandomId = (currentIndx: number) => {
-    console.log("👴currentIndx", currentIndx);
     const { playList } = store.current;
     const filterList = playList.filter((item, index) => index !== currentIndx);
 
@@ -222,9 +219,9 @@ const usePlayer = () => {
     playList,
     playOne,
     playNext,
-    backStart,
     playMode,
     setPlayMode,
+    clearList
   };
 };
 

@@ -1,5 +1,6 @@
 import PlayListTable from "@/pages/songList/PlayListTable";
 import React, { FC, ReactElement, useMemo } from "react";
+import Empty from "../Container/Empty";
 import SongTimeBar from "../Container/SongTimeBar";
 import Icon from "../icon/Icon";
 
@@ -8,20 +9,27 @@ interface IProps {
   list: SongItem[];
   currentSong: SongItem;
   isPlay: boolean;
-  playOne(e: any, id: any): void;
+  clearList(): void;
 }
 const PlayListDrawer: FC<IProps> = ({
   visible,
   list = [],
   currentSong,
   isPlay,
-  playOne,
+  clearList,
 }): ReactElement => {
   return (
     <div className={`play-list-drawer ${visible ? "show" : "hidden"}`}>
       <div className="header">
         <h2>当前播放</h2>
       </div>
+      <div className="play-list-handle">
+        <div>共{list.length}首</div>
+        <div className="link" onClick={clearList}>
+          清空列表
+        </div>
+      </div>
+      <div>{list.length === 0 && <Empty  />}</div>
       <table className={`player-list play-list-table`}>
         <tbody>
           {list.map((item) => (

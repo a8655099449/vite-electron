@@ -32,6 +32,7 @@ const Control: FC<IProps> = ({
   setPlayProgress,
   setPlayMode,
   playMode,
+  // disable = false,
 }): ReactElement => {
   const boxElement = useRef<HTMLDivElement>(null);
   const data = useRef({
@@ -40,6 +41,8 @@ const Control: FC<IProps> = ({
     offsetLeft: 0,
     left: 0,
   });
+
+  const disable = useMemo(() => !song?.name, [song]);
 
   useEffect(() => {
     data.current.clientWidth = boxElement.current?.clientWidth || 300;
@@ -86,13 +89,17 @@ const Control: FC<IProps> = ({
   };
 
   const onMouseDown = (pageX: number) => {
+    if (disable) {
+      return
+    }
     data.current.pageX = pageX;
     document.body.addEventListener("mousemove", bodyMove);
     const handleMouseup = () => {
-      const { left, clientWidth } = data.current;
-      setPlayProgress(left / clientWidth);
+
       document.body.removeEventListener("mousemove", bodyMove);
       document.body.removeEventListener("mouseup", handleMouseup);
+      const { left, clientWidth } = data.current;
+      setPlayProgress(left / clientWidth);
     };
 
     document.body.addEventListener("mouseup", handleMouseup);
@@ -112,6 +119,7 @@ const Control: FC<IProps> = ({
             size={20}
             hoverLight
             onClick={(e) => {
+
               switchPlayMode();
             }}
             title="单曲循环"

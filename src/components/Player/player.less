@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px;
-  &>div{
+  & > div {
     width: calc(100% / 3);
   }
   .music-info {
@@ -147,6 +147,42 @@
   &.show {
     right: 0;
   }
+  .play-list-handle {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-color-2);
+
+  }
+  .player-list.player-list {
+    margin-top: 0;
+
+    tr.active {
+      color: var(--primary-color);
+      td:nth-child(1) {
+        i {
+          display: block;
+        }
+      }
+    }
+    td {
+      &:nth-child(1) {
+        width: auto;
+        padding-left: 20px;
+        position: relative;
+        i {
+          display: none;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          left: 5px;
+        }
+      }
+      &:nth-child(2) {
+        width: 120px;
+      }
+    }
+  }
 }
 
 // @keyframes to-left {
@@ -154,31 +190,3 @@
 //     right: 0;
 //   }
 // }
-.player-list.player-list {
-  margin-top: 0;
-  tr.active {
-    color: var(--primary-color);
-    td:nth-child(1) {
-      i {
-        display: block;
-      }
-    }
-  }
-  td {
-    &:nth-child(1) {
-      width: auto;
-      padding-left: 20px;
-      position: relative;
-      i {
-        display: none;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        left: 5px;
-      }
-    }
-    &:nth-child(2) {
-      width: 120px;
-    }
-  }
-}
