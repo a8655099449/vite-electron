@@ -21,6 +21,10 @@ const Player: FC<IProps> = (): ReactElement => {
     playListVisible,
     setPlayListVisible,
     playList,
+    playOne,
+    playNext,
+    playMode,
+    setPlayMode,
   } = usePlayer();
 
   return (
@@ -39,7 +43,13 @@ const Player: FC<IProps> = (): ReactElement => {
       ) : (
         <NotPlayInfo />
       )}
-      <PlayListDrawer visible={playListVisible} list={playList} />
+      <PlayListDrawer
+        visible={playListVisible}
+        list={playList}
+        isPlay={isPlay}
+        currentSong={currentSong}
+        playOne={playOne}
+      />
       <Control
         song={currentSong}
         isPlay={isPlay}
@@ -47,6 +57,8 @@ const Player: FC<IProps> = (): ReactElement => {
         loadProgress={loadProgress}
         currentTime={currentTime}
         setPlayProgress={setPlayProgress}
+        playNext={playNext}
+        {...{ playMode, setPlayMode }}
 
         // {...{ playListVisible, setPlayListVisible }}
       />
@@ -55,7 +67,6 @@ const Player: FC<IProps> = (): ReactElement => {
           setPlayListVisible(!playListVisible);
         }}
       />
-      {/* <PlayerRight /> */}
     </div>
   );
 };

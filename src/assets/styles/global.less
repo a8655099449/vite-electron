@@ -133,7 +133,7 @@ img {
   margin: 0 5px;
   border-radius: 2px;
 }
-.p-20{
+.p-20 {
   padding: 20px;
 }
 .text-row-1 {
@@ -150,4 +150,39 @@ img {
   text-overflow: ellipsis;
   -webkit-box-orient: vertical;
   /* autoprefixer: off */
+}
+.play-list-table {
+  width: 100%;
+  margin-top: 30px;
+  border-collapse: collapse;
+  th {
+    text-align: left;
+  }
+  line-height: 36px;
+
+  tbody {
+    tr {
+      &:nth-child(2n - 1) {
+        background-color: var(--bg-color-3);
+      }
+      &:hover {
+        background-color: var(--bg-color-2);
+      }
+    }
+  }
+  .song-name {
+    width: 150px;
+  }
+  td,
+  th {
+    padding: 0 6px;
+  }
+  td {
+    &:nth-child(1) {
+      width: 40px;
+    }
+    &:nth-child(2) {
+      width: 100px;
+    }
+  }
 }

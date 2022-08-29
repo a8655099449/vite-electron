@@ -9,7 +9,7 @@ interface IProps {
 const PlayListTable: FC<IProps> = ({ data }): ReactElement => {
   return (
     <div>
-      <table className={`${styles["play-list-table"]}`}>
+      <table className={`play-list-table`}>
         <thead>
           <tr>
             <th></th>
@@ -37,7 +37,7 @@ const PlayListTable: FC<IProps> = ({ data }): ReactElement => {
                 />
               </td>
               <td>
-                <div className={`${styles["name"]} text-row-1`}>{item.name}</div>
+                <div className={`song-name text-row-1`}>{item.name}</div>
               </td>
               <td>
                 <Link

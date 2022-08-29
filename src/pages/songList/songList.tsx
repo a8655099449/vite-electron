@@ -16,7 +16,9 @@ const songList: FC<IProps> = (): ReactElement => {
   const { data: list, loading: loading2 } = useRequest(() =>
     getSongListAllMusic(id as string)
   );
-
+  const clickPlayAll = () => {
+    api.emit("PLAY_LIST", list?.songs);
+  };
 
   if (loading) {
     return <Loading />;
@@ -24,8 +26,10 @@ const songList: FC<IProps> = (): ReactElement => {
   // console.log("👴2022-08-25 17:41:45 songList.tsx line:13", data);
   return (
     <div className="p-20">
-      <SongListBanner data={data?.playlist as SongListItem} />
-
+      <SongListBanner
+        data={data?.playlist as SongListItem}
+        clickPlayAll={clickPlayAll}
+      />
 
       {loading2 && <Loading />}
       <PlayListTable data={list?.songs || []} />

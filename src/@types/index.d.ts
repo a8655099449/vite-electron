@@ -25,7 +25,8 @@ type ListenerKeys =
   | "minimize"
   | "unmaximize"
   | "LOGIN_SUCCESS"
-  | "PLAY";
+  | "PLAY"
+  | "PLAY_LIST";
 
 declare module "@loadable/component";
 declare module "qrcode.react";

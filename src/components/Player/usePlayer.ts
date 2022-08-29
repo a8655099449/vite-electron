@@ -1,29 +1,39 @@
 import { getSongDetail, getSongUrl } from "@/api/song";
 import to from "@/common/to";
+import { getStore } from "@/common/utils";
 import { useLocalStorage } from "@mantine/hooks";
 import { useEffect, useRef, useState } from "react";
 
 const usePlayer = () => {
-  // fun
   const audioInstance = useRef<HTMLAudioElement>(null);
   const [currentSong, setCurrentSong] = useLocalStorage<SongItem>({
     key: "currentSong",
     defaultValue: {} as SongItem,
   });
+
+  const [playMode, setPlayMode] = useLocalStorage<number>({
+    key: "playMode",
+    defaultValue: 0,
+  }); // 0 随机播放  1 列表循环 2 单曲循环
+
   const [currentSongUrl, setCurrentSongUrl] = useLocalStorage<string>({
     key: "currentSongUrl",
     defaultValue: "",
   });
-  const store = useRef({
-    isBind: false,
-    playList: [] as SongItem[],
-  });
 
-  // const s = () => {}
-
-  const [playList, setPlayList] = useLocalStorage<SongItem[]>({
+  const [playList, _setPlayList] = useLocalStorage<SongItem[]>({
     defaultValue: [],
     key: "CURRENT_PLAY_LIST",
+  });
+  const setPlayList = (playList: SongItem[]) => {
+    store.current.playList = playList;
+    _setPlayList(playList);
+  };
+
+  const store = useRef({
+    isBind: false,
+    playList: (getStore("CURRENT_PLAY_LIST") || []) as SongItem[],
+    currentSong: (getStore("currentSong") || {}) as SongItem,
   });
 
   const [playListVisible, setPlayListVisible] = useState(false);
@@ -36,40 +46,50 @@ const usePlayer = () => {
   const [loadProgress, setLoadProgress] = useState(0);
 
   const [isPlay, setIsPlay] = useState(false);
-  // console.log("👴playOne", playList);
 
-  const playOne = async (e: any, id: string) => {
+  const playOne = async (e: any, id: number) => {
     getSongUrlAndPlay(id);
     const [err, res] = await to(getSongDetail(id));
     if (err || res.code !== 200) {
       return;
     }
+    store.current.currentSong = res.songs[0];
     setCurrentSong(res.songs[0]);
     addPlayListItem(res.songs[0]);
   };
-  const addPlayListItem = (item: SongItem) => {
-    const { playList } = store.current;
-    if (!playList.some((it) => it.id === item.id)) {
-      playList.push(item);
-      setPlayList([...playList]);
-      console.log("👴addPlayListItem", playList);
-
-      store.current.playList = playList;
+  const handlePlayList = (e: any, list: SongItem[]) => {
+    if (list && list.length > 0) {
+      setPlayList(list);
+      setTimeout(() => {
+        playOne({}, list[0]?.id);
+      }, 100);
     }
   };
 
-  const getSongUrlAndPlay = async (id: string) => {
+  const addPlayListItem = (item: SongItem) => {
+    const { playList } = store.current;
+    console.log("👴", playList);
+    if (!playList.some((it) => it.id === item.id)) {
+      playList.push(item);
+      setPlayList([...playList]);
+    }
+  };
+
+  const getSongUrlAndPlay = async (id: number) => {
+    audioInstance.current?.pause();
+
+    setCurrentTime(0);
+    // return
     const [err, res] = await to(getSongUrl(id));
     if (err || res.code !== 200) {
       return;
     }
     setCurrentSongUrl(res.data[0].url);
-    if (!isPlay) {
-      console.log("👴play");
-      setTimeout(() => {
-        play();
-      }, 100);
-    }
+    setTimeout(() => {
+      // audioInstance.current!.currentTime = 0;
+      play();
+      backStart();
+    }, 500);
   };
 
   const handleLoadMusic = () => {
@@ -102,13 +122,15 @@ const usePlayer = () => {
       "timeupdate",
       handleMusicPlayProgressChange
     );
+    audioInstance.current?.addEventListener("ended", (e) => {
+      console.log("👴播放结束");
+      playNext(1);
+    });
   };
   const play = () => {
-    if (!isPlay && audioInstance.current) {
-      audioInstance.current.currentTime = currentTime;
-      audioInstance.current?.play();
-      setIsPlay(true);
-    }
+    audioInstance.current!.currentTime = currentTime;
+    audioInstance.current?.play();
+    setIsPlay(true);
   };
   const pause = () => {
     audioInstance.current?.pause();
@@ -123,9 +145,56 @@ const usePlayer = () => {
     }
   };
   const setPlayProgress = (p: number) => {
-    (audioInstance.current as HTMLAudioElement).currentTime =
-      p * (currentSong.dt / 1000);
-    play();
+    const currentTime = p * (currentSong.dt / 1000);
+    setCurrentTime(currentTime);
+    audioInstance.current!.currentTime = currentTime;
+    // play();
+  };
+
+  const backStart = () => (audioInstance.current!.currentTime = 0);
+
+  const playNext = (count: number) => {
+    console.log("👴playMode", playMode);
+    const { playList, currentSong } = store.current;
+    if (playList.length <= 1) {
+      return;
+    }
+
+    const currentIndex = playList.findIndex(
+      (item) => item.id === currentSong.id
+    );
+    if (playMode === 0) {
+      playOne({}, getRandomId(currentIndex));
+      return;
+    }
+
+    // console.log("👴currentIndex", currentIndex, currentSong);
+    let playIndex;
+    if (count > 0) {
+      if (currentIndex === playList.length - 1) {
+        playIndex = 0;
+      } else {
+        playIndex = currentIndex + 1;
+      }
+    } else {
+      // 播放上一首
+      if (currentIndex === 0) {
+        playIndex = playList.length - 1;
+      } else {
+        playIndex = currentIndex - 1;
+      }
+    }
+    // console.log("👴playNext", playList[playIndex].id);
+    audioInstance.current!.currentTime = 0;
+    // audioInstance.current.
+    playOne({}, playList[playIndex].id);
+  };
+  const getRandomId = (currentIndx: number) => {
+    console.log("👴currentIndx", currentIndx);
+    const { playList } = store.current;
+    const filterList = playList.filter((item, index) => index !== currentIndx);
+
+    return filterList[Math.ceil(Math.random() * filterList.length)].id;
   };
 
   useEffect(() => {
@@ -133,6 +202,8 @@ const usePlayer = () => {
     if (!isBind) {
       bindAudioEvent();
       api.on("PLAY", playOne);
+      api.on("PLAY_LIST", handlePlayList);
+
       store.current.isBind = true;
     }
   }, []);
@@ -148,7 +219,12 @@ const usePlayer = () => {
     setPlayProgress,
     playListVisible,
     setPlayListVisible,
-    playList
+    playList,
+    playOne,
+    playNext,
+    backStart,
+    playMode,
+    setPlayMode,
   };
 };
 

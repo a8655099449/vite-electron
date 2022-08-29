@@ -10,9 +10,11 @@ import PalyCount from "./PalyCount";
 
 interface IProps {
   data: SongListItem;
+  clickPlayAll(): void;
 }
-const SongListBanner: FC<IProps> = ({ data }): ReactElement => {
-  const { tags, creator, createTime, description, playCount , trackCount } = data;
+const SongListBanner: FC<IProps> = ({ data ,clickPlayAll}): ReactElement => {
+  const { tags, creator, createTime, description, playCount, trackCount } =
+    data;
 
   return (
     <div className={`${styles["song-list-banner"]}`}>
@@ -32,7 +34,7 @@ const SongListBanner: FC<IProps> = ({ data }): ReactElement => {
           <span>{dayjs(createTime).format("YYYY-MM-DD")} 创建</span>
         </div>
         <div className={`${styles["button"]}`}>
-          <Button size="xs" leftIcon={<Icon type="play" />}>
+          <Button size="xs" leftIcon={<Icon type="play" />} onClick={clickPlayAll}>
             播放全部
           </Button>
           <Button

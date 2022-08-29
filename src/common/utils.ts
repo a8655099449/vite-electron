@@ -18,15 +18,15 @@ export const setStorage = (key: string, data: any, time = saveTime): void => {
 };
 
 export const getStore = <T = any>(key: string): T | "" => {
-  let v = localStorage.getItem(key);
+  let v:any = localStorage.getItem(key);
   if (!v || !isJson(v)) {
     return "";
   }
   const now = Date.now();
   v = JSON.parse(v as string);
   const { saveTime, time, data } = v as any;
-  if (!saveTime) {
-    return "";
+  if (!saveTime && v) {
+    return v;
   }
   if (!data) {
     return "";

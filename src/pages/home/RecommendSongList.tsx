@@ -9,6 +9,9 @@ import styles from "./home.module.less";
 interface IProps {}
 const RecommendSongList: FC<IProps> = (): ReactElement => {
   const { data, loading } = useRequest(getRecommendSongList);
+  if (data?.code !== 200 ) {
+    return <></>
+  }
 
   return (
     <div className={`${styles["recommend-list"]}`}>

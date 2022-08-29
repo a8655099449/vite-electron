@@ -11,13 +11,13 @@ const useProfile = () => {
     defaultValue: {},
   });
   const login = async () => {
-    const cookie = localStorage.getItem(COOKIE_KEY);
-    if (!cookie && !userInfo.avatarUrl) {
+    // const cookie = localStorage.getItem(COOKIE_KEY);
+    if (userInfo.avatarUrl) {
       return;
     }
 
     const [err, res] = await to(getLoginStatus());
-    if (err) {
+    if (err || !res.data.profile) {
       // setStorage)
       return;
     }

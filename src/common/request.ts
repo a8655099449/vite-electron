@@ -3,8 +3,8 @@ import axios from "axios";
 import type { AxiosRequestConfig } from "axios";
 import { COOKIE_KEY } from "./consts";
 
-// const baseURL = `http://47.107.81.99:3000`;
-const baseURL = `/apis`;
+const baseURL = `http://47.107.81.99:3000`;
+// const baseURL = `/apis`;
 function request<T = any>(
   config: AxiosRequestConfig
 ): Promise<{

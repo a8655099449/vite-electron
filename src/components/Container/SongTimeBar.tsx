@@ -22,9 +22,9 @@ const SongTimeBar: FC<IProps> = ({ dt = 0 }): ReactElement => {
   }, [dt]);
 
   return (
-    <div>
+    <>
       {time.min}:{time.second}
-    </div>
+    </>
   );
 };
 

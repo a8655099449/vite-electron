@@ -15,51 +15,52 @@ interface IProps {
   song: SongItem;
   isPlay: boolean;
   playOrPause(): void;
+  playNext(count: number): void;
   setPlayProgress(n: number): void;
+  setPlayMode(n: any): void;
   loadProgress: number;
   currentTime: number;
+  playMode: number;
 }
 const Control: FC<IProps> = ({
   song,
   playOrPause,
+  playNext,
   isPlay,
   loadProgress,
   currentTime,
   setPlayProgress,
+  setPlayMode,
+  playMode,
 }): ReactElement => {
   const boxElement = useRef<HTMLDivElement>(null);
   const data = useRef({
-    clientWidth: 283,
+    clientWidth: 300,
     pageX: 323,
     offsetLeft: 0,
     left: 0,
   });
 
+  useEffect(() => {
+    data.current.clientWidth = boxElement.current?.clientWidth || 300;
+  }, []);
   const playModes = [
     {
       icon: "randomPlay",
       label: "随机播放",
     },
     {
-      icon: "onceLoop",
-      label: "单曲循环",
-    },
-    {
       icon: "listLoop",
       label: "列表循环",
     },
+    {
+      icon: "onceLoop",
+      label: "单曲循环",
+    },
   ];
-  useEffect(() => {
-    data.current.clientWidth = boxElement.current?.clientWidth || 283;
-  }, []);
-
-  const [playMode, setPlayMode] = useLocalStorage<number>({
-    key: "playMode",
-    defaultValue: 0,
-  });
 
   const switchPlayMode = () => {
-    setPlayMode((mode) => (mode + 1 === 3 ? 0 : mode + 1));
+    setPlayMode((mode: number) => (mode + 1 === 3 ? 0 : mode + 1));
   };
 
   const [playProgress, _setPlayProgress] = useState<string | number>(0);
@@ -116,13 +117,19 @@ const Control: FC<IProps> = ({
             title="单曲循环"
           />
         </HoverCard>
-        <Icon type="next" size={24} className={`prov`} hoverLight />
+        <Icon
+          type="next"
+          size={24}
+          className={`prov`}
+          hoverLight
+          onClick={() => playNext(-1)}
+        />
         <Icon
           type={isPlay ? "pause" : "play"}
           size={24}
           onClick={playOrPause}
         />
-        <Icon type="next" size={24} hoverLight />
+        <Icon type="next" size={24} hoverLight onClick={() => playNext(1)} />
         <Icon type={"songWord"} size={18} hoverLight />
       </div>
       <div className="progress-box">
@@ -137,6 +144,9 @@ const Control: FC<IProps> = ({
             const layerX = e.pageX - (boxElement.current?.offsetLeft || 0);
 
             setPlayProgress(layerX / data.current.clientWidth);
+          }}
+          style={{
+            width: 300,
           }}
         >
           {/* 下载进度条 */}
@@ -158,7 +168,6 @@ const Control: FC<IProps> = ({
             onClick={(e) => e.stopPropagation()}
             className="circle"
             onMouseDown={(e) => {
-              console.log("👴2022-08-26 15:01:54 Control.tsx line:135", e);
               onMouseDown(e.pageX);
               // @ts-ignore
               data.current.offsetLeft = e.target.offsetLeft;
