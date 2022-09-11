@@ -1,15 +1,21 @@
-import { getSongDetail, getSongUrl } from "@/api/song";
+import { getLyric, getSongDetail, getSongUrl } from "@/api/song";
 import to from "@/common/to";
 import { getStore } from "@/common/utils";
+import { useBaseContext } from "@/context/useBaseContent";
 import { useLocalStorage } from "@mantine/hooks";
 import { useEffect, useRef, useState } from "react";
 
 const usePlayer = () => {
+  const {
+    isPlay,
+    setIsPlay,
+    currentSong,
+    setCurrentSong,
+    setLyric,
+    currentTime,
+    _setCurrentTime,
+  } = useBaseContext();
   const audioInstance = useRef<HTMLAudioElement>(null);
-  const [currentSong, setCurrentSong] = useLocalStorage<SongItem>({
-    key: "currentSong",
-    defaultValue: {} as SongItem,
-  });
 
   const [playMode, setPlayMode] = useLocalStorage<number>({
     key: "playMode",
@@ -20,6 +26,15 @@ const usePlayer = () => {
     key: "currentSongUrl",
     defaultValue: "",
   });
+  const [volume, setVolume] = useLocalStorage({
+    key: "volume",
+    defaultValue: 60,
+  });
+
+  const changeVolume = (v: number) => {
+    audioInstance.current!.volume = v / 100;
+    setVolume(v);
+  };
 
   const [playList, _setPlayList] = useLocalStorage<SongItem[]>({
     defaultValue: [],
@@ -34,14 +49,12 @@ const usePlayer = () => {
     isBind: false,
     playList: (getStore("CURRENT_PLAY_LIST") || []) as SongItem[],
     currentSong: (getStore("currentSong") || {}) as SongItem,
+    volume: Number(localStorage.getItem("volume")) || 60,
+    isFirstPlay: true,
   });
 
   const [playListVisible, setPlayListVisible] = useState(false);
 
-  const [currentTime, _setCurrentTime] = useLocalStorage({
-    key: "currentTime",
-    defaultValue: 0,
-  });
   const setCurrentTime = (currentTime: number) => {
     _setCurrentTime(currentTime);
     audioInstance.current!.currentTime = currentTime;
@@ -50,8 +63,6 @@ const usePlayer = () => {
   // 加载的进度条
   const [loadProgress, setLoadProgress] = useState(0);
 
-  const [isPlay, setIsPlay] = useState(false);
-
   const clearList = () => {
     setCurrentTime(0);
     setCurrentSong({} as SongItem);
@@ -59,8 +70,42 @@ const usePlayer = () => {
     pause();
   };
 
-  const playOne = async (e: any, id: number) => {
-    getSongUrlAndPlay(id);
+  const _getLyric = async (id: number) => {
+    const [err, res] = await to(getLyric(id));
+
+    if (err) {
+      return;
+    }
+    if (res?.lrc?.lyric) {
+      const lyric = res.lrc.lyric as string;
+
+      const lyricList = lyric
+        .split("\n")
+        .filter((item) => item)
+        .map((item) => {
+          let [time, text] = item.split("]").map((item) => item.trim());
+
+          time = time.replace("[", "");
+          time = time.split(".")[0];
+          const [min, second] = time.split(":");
+          const _time = Number(min) * 60 + Number(second);
+          return {
+            time: _time,
+            text,
+          };
+        });
+      setLyric(lyricList);
+    }
+  };
+
+  const playOne = async (
+    e: any,
+    id: number,
+    { isClearCurrentTime = true } = {}
+  ) => {
+    store.current.isFirstPlay = false;
+    getSongUrlAndPlay(id, isClearCurrentTime);
+    _getLyric(id);
     const [err, res] = await to(getSongDetail(id));
     if (err || res.code !== 200) {
       return;
@@ -86,7 +131,7 @@ const usePlayer = () => {
     }
   };
 
-  const getSongUrlAndPlay = async (id: number) => {
+  const getSongUrlAndPlay = async (id: number, isClearCurrentTime: boolean) => {
     audioInstance.current?.pause();
 
     const [err, res] = await to(getSongUrl(id));
@@ -96,8 +141,11 @@ const usePlayer = () => {
     setCurrentSongUrl(res.data[0].url);
     setTimeout(() => {
       play();
-      // backStart();
-      setCurrentTime(0);
+      if (isClearCurrentTime) {
+        setCurrentTime(0);
+      } else {
+        audioInstance.current!.currentTime = currentTime;
+      }
     }, 500);
   };
 
@@ -118,11 +166,14 @@ const usePlayer = () => {
   };
 
   const bindAudioEvent = () => {
+    // audioInstance.current!.volume = volume;
     // ! 加载元数据
-    audioInstance.current?.addEventListener("loadedmetadata", () => {
-      // if (audioInstance.current) {
-      // }
-    });
+    // audioInstance.current?.addEventListener("loadedmetadata", () => {
+    //   // if (audioInstance.current) {
+    //   // }
+    // });
+    audioInstance.current!.volume = store.current.volume / 100;
+
     // ! 监听下载进度
     audioInstance.current?.addEventListener("progress", handleLoadMusic);
     // ! 监听音乐播放进度变化
@@ -144,6 +195,12 @@ const usePlayer = () => {
   };
 
   const playOrPause = () => {
+    if (store.current.isFirstPlay) {
+      getSongUrlAndPlay(currentSong.id, false);
+      audioInstance.current!.currentTime = currentTime;
+      store.current.isFirstPlay = false;
+      return;
+    }
     if (isPlay) {
       pause();
     } else {
@@ -221,7 +278,9 @@ const usePlayer = () => {
     playNext,
     playMode,
     setPlayMode,
-    clearList
+    clearList,
+    volume,
+    changeVolume,
   };
 };
 

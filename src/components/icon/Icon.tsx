@@ -25,6 +25,7 @@ const typeMap = {
   like: "icon-fabulous",
   pause: "icon-pause1",
   empty: "icon-empty",
+  logout: "icon-logout",
 };
 export type IconType = keyof typeof typeMap;
 export interface IconProps extends React.HTMLAttributes<HTMLElement> {

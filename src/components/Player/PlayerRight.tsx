@@ -1,36 +1,35 @@
 import { useLocalStorage } from "@mantine/hooks";
-import React, { FC, ReactElement } from "react";
+import React, { FC, ReactElement, useRef } from "react";
 import Icon from "../icon/Icon";
 
 interface IProps {
   clickListIcon(): void;
+  volume: number;
+  changeVolume(v: number): void;
 }
-const PlayerRight: FC<IProps> = ({ clickListIcon }): ReactElement => {
-  const [volume, setVolume] = useLocalStorage({
-    key: "volume",
-    defaultValue: 0,
-  });
+const PlayerRight: FC<IProps> = ({
+  clickListIcon,
+  volume,
+  changeVolume,
+}): ReactElement => {
   const [disabledVolume, setDisabledVolume] = useLocalStorage({
     key: "disabledVolume",
     defaultValue: false,
   });
+  const volumeControl = useRef<HTMLDivElement>(null);
 
   const switchDisabledVolume = () => {
-    setDisabledVolume((e) => !e);
+    if (!disabledVolume) {
+      changeVolume(0);
+    } else {
+      changeVolume(60);
+    }
+
+    setDisabledVolume(!disabledVolume);
   };
 
   return (
     <div className="right-bar">
-      <div className="volumeWrap">
-        <div className="volumeControl">
-          <div className="volume-bar"></div>
-        </div>
-        <Icon
-          type={disabledVolume ? "disabledVolume" : "volume"}
-          size={22}
-          onClick={switchDisabledVolume}
-        />
-      </div>
       <Icon
         type="list"
         size={22}
@@ -38,6 +37,51 @@ const PlayerRight: FC<IProps> = ({ clickListIcon }): ReactElement => {
         title="播放列表"
         onClick={clickListIcon}
       />
+      <div className="volumeWrap">
+        <div className="volumeControl">
+          <div
+            className="volume-bar"
+            onClick={(e) => {
+              const rect = volumeControl.current?.getClientRects()[0];
+              if (rect) {
+                const { top } = rect;
+                const { clientY } = e;
+                let v = 100 - (clientY - top);
+                console.log("👴2022-09-09 18:17:04 PlayerRight.tsx line:44", v);
+                if (v < 0) {
+                  setDisabledVolume(true);
+                  v = 0;
+                } else {
+                  setDisabledVolume(false);
+                }
+                if (v > 100) {
+                  v = 100;
+                }
+                changeVolume(v);
+              }
+            }}
+            ref={volumeControl}
+          >
+            <div
+              className="volume-circle"
+              style={{
+                bottom: volume,
+              }}
+            ></div>
+            <div
+              className="volume-progress"
+              style={{
+                height: volume,
+              }}
+            ></div>
+          </div>
+        </div>
+        <Icon
+          type={disabledVolume ? "disabledVolume" : "volume"}
+          size={22}
+          onClick={switchDisabledVolume}
+        />
+      </div>
     </div>
   );
 };

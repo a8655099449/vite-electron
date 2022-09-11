@@ -9,7 +9,7 @@ interface IProps {
 const Layout: FC<IProps> = ({ sideBar, children }): ReactElement => {
   return (
     <div className="layout">
-      <div className="sidebar border-right-1">{sideBar}</div>
+      <div className="sidebar border-right-1 scroll-y">{sideBar}</div>
       <div className="content">
         <ErrorCatch>{children}</ErrorCatch>
       </div>

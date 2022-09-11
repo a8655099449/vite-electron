@@ -117,3 +117,13 @@ type SongItem = {
   al: Album;
   dt: number;
 };
+
+type LyricItem = {
+  time: number;
+  text: string;
+};
+
+type UserPlayList = {
+  create: SongListItem[];
+  collect: SongListItem[];
+};

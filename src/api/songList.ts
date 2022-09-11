@@ -33,5 +33,5 @@ export const getSongListAllMusic = (id: string) =>
     songs: SongItem[];
   }>({
     url: "/playlist/track/all",
-    params: { id, limit: 1000 },
+    params: { id, limit: 100 },
   });

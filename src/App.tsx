@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import Layout from "./components/Layout/Layout";
 import lazyLoad from "./components/lazyLoad";
 import Login from "./components/Login/Login";
+import PlayDetail from "./components/PlayDetail/PlayDetail";
 import Player from "./components/Player/Player";
 // @ts-ignore
 import SideBar from "./components/SideBar/SideBar";
@@ -15,7 +16,7 @@ import BaseContext from "./context/BaseContext";
 import { useBaseContext } from "./context/useBaseContent";
 
 const App: React.FC = () => {
-  const { theme, toggleTheme } = useBaseContext();
+  const { theme, playDetailVisible } = useBaseContext();
   const mod = import.meta.glob("./pages/**/[a-z[]*.tsx");
   // const
   const components = useMemo(() => {
@@ -52,6 +53,7 @@ const App: React.FC = () => {
           </Routes>
         </Layout>
         <Player />
+        {playDetailVisible && <PlayDetail />}
       </MantineProvider>
     </div>
   );

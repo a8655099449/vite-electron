@@ -190,3 +190,13 @@ img {
   color: var(--link-color);
   cursor: pointer;
 }
+.scroll-y {
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
+  &:hover::-webkit-scrollbar  {
+    display: block; /* Chrome Safari */
+
+  }
+}

@@ -23,7 +23,6 @@ const songList: FC<IProps> = (): ReactElement => {
   if (loading) {
     return <Loading />;
   }
-  // console.log("👴2022-08-25 17:41:45 songList.tsx line:13", data);
   return (
     <div className="p-20">
       <SongListBanner

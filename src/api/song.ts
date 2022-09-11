@@ -17,3 +17,9 @@ export const getSongUrl = (id: number) =>
     url: "/song/url",
     params: { id },
   });
+
+export const getLyric = (id: number) =>
+  request({
+    url: "/lyric",
+    params: { id },
+  });

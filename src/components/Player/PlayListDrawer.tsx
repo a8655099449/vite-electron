@@ -1,4 +1,6 @@
+import { confirm } from "@/common/utils";
 import PlayListTable from "@/pages/songList/PlayListTable";
+import { openConfirmModal } from "@mantine/modals";
 import React, { FC, ReactElement, useMemo } from "react";
 import Empty from "../Container/Empty";
 import SongTimeBar from "../Container/SongTimeBar";
@@ -18,6 +20,8 @@ const PlayListDrawer: FC<IProps> = ({
   isPlay,
   clearList,
 }): ReactElement => {
+
+
   return (
     <div className={`play-list-drawer ${visible ? "show" : "hidden"}`}>
       <div className="header">
@@ -25,11 +29,19 @@ const PlayListDrawer: FC<IProps> = ({
       </div>
       <div className="play-list-handle">
         <div>共{list.length}首</div>
-        <div className="link" onClick={clearList}>
+        <div
+          className="link"
+          onClick={async () => {
+            await confirm({
+              children:"是否确认清空列表？"
+            })
+            clearList()
+          }}
+        >
           清空列表
         </div>
       </div>
-      <div>{list.length === 0 && <Empty  />}</div>
+      <div>{list.length === 0 && <Empty />}</div>
       <table className={`player-list play-list-table`}>
         <tbody>
           {list.map((item) => (

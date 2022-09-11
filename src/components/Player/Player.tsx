@@ -1,4 +1,5 @@
 import { IMAGE_ALBUM } from "@/common/images";
+import { useBaseContext } from "@/context/useBaseContent";
 import React, { FC, ReactElement } from "react";
 import Control from "./Control";
 import NotPlayInfo from "./NotPlayInfo";
@@ -25,14 +26,17 @@ const Player: FC<IProps> = (): ReactElement => {
     playNext,
     playMode,
     setPlayMode,
-    clearList
+    clearList,
+    volume,
+    changeVolume,
   } = usePlayer();
+  const { togglePlayDetailVisible } = useBaseContext();
 
   return (
     <div className="player">
       <audio src={currentSongUrl} ref={audioInstance} />
       {currentSong?.name ? (
-        <div className="music-info">
+        <div className="music-info" onClick={togglePlayDetailVisible}>
           <div className="image">
             <img src={currentSong.al.picUrl} alt="" />
           </div>
@@ -65,6 +69,7 @@ const Player: FC<IProps> = (): ReactElement => {
         clickListIcon={() => {
           setPlayListVisible(!playListVisible);
         }}
+        {...{ volume, changeVolume }}
       />
     </div>
   );

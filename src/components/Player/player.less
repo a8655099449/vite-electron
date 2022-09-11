@@ -97,7 +97,7 @@
     position: relative;
     .volumeControl {
       // width: 34px;
-      height: 100px;
+      // height: 100px;
       border: 1px solid #f00;
       position: absolute;
       bottom: 40px;
@@ -113,9 +113,31 @@
     }
     .volume-bar {
       width: 3px;
-      height: 100%;
+      height: 100px;
       background-color: var(--bg-color-2);
       margin: auto;
+      position: relative;
+      cursor: pointer;
+      .volume-progress {
+        position: absolute;
+        left: 0;
+        right: 0;
+        background-color: var(--primary-color);
+
+
+        bottom: 0;
+        // height: 30%;
+      }
+      .volume-circle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background-color: var(--primary-color);
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 50%;
+      }
     }
     &:hover {
       .volumeControl {
@@ -152,7 +174,6 @@
     display: flex;
     justify-content: space-between;
     color: var(--text-color-2);
-
   }
   .player-list.player-list {
     margin-top: 0;

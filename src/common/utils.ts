@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import { openConfirmModal } from "@mantine/modals";
 // import md5 from 'blueimp-md5'
 
 export const message = {
@@ -18,7 +19,7 @@ export const setStorage = (key: string, data: any, time = saveTime): void => {
 };
 
 export const getStore = <T = any>(key: string): T | "" => {
-  let v:any = localStorage.getItem(key);
+  let v: any = localStorage.getItem(key);
   if (!v || !isJson(v)) {
     return "";
   }
@@ -47,4 +48,18 @@ export const isJson = (v: any) => {
   }
 };
 
-// const getStorage = () => {}
+export const confirm = ({ title = "确认提示", children = "请确认" } = {}) => {
+  return new Promise((resolve, reject) => {
+    openConfirmModal({
+      title,
+      labels: { confirm: "确认", cancel: "取消" },
+      children,
+      onConfirm() {
+        resolve("ok");
+      },
+      onCancel() {
+        reject();
+      },
+    });
+  });
+};

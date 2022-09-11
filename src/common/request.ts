@@ -2,16 +2,19 @@ import axios from "axios";
 
 import type { AxiosRequestConfig } from "axios";
 import { COOKIE_KEY } from "./consts";
+import { message } from "./utils";
 
-const baseURL = `http://47.107.81.99:3000`;
-// const baseURL = `/apis`;
+// const baseURL = `http://47.107.81.99:3000`;
+const baseURL = `/apis`;
 function request<T = any>(
   config: AxiosRequestConfig
-): Promise<{
-  code: number;
-  data: T;
-  [K: string]: any;
-} & T> {
+): Promise<
+  {
+    code: number;
+    data: T;
+    [K: string]: any;
+  } & T
+> {
   const instance = axios.create({
     // 公用的网络请求路径
     baseURL: baseURL,
@@ -30,10 +33,9 @@ function request<T = any>(
       if (!config.params) {
         config.params = {};
       }
-      if (cookie) {
-        config.params.cookie = encodeURIComponent(cookie);
-      }
-
+      // if (cookie) {
+      //   config.params.cookie = encodeURIComponent(cookie);
+      // }
       config.params.timerstamp = Date.now();
 
       return config;
@@ -50,6 +52,9 @@ function request<T = any>(
       return res.data;
     },
     (err) => {
+      if (err?.response?.data?.message) {
+        message.error(err?.response?.data?.message);
+      }
       return err;
     }
   );

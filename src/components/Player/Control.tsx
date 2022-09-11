@@ -74,7 +74,6 @@ const Control: FC<IProps> = ({
   }, [currentTime, song]);
 
   const bodyMove = (e: MouseEvent) => {
-    // console.log("👴", e.pageX , data.current);
     const { pageX, offsetLeft, clientWidth } = data.current;
     let left = e.pageX - pageX + offsetLeft;
 
@@ -107,7 +106,6 @@ const Control: FC<IProps> = ({
   };
 
   const onMouseUp = () => {
-    // console.log("👴拉起");
     document.body.removeEventListener("mousemove", bodyMove);
   };
   return (

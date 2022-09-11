@@ -1,3 +1,4 @@
+import { ModalsProvider } from "@mantine/modals";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
@@ -17,13 +18,15 @@ if (!window.api) {
 }
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <BaseContext>
-        <App />
-      </BaseContext>
-    </BrowserRouter>
-  </React.StrictMode>
+  <>
+    <ModalsProvider>
+      <BrowserRouter>
+        <BaseContext>
+          <App />
+        </BaseContext>
+      </BrowserRouter>
+    </ModalsProvider>
+  </>
 );
 
 postMessage({ payload: "removeLoading" }, "*");

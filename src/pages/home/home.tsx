@@ -45,7 +45,6 @@ const home = () => {
     setStorage(HOME_PAGE_DATA, blocks, 24 * 60 * 60 * 1000);
     return blocks;
   });
-  console.log('👴',data)
 
   return (
     <PageWrap className={`${styles["home"]}`}>
