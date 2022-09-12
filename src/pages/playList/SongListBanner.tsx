@@ -12,7 +12,7 @@ interface IProps {
   data: SongListItem;
   clickPlayAll(): void;
 }
-const SongListBanner: FC<IProps> = ({ data ,clickPlayAll}): ReactElement => {
+const SongListBanner: FC<IProps> = ({ data, clickPlayAll }): ReactElement => {
   const { tags, creator, createTime, description, playCount, trackCount } =
     data;
 
@@ -30,11 +30,15 @@ const SongListBanner: FC<IProps> = ({ data ,clickPlayAll}): ReactElement => {
         <h1>{data.name}</h1>
         <div className={`${styles["author"]}`}>
           <Image src={creator.avatarUrl} />
-          <Link to={""}>{creator.nickname}</Link>
+          <Link to={`/user?id=${creator.userId}`}>{creator.nickname}</Link>
           <span>{dayjs(createTime).format("YYYY-MM-DD")} 创建</span>
         </div>
         <div className={`${styles["button"]}`}>
-          <Button size="xs" leftIcon={<Icon type="play" />} onClick={clickPlayAll}>
+          <Button
+            size="xs"
+            leftIcon={<Icon type="play" />}
+            onClick={clickPlayAll}
+          >
             播放全部
           </Button>
           <Button

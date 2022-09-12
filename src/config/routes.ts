@@ -10,8 +10,12 @@ const routes: RouteItem[] = [
     isMenu: true,
   },
   {
-    path: "/songList",
+    path: "/playList",
     name: "歌单详情",
+  },
+  {
+    path: "/user",
+    name: "用户详情",
   },
 ];
 

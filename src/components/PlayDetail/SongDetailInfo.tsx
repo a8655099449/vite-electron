@@ -20,7 +20,7 @@ const SongDetailInfo: FC<IProps> = (): ReactElement => {
       const offsetTop = current!.offsetTop;
       wrap.current!.scrollTo({
         top: offsetTop - 150,
-        behavior: "smooth",
+        behavior:'smooth'
       });
       setFinder(currentTime);
 

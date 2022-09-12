@@ -13,7 +13,7 @@ const SongListItem: FC<IProps> = ({ item }): ReactElement => {
     <div
       className="song-list-item"
       onClick={(e) => {
-        navigate(`/songList?id=${item.id}`);
+        navigate(`/playList?id=${item.id}`);
       }}
     >
       <div>
@@ -21,6 +21,7 @@ const SongListItem: FC<IProps> = ({ item }): ReactElement => {
       </div>
 
       <div>{item.name}</div>
+
     </div>
   );
 };

@@ -48,11 +48,20 @@ const PlayListTable: FC<IProps> = ({ data }): ReactElement => {
                   }}
                   className="text-row-1"
                 >
-                  {" "}
                   {item.ar?.[0].name}
                 </Link>
               </td>
-              <td>{item.al.name}</td>
+              <td>
+                <div
+                  style={{
+                    display: "block",
+                    width: 150,
+                  }}
+                  className="text-row-1"
+                >
+                  {item.al.name}
+                </div>
+              </td>
               <td>
                 <SongTimeBar dt={item.dt} />
               </td>

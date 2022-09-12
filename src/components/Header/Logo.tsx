@@ -8,7 +8,7 @@ interface IProps {}
 const Logo: FC<IProps> = (): ReactElement => {
   const { playDetailVisible, togglePlayDetailVisible } = useBaseContext();
   return (
-    <div className={`${styles["logo"]} drag`}>
+    <div className={`${styles["logo"]} `}>
       {playDetailVisible ? (
         <div className={`${styles['down-arrow']}`}>
           <Icon type="arrow-right" size={20} button onClick={togglePlayDetailVisible} />

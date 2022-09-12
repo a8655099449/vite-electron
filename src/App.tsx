@@ -10,7 +10,7 @@ import Login from "./components/Login/Login";
 import PlayDetail from "./components/PlayDetail/PlayDetail";
 import Player from "./components/Player/Player";
 // @ts-ignore
-import SideBar from "./components/SideBar/SideBar";
+import SideBar from "./components/Sidebar/BaseSideBar";
 import routes from "./config/routes";
 import BaseContext from "./context/BaseContext";
 import { useBaseContext } from "./context/useBaseContent";
@@ -28,6 +28,8 @@ const App: React.FC = () => {
       return item;
     });
   }, [routes]);
+
+
 
   return (
     <div className={`main-container ${theme}`}>

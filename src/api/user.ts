@@ -59,7 +59,9 @@ export const getUserSubCount = () =>
   });
 // 获取用户详情
 export const getUserDetail = (uid: number) =>
-  request({
+  request<{
+    profile: UserProfile;
+  }>({
     url: "/user/detail",
     params: { uid },
   });

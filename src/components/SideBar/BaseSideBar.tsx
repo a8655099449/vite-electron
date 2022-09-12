@@ -4,9 +4,12 @@ import { Menu } from "@mantine/core";
 import React, { FC, ReactElement, useMemo } from "react";
 import { Link, NavLink } from "react-router-dom";
 import styles from "./sidebar.module.less";
-import SubPlayListMenu from "./SubPlayListMenu";
+
+// @ts-ignore
+import PlayListMenu from "../Container/playListMenu";
+
 interface IProps {}
-const SideBar: FC<IProps> = (): ReactElement => {
+const BaseSideBar: FC<IProps> = (): ReactElement => {
   const menus = useMemo(() => {
     return routes.filter(({ isMenu }) => isMenu);
   }, [routes]);
@@ -27,9 +30,10 @@ const SideBar: FC<IProps> = (): ReactElement => {
           </NavLink>
         );
       })}
-      <SubPlayListMenu label="创建的歌单" list={userPlayList.create} />
+      <PlayListMenu label="创建的歌单" list={userPlayList.create} />
+      <PlayListMenu label="收藏的歌单" list={userPlayList.collect} />
     </div>
   );
 };
 
-export default SideBar;
+export default BaseSideBar;

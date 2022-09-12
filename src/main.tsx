@@ -6,6 +6,7 @@ import App from "./App";
 // import './samples/node-api'
 import "./assets/styles/global.less";
 import event from "./common/event";
+import ErrorCatch from "./components/Container/ErrorCatch";
 import BaseContext from "./context/BaseContext";
 
 if (!window.api) {
@@ -18,7 +19,7 @@ if (!window.api) {
 }
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <>
+  <ErrorCatch>
     <ModalsProvider>
       <BrowserRouter>
         <BaseContext>
@@ -26,7 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </BaseContext>
       </BrowserRouter>
     </ModalsProvider>
-  </>
+  </ErrorCatch>
 );
 
 postMessage({ payload: "removeLoading" }, "*");
