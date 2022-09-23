@@ -42,7 +42,7 @@ function request<T = any>(
     },
     // 请求错误前的拦截
     (error) => {
-      return Promise.reject(error);
+      return Promise.reject(error?.response);
     }
   );
 
@@ -55,7 +55,9 @@ function request<T = any>(
       if (err?.response?.data?.message) {
         message.error(err?.response?.data?.message);
       }
-      return err;
+
+
+      return Promise.reject(err?.response?.data || err);
     }
   );
 

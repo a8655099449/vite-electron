@@ -15,13 +15,15 @@ const SongListItem: FC<IProps> = ({ item }): ReactElement => {
       onClick={(e) => {
         navigate(`/playList?id=${item.id}`);
       }}
+      style={{
+        maxWidth: 300,
+      }}
     >
       <div>
-        <Image src={item.picUrl} />
+        <Image src={item.picUrl || item.coverImgUrl} />
       </div>
 
       <div>{item.name}</div>
-
     </div>
   );
 };

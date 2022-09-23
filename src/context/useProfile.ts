@@ -45,6 +45,9 @@ const useProfile = () => {
     await sendLogout();
     setUserInfo({});
     localStorage.setItem(COOKIE_KEY, "");
+
+    api.emit('LOGOUT')
+
   };
 
   useEffect(() => {

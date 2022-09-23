@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 const parseQuery = <T = any>(s: string = ""): T => {
@@ -18,4 +19,15 @@ const parseQuery = <T = any>(s: string = ""): T => {
 export const useQuery = () => {
   const { search } = useLocation();
   return parseQuery(search);
+};
+
+type UseEventParams = {
+  key: ListenerKeys;
+  event(e?: any): void;
+};
+export const useEvent = ({ key, event }: UseEventParams) => {
+  useEffect(() => {
+    api.on(key, event);
+    return () => api.off(key, event);
+  }, []);
 };

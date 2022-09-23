@@ -4,13 +4,7 @@
   overflow: hidden;
   padding: 10px 20px;
 }
-.song-list-item {
-  img {
-    border-radius: 4px;
-  }
-  margin-bottom: 20px;
-  cursor: pointer;
-}
+
 .loading {
   // display: ;
   position: fixed;
@@ -98,4 +92,25 @@
   height: calc(100vh - 100px);
   width: 100vw;
   // display;
+}
+.play-list-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  .song-list-item {
+    width: calc((100% - 80px) / 5);
+    margin-right: 20px;
+    &:nth-child(5n) {
+      margin-right: 0;
+    }
+  }
+}
+.song-list-item {
+  display: inline-block;
+  width: 25%;
+  img {
+    border-radius: 4px;
+    width: 100%;
+  }
+  margin-bottom: 20px;
+  cursor: pointer;
 }

@@ -9,7 +9,6 @@ type BaseContextProps = {
   loginVisible: boolean;
   toggleTheme(): void;
   toggleLoginVisible(v: boolean): void;
-  logout(): void;
 
 } & ReturnType<typeof useProfile> &
   ReturnType<typeof useGlobalPlay>;

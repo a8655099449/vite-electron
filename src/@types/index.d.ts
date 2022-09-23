@@ -26,6 +26,7 @@ type ListenerKeys =
   | "unmaximize"
   | "LOGIN_SUCCESS"
   | "PLAY"
+  | "LOGOUT"
   | "PLAY_LIST";
 
 declare module "@loadable/component";
@@ -110,13 +111,6 @@ type SongListItem = {
   tags: string[];
   creator: UserProfile;
 };
-type SongItem = {
-  id: number;
-  name: string;
-  ar: UserProfile[];
-  al: Album;
-  dt: number;
-};
 
 type LyricItem = {
   time: number;
@@ -127,5 +121,4 @@ type UserPlayList = {
   create: SongListItem[];
   collect: SongListItem[];
 };
-
 

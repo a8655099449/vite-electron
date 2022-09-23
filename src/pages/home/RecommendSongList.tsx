@@ -1,26 +1,51 @@
 import { getRecommendSongList } from "@/api/songList";
+import to from "@/common/to";
 import SongListItem from "@/components/Container/SongListItem";
 import Icon from "@/components/icon/Icon";
+import { useBaseContext } from "@/context/useBaseContent";
 import { Skeleton } from "@mantine/core";
 import { useRequest } from "ahooks";
-import React, { FC, ReactElement } from "react";
+import React, { FC, ReactElement, useMemo } from "react";
 import styles from "./home.module.less";
 
-interface IProps {}
-const RecommendSongList: FC<IProps> = (): ReactElement => {
-  const { data, loading } = useRequest(getRecommendSongList);
-  if (data?.code !== 200 ) {
-    return <></>
+interface IProps {
+  data: any[];
+  title?: string;
+}
+const RecommendSongList: FC<IProps> = ({
+  data: _data = [],
+  title,
+}): ReactElement => {
+  const data = useMemo(() => {
+    const allList: any[] = [];
+
+    _data.forEach((item) => {
+      if (Array.isArray(item.resources)) {
+        allList.push(...item.resources);
+      }
+    });
+
+    return allList.map(
+      (item) =>
+        ({
+          name: item.uiElement.mainTitle.title,
+          id: item.resourceId,
+          coverImgUrl: item.uiElement.image.imageUrl,
+          playCount: item.resourceExtInfo.playCount,
+        } as SongListItem)
+    );
+  }, [_data]);
+
+  if (data.length === 0) {
+    return <div></div>;
   }
 
   return (
     <div className={`${styles["recommend-list"]}`}>
-      <h2>
-        推荐歌单 <Icon type="arrow-right" size={20} />
-      </h2>
+      <h2>{title}</h2>
       <div>
         <div className={`${styles["list"]}`}>
-          {data?.recommend.map((item, index) =>
+          {data?.map((item, index) =>
             index < 9 ? <SongListItem item={item} key={item.id} /> : null
           )}
         </div>

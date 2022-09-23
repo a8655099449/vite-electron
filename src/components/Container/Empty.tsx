@@ -7,13 +7,16 @@ export default function Empty({ desc = "空空如也" }) {
       style={{
         textAlign: "center",
         padding: 20,
-        color:"var(--text-color-2)"
+        color: "var(--text-color-2)",
+        flex: 1,
       }}
     >
       <div
-        style={{
-          // marginBottom: 20,
-        }}
+        style={
+          {
+            // marginBottom: 20,
+          }
+        }
       >
         <Icon type="empty" size={50} />
       </div>
