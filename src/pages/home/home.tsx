@@ -6,9 +6,10 @@ import { useEvent } from "@/common/use";
 import { getStore, setStorage } from "@/common/utils";
 import Loading from "@/components/Container/Loading";
 import PageWrap from "@/components/Container/PageWrap";
+import Skeleton from "@/components/Container/Skeleton";
 import Image from "@/components/Image/Image";
 import Swiper from "@/components/Swiper/Swiper";
-import { Skeleton, Tabs } from "@mantine/core";
+import { Tabs } from "@mantine/core";
 import { useRequest } from "ahooks";
 import React, { useEffect, useMemo } from "react";
 // import Swiper from "swiper";
@@ -32,7 +33,11 @@ type homeData = {
   [K in TupleToUnion<BlockKeys>]: HomeData;
 };
 const home = () => {
-  const { data, loading, run } = useRequest(async (clare = false) => {
+  const {
+    data = {},
+    loading,
+    run,
+  } = useRequest(async (clare = false) => {
     const data = getStore(HOME_PAGE_DATA);
     if (data && !clare) {
       return data;
@@ -69,7 +74,6 @@ const home = () => {
       HOMEPAGE_BLOCK_STYLE_RCMD,
       HOMEPAGE_BLOCK_HOT_TOPIC,
     } = (data as homeData) || {};
-    console.log("👴HOMEPAGE_BLOCK_HOT_TOPIC", HOMEPAGE_BLOCK_HOT_TOPIC);
 
     const styleSongs: Resource[] = [];
 
@@ -116,28 +120,24 @@ const home = () => {
     <PageWrap className={`${styles["home"]}`}>
       <HomeTabs />
 
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          <BannerSwiper data={banner} />
-          <RecommendSongList {...recommend} />
-          <RecommendSongList {...official} />
+      <Skeleton loading={loading} type='bar' count={5}>
+        <BannerSwiper data={banner} />
+        <RecommendSongList {...recommend} />
+        <RecommendSongList {...official} />
 
-          <HomeSongList {...style} />
-          <RecommendSongList {...mgc} />
-          <HomeTopic {...topic} />
+        <HomeSongList {...style} />
+        <RecommendSongList {...mgc} />
+        <HomeTopic {...topic} />
 
-          {Object.keys(data).map((key, index) =>
-            data[key].uiElement ? (
-              <h2 key={index}>
-                {data[key].uiElement.subTitle.title}
-                {key}
-              </h2>
-            ) : null
-          )}
-        </>
-      )}
+        {Object.keys(data || {}).map((key, index) =>
+          data[key].uiElement ? (
+            <h2 key={index}>
+              {data[key].uiElement.subTitle.title}
+              {key}
+            </h2>
+          ) : null
+        )}
+      </Skeleton>
     </PageWrap>
   );
 };

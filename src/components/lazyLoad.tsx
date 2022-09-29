@@ -1,6 +1,5 @@
-
-
 import loadable from "@loadable/component";
+import Skeleton from "./Container/Skeleton";
 
 function load(fn: any, options: any) {
   const Component = loadable(fn, options);
@@ -19,15 +18,10 @@ function LoadingComponent(props: {
     console.error(props.error);
     return null;
   }
-  return (
-    <div>
-      loading
-      {/* <Spin /> */}
-    </div>
-  );
+  return <Skeleton count={5} type="bar" loading />;
 }
 
-const lazyLoad = (loader:any) => {
+const lazyLoad = (loader: any) => {
   return load(loader, {
     fallback: LoadingComponent({
       pastDelay: true,

@@ -1,4 +1,5 @@
 import Image from "@/components/Image/Image";
+import { useBaseContext } from "@/context/useBaseContent";
 import { Button } from "@mantine/core";
 import React, { FC, ReactElement } from "react";
 
@@ -8,6 +9,8 @@ interface IProps {
   profile: UserProfile;
 }
 const UserDetail: FC<IProps> = ({ profile = {} }): ReactElement => {
+  const { userInfo } = useBaseContext();
+
   return (
     <div className={`${styles["user-detail"]}`}>
       <div className={`${styles["avatar"]}`}>
@@ -24,15 +27,19 @@ const UserDetail: FC<IProps> = ({ profile = {} }): ReactElement => {
             <div className={`${styles["level"]}`}>lv.9</div>
           </div>
           <div>
-            <Button>发私信</Button>
-            <Button
-              variant={"outline"}
-              style={{
-                marginLeft: 10,
-              }}
-            >
-              关注
-            </Button>
+            {userInfo.userId !== profile.userId && (
+              <>
+                <Button>发私信</Button>
+                <Button
+                  variant={"outline"}
+                  style={{
+                    marginLeft: 10,
+                  }}
+                >
+                  关注
+                </Button>
+              </>
+            )}
           </div>
         </div>
         <div className={`${styles["follow"]}`}>

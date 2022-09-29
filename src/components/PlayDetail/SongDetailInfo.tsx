@@ -1,3 +1,11 @@
+/*
+ * @Author: error: git config user.name && git config user.email & please set dead value or install git
+ * @Date: 2022-09-28 07:45:09
+ * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
+ * @LastEditTime: 2022-09-29 21:48:36
+ * @FilePath: \vite-electron\src\components\PlayDetail\SongDetailInfo.tsx
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import { useBaseContext } from "@/context/useBaseContent";
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
 import Image from "../Image/Image";
@@ -10,9 +18,10 @@ const SongDetailInfo: FC<IProps> = (): ReactElement => {
   const ref = useRef({
     isFirst: true,
   });
+
   const handleCurrentTimeChange = (currentTime: number): boolean => {
     const current = document.querySelector(
-      `[data-currentTime="${currentTime}"]`
+      `[data-current_time="${currentTime}"]`
     );
     if (current) {
       // console.dir(current);
@@ -57,14 +66,14 @@ const SongDetailInfo: FC<IProps> = (): ReactElement => {
       </div>
       <div className={`${styles["center"]}`}>
         <div className={`${styles["lyric-wrap"]}`} ref={wrap}>
-          {lyric.map((item) => {
+          {lyric.map((item,index) => {
             return (
               <div
-                key={item.time}
+                key={index}
                 className={`${styles["lyric-item"]} ${
                   finder == item.time ? styles["active"] : ""
                 }`}
-                data-currentTime={item.time}
+                data-current_time={item.time}
               >
                 {item.text}
               </div>

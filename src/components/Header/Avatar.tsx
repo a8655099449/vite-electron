@@ -3,13 +3,15 @@ import { useBaseContext } from "@/context/useBaseContent";
 import { Button, Menu } from "@mantine/core";
 import { IconOutlet } from "@tabler/icons";
 import React, { FC, ReactElement } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Icon from "../icon/Icon";
 import Image from "../Image/Image";
 
 interface IProps {}
 const Avatar: FC<IProps> = (): ReactElement => {
-  const { toggleLoginVisible, userInfo ,logout } = useBaseContext();
-
+  const { toggleLoginVisible, userInfo, logout } = useBaseContext();
+  const to = useNavigate();
+  const { pathname } = useLocation();
   return (
     <div>
       {userInfo.avatarUrl ? (
@@ -23,7 +25,14 @@ const Avatar: FC<IProps> = (): ReactElement => {
         >
           <Menu.Target>
             <div>
-              <Image src={userInfo.avatarUrl} />
+              <Image
+                src={userInfo.avatarUrl}
+                onClick={(e) => {
+                  to(`/user?id=${userInfo.userId}`, {
+                    replace: pathname === "/user",
+                  });
+                }}
+              />
             </div>
           </Menu.Target>
 
@@ -37,7 +46,7 @@ const Avatar: FC<IProps> = (): ReactElement => {
                   children: "是否确认退出登录？",
                   title: "退出登录",
                 });
-                logout()
+                logout();
               }}
             >
               退出登录

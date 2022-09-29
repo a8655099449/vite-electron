@@ -1,0 +1,34 @@
+.login {
+  padding-bottom: 30px;
+  height: 250;
+}
+.login svg {
+  border: 5px solid #fff;
+}
+.login :global .underline {
+  font-size: 12px;
+}
+.login .password {
+  display: flex;
+}
+.login .password > div {
+  width: 70%;
+}
+.login .user {
+  padding-bottom: 20px;
+}
+.login .user img {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+}
+.login .user .nickName {
+  padding: 20px;
+}
+.login .form {
+  padding: 0 50px;
+}
+.login .form .input {
+  margin-bottom: 20px;
+}

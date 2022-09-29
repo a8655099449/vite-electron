@@ -136,6 +136,12 @@ const usePlayer = () => {
 
     const [err, res] = await to(getSongUrl(id));
     if (err || res.code !== 200) {
+      console.log("👴2022-09-28 08:00:43 usePlayer.ts line:139", res);
+      if (res?.code === -462) {
+
+      }
+
+
       return;
     }
     setCurrentSongUrl(res.data[0].url);
