@@ -12,13 +12,38 @@ import Image from "../Image/Image";
 import styles from "./index.module.less";
 interface IProps {}
 const SongDetailInfo: FC<IProps> = (): ReactElement => {
-  const { isPlay, currentSong, lyric, currentTime } = useBaseContext();
-  const wrap = useRef<HTMLDivElement>(null);
-  const [finder, setFinder] = useState(0);
+  const { isPlay, currentSong } = useBaseContext();
+
+  return (
+    <div className={`${styles["SongDetailInfo"]}`}>
+      <div className={`${styles["left"]}`}>
+        <div
+          className={`${styles["song-pic"]}`}
+          style={{
+            animationPlayState: isPlay ? "running" : "paused",
+          }}
+        >
+          <Image src={currentSong.al.picUrl} />
+        </div>
+      </div>
+      <div className={`${styles["center"]}`}>
+        <Lyric />
+      </div>
+    </div>
+  );
+};
+
+interface ILyricProps {}
+export const Lyric: FC<ILyricProps> = (): ReactElement => {
+  const { lyric, currentTime } = useBaseContext();
   const ref = useRef({
     isFirst: true,
   });
 
+  useEffect(() => {
+    handleCurrentTimeChange(currentTime);
+    ref.current.isFirst = false;
+  }, [currentTime]);
   const handleCurrentTimeChange = (currentTime: number): boolean => {
     const current = document.querySelector(
       `[data-current_time="${currentTime}"]`
@@ -29,7 +54,7 @@ const SongDetailInfo: FC<IProps> = (): ReactElement => {
       const offsetTop = current!.offsetTop;
       wrap.current!.scrollTo({
         top: offsetTop - 150,
-        behavior:'smooth'
+        behavior: "smooth",
       });
       setFinder(currentTime);
 
@@ -47,40 +72,24 @@ const SongDetailInfo: FC<IProps> = (): ReactElement => {
 
     return false;
   };
-  useEffect(() => {
-    handleCurrentTimeChange(currentTime);
-    ref.current.isFirst = false;
-  }, [currentTime]);
 
+  const wrap = useRef<HTMLDivElement>(null);
+  const [finder, setFinder] = useState(0);
   return (
-    <div className={`${styles["SongDetailInfo"]}`}>
-      <div className={`${styles["left"]}`}>
-        <div
-          className={`${styles["song-pic"]}`}
-          style={{
-            animationPlayState: isPlay ? "running" : "paused",
-          }}
-        >
-          <Image src={currentSong.al.picUrl} />
-        </div>
-      </div>
-      <div className={`${styles["center"]}`}>
-        <div className={`${styles["lyric-wrap"]}`} ref={wrap}>
-          {lyric.map((item,index) => {
-            return (
-              <div
-                key={index}
-                className={`${styles["lyric-item"]} ${
-                  finder == item.time ? styles["active"] : ""
-                }`}
-                data-current_time={item.time}
-              >
-                {item.text}
-              </div>
-            );
-          })}
-        </div>
-      </div>
+    <div className={`${styles["lyric-wrap"]}`} ref={wrap}>
+      {lyric.map((item, index) => {
+        return (
+          <div
+            key={index}
+            className={`${styles["lyric-item"]} ${
+              finder == item.time ? styles["active"] : ""
+            }`}
+            data-current_time={item.time}
+          >
+            {item.text}
+          </div>
+        );
+      })}
     </div>
   );
 };

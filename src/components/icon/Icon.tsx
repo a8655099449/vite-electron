@@ -23,9 +23,17 @@ const typeMap = {
   share: "icon-share",
   collect: "icon-folder-add",
   like: "icon-fabulous",
+  like2: "icon-24px",
   pause: "icon-pause1",
   empty: "icon-empty",
+  delete: "icon-delete",
   logout: "icon-logout",
+  comment: "icon-comment",
+  home: "icon-home_fill_light",
+  "theme-hight": "icon-ai250",
+  "theme-dark": "icon-dark1",
+  video: "icon-shipin",
+  radio: "icon-a-tupianyihuifu-10",
 };
 export type IconType = keyof typeof typeMap;
 export interface IconProps extends React.HTMLAttributes<HTMLElement> {
@@ -40,7 +48,7 @@ const Icon: FC<Partial<IconProps>> = ({
   button = false,
   hoverLight = false,
   className = "",
-  size = 14,
+  size,
   style = {},
   ...rest
 }): ReactElement => {

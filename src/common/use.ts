@@ -23,7 +23,7 @@ export const useQuery = () => {
 
 type UseEventParams = {
   key: ListenerKeys;
-  event(e?: any): void;
+  event(...e: any[]): void;
 };
 export const useEvent = ({ key, event }: UseEventParams) => {
   useEffect(() => {

@@ -1,4 +1,3 @@
-
 import routes from "@/config/routes";
 import { useBaseContext } from "@/context/useBaseContent";
 import { Menu } from "@mantine/core";
@@ -8,6 +7,7 @@ import styles from "./sidebar.module.less";
 
 // @ts-ignore
 import PlayListMenu from "../Container/playListMenu";
+import Icon from "../icon/Icon";
 
 interface IProps {}
 const BaseSideBar: FC<IProps> = (): ReactElement => {
@@ -15,29 +15,25 @@ const BaseSideBar: FC<IProps> = (): ReactElement => {
     return routes.filter(({ isMenu }) => isMenu);
   }, [routes]);
   const { userInfo, userPlayList } = useBaseContext();
-  console.log('👴2022-09-29 21:51:50 BaseSideBar.tsx line:18',userInfo)
+
+
   return (
     <div className={`${styles["sidebar"]} `}>
-      {menus.map(({ name, path }) => {
+      {menus.map(({ path, icon, name }) => {
         return (
           <NavLink
             className={({ isActive }) =>
-              `${styles["menu-item"]} ${isActive ? styles["active"] : ""} hover`
+              `${styles["menu-icon"]} ${isActive ? styles["active"] : ""} hover`
             }
-
             to={path}
-            key={name}
+            key={path}
+            title={name}
           >
-            {name}
+            <Icon type={icon as any} size={30} />
+            <div>{name}</div>
           </NavLink>
         );
       })}
-      {userInfo.avatarUrl && (
-        <>
-          <PlayListMenu label="创建的歌单" list={userPlayList.create} />
-          <PlayListMenu label="收藏的歌单" list={userPlayList.collect} />
-        </>
-      )}
     </div>
   );
 };

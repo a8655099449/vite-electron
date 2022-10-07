@@ -1,5 +1,6 @@
 import { getLyric, getSongDetail, getSongUrl } from "@/api/song";
 import to from "@/common/to";
+import { useEvent } from "@/common/use";
 import { getStore } from "@/common/utils";
 import { useBaseContext } from "@/context/useBaseContent";
 import { useLocalStorage } from "@mantine/hooks";
@@ -136,11 +137,8 @@ const usePlayer = () => {
 
     const [err, res] = await to(getSongUrl(id));
     if (err || res.code !== 200) {
-      console.log("👴2022-09-28 08:00:43 usePlayer.ts line:139", res);
       if (res?.code === -462) {
-
       }
-
 
       return;
     }
@@ -152,7 +150,7 @@ const usePlayer = () => {
       } else {
         audioInstance.current!.currentTime = currentTime;
       }
-    }, 500);
+    }, 100);
   };
 
   const handleLoadMusic = () => {
@@ -191,12 +189,14 @@ const usePlayer = () => {
       playNext(1);
     });
   };
-  const play = () => {
-    audioInstance.current?.play();
-    setIsPlay(true);
+  const play = async () => {
+    const [err, res] = await to(audioInstance.current!.play());
+    if (!err) {
+      setIsPlay(true);
+    }
   };
   const pause = () => {
-    audioInstance.current?.pause();
+    audioInstance.current!.pause();
     setIsPlay(false);
   };
 
@@ -256,17 +256,12 @@ const usePlayer = () => {
 
     return filterList[Math.ceil(Math.random() * filterList.length)].id;
   };
-
   useEffect(() => {
-    const { isBind } = store.current;
-    if (!isBind) {
-      bindAudioEvent();
-      api.on("PLAY", playOne);
-      api.on("PLAY_LIST", handlePlayList);
-
-      store.current.isBind = true;
-    }
+    bindAudioEvent();
   }, []);
+
+  useEvent({ key: "PLAY", event: playOne });
+  useEvent({ key: "PLAY_LIST", event: handlePlayList });
 
   return {
     currentSong,

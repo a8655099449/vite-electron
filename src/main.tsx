@@ -1,7 +1,7 @@
 import { ModalsProvider } from "@mantine/modals";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter , HashRouter } from "react-router-dom";
 import App from "./App";
 // import './samples/node-api'
 import "./assets/styles/global.less";
@@ -21,11 +21,11 @@ if (!window.api) {
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <ErrorCatch>
     <ModalsProvider>
-      <BrowserRouter>
+      <HashRouter>
         <BaseContext>
           <App />
         </BaseContext>
-      </BrowserRouter>
+      </HashRouter>
     </ModalsProvider>
   </ErrorCatch>
 );

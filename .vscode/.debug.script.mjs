@@ -1,4 +1,4 @@
-import fs from 'fs'
+/* import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { createRequire } from 'module'
@@ -22,3 +22,4 @@ spawn(
     env: Object.assign(process.env, { VSCODE_DEBUG: 'true' }),
   },
 )
+ */

@@ -1,16 +1,20 @@
 import { getSongListAllMusic, getSongListDetails } from "@/api/songList";
+import { useQuery } from "@/common/use";
+import Comments from "@/components/Comments";
+import BaseTabs from "@/components/Container/BaseTabs";
 import Loading from "@/components/Container/Loading";
 import Skeleton from "@/components/Container/Skeleton";
 import { useRequest } from "ahooks";
-import React, { FC, ReactElement, useEffect } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import React, { FC, ReactElement, useEffect, useState } from "react";
 import PlayListTable from "./PlayListTable";
 import SongListBanner from "./SongListBanner";
+import Subscribers from "./Subscribers";
 
 interface IProps {}
 const songList: FC<IProps> = (): ReactElement => {
-  const [searchParams] = useSearchParams();
-  const id = searchParams.get("id");
+  const { id } = useQuery();
+
+  const [tabValue, setTabValue] = useState(`list`);
 
   const {
     data,
@@ -22,7 +26,7 @@ const songList: FC<IProps> = (): ReactElement => {
 
   useEffect(() => {
     run(id);
-  }, [searchParams]);
+  }, [id]);
 
   const run = (id: any) => {
     _getSongListDetails(id);
@@ -38,7 +42,6 @@ const songList: FC<IProps> = (): ReactElement => {
     api.emit("PLAY_LIST", list?.songs);
   };
 
-
   return (
     <div className="p-20">
       <Skeleton loading={loading || !data?.playlist}>
@@ -47,14 +50,35 @@ const songList: FC<IProps> = (): ReactElement => {
           clickPlayAll={clickPlayAll}
         />
       </Skeleton>
-
-      {/* {data?.playlist && (
-
-      )} */}
-      <Skeleton loading={loading2} type="bar" count={5}>
-        <PlayListTable data={list?.songs || []} />
-      </Skeleton>
-      {/* {loading2 ? <Loading /> : } */}
+      <div style={{
+        margin:'20px 0'
+      }}>
+        <BaseTabs
+          onChange={setTabValue}
+          list={[
+            {
+              value: "list",
+              children: "歌曲列表",
+              content: (
+                <Skeleton loading={loading2} type="bar" count={5}>
+                  <PlayListTable data={list?.songs || []} />
+                </Skeleton>
+              ),
+            },
+            {
+              value: "comment",
+              children: "评论",
+              content: <Comments id={id} type="playlist" />,
+            },
+            {
+              value: "collectors",
+              children: <div>收藏者</div>,
+              content: <Subscribers id={id} />,
+            },
+          ]}
+          value={tabValue}
+        />
+      </div>
     </div>
   );
 };

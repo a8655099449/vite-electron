@@ -122,3 +122,73 @@ type UserPlayList = {
   collect: SongListItem[];
 };
 
+interface CommentRequest {
+  isMusician: boolean;
+  cnum: number;
+  userId: number;
+  topComments: any[];
+  moreHot: boolean;
+  hotComments: Comment[];
+  commentBanner?: any;
+  code: number;
+  comments: Comment[];
+  total: number;
+  more: boolean;
+}
+
+interface Comment {
+  user: UserProfile;
+  beReplied: (BeReplied2 | BeReplied)[];
+  pendantData?: PendantDatum;
+  showFloorComment?: any;
+  status: number;
+  commentId: number;
+  content: string;
+  richContent?: string;
+  contentResource?: any;
+  time: number;
+  timeStr: string;
+  needDisplayTime: boolean;
+  likedCount: number;
+  expressionUrl?: any;
+  commentLocationType: number;
+  parentCommentId: number;
+  decoration?: Decoration;
+  repliedMark?: any;
+  grade?: any;
+  userBizLevels?: any;
+  liked: boolean;
+}
+
+interface BeReplied2 {
+  user: UserProfile;
+  beRepliedCommentId: number;
+  content?: any;
+  richContent?: any;
+  status: number;
+  expressionUrl?: any;
+}
+
+interface AvatarDetail {
+  userType: number;
+  identityLevel: number;
+  identityIconUrl: string;
+}
+
+interface Decoration {}
+
+interface PendantDatum {
+  id: number;
+  imageUrl: string;
+}
+
+interface BeReplied {
+  user: UserProfile;
+  beRepliedCommentId: number;
+  content: string;
+  richContent?: any;
+  status: number;
+  expressionUrl?: any;
+}
+
+type CommentTypes = "playlist" | "music" | "album" | "video";

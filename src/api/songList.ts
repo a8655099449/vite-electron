@@ -35,3 +35,45 @@ export const getSongListAllMusic = (id: string) =>
     url: "/playlist/track/all",
     params: { id, limit: 100 },
   });
+
+// 获取评论列表
+export const getComment = ({
+  id,
+  type = "playlist",
+  limit = 30,
+  offset = 0,
+}: {
+  id: any;
+  type?: CommentTypes;
+  limit?: number;
+  offset?: number;
+}) =>
+  request<CommentRequest>({
+    url: `/comment/${type}`,
+    params: { id, limit, offset },
+  });
+
+// 给评论点赞
+export const likeComment = () => {};
+
+// 获取歌单收藏者
+
+export const getPlayListSubscribers = ({
+  id = 0,
+  limit = 30,
+  offset = 0,
+} = {}) =>
+  request<{
+    subscribers: UserProfile[];
+  }>({
+    url: "/playlist/subscribers",
+    params: { id, limit, offset },
+  });
+
+// 私人MF
+export const getUserMF = () =>
+  request<{
+    data: SongItem[];
+  }>({
+    url: "/personal_fm",
+  });

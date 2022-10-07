@@ -15,7 +15,6 @@ function LoadingComponent(props: {
   pastDelay: boolean;
 }) {
   if (props.error) {
-    console.error(props.error);
     return null;
   }
   return <Skeleton count={5} type="bar" loading />;

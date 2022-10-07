@@ -67,6 +67,30 @@ const Player: FC<IProps> = (): ReactElement => {
       />
       <PlayerRight
         clickListIcon={() => {
+          const handleBodyClick = (e: MouseEvent) => {
+            const { path = [] } = e as any;
+            let close = true;
+            path.forEach((element: any) => {
+              const { className = "" } = element || {};
+              if (className.indexOf("play-list-drawer") !== -1) {
+                close = false;
+              }
+            });
+
+            if (close) {
+              document.body.removeEventListener("click", handleBodyClick);
+              setPlayListVisible(false);
+            }
+          };
+
+          if (!playListVisible) {
+            setTimeout(() => {
+              document.body.removeEventListener("click", handleBodyClick);
+
+              document.body.addEventListener("click", handleBodyClick);
+            }, 100);
+          }
+
           setPlayListVisible(!playListVisible);
         }}
         {...{ volume, changeVolume }}
