@@ -17,7 +17,8 @@ type APISendKeys = [
   "window-close",
   "reload",
   "toggle-theme",
-  "openDevtools"
+  "openDevtools",
+  "open-url"
 ];
 
 type ListenerKeys =

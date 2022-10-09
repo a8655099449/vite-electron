@@ -1,4 +1,4 @@
-import { BrowserWindow, ipcMain, Menu, nativeTheme } from "electron";
+import { BrowserWindow, ipcMain, Menu, nativeTheme, shell } from "electron";
 
 export const setMenu = (win: BrowserWindow) => {
   let template = [
@@ -42,6 +42,10 @@ const bindEvent = (win: BrowserWindow) => {
   ipcMain.on("window-min", () => {
     win.minimize();
   });
+  // 在浏览器打开链接
+  ipcMain.on("open-url", (e, url: string) => {
+    shell.openExternal(url);
+  });
   // 最大化窗口
   ipcMain.on("window-max", () => {
     // 如果已经是最大化窗口就还原
@@ -59,6 +63,7 @@ const bindEvent = (win: BrowserWindow) => {
   ipcMain.on("EMIT_EVENT", (e, key, ...args) => {
     win.webContents.send(key, ...args);
   });
+
   ipcMain.on("toggle-theme", (e, cb) => {
     console.log("toggle-theme");
     if (nativeTheme.shouldUseDarkColors) {
