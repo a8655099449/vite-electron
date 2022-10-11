@@ -1,5 +1,6 @@
 import { getUserMF } from "@/api/songList";
 import to from "@/common/to";
+import { useEvent } from "@/common/use";
 import { getStore, setStorage } from "@/common/utils";
 import Skeleton from "@/components/Container/Skeleton";
 import Icon from "@/components/icon/Icon";
@@ -12,50 +13,64 @@ import { Link } from "react-router-dom";
 import styles from "./index.module.less";
 interface IProps {}
 const userRadio: FC<IProps> = (): ReactElement => {
-  const { data, loading } = useRequest(async () => {
+  const store = useRef({
+    currentIndex: 0,
+    isFirst: true,
+    songList: [] as SongItem[],
+  });
+  const { currentSong: song } = useBaseContext();
+
+  const { data, loading, run } = useRequest(async ({ clear = false } = {}) => {
     let storeRes = getStore("userRadio");
-    if (!storeRes) {
+
+    if (!storeRes || clear) {
       const [err, res] = await to(getUserMF());
       if (res) {
         storeRes = res;
       }
     }
+
     if (storeRes) {
       setStorage("userRadio", storeRes);
     }
-
+    setTimeout(() => {
+      play();
+    }, 100);
+    store.current.isFirst = false;
+    store.current.songList = storeRes?.data;
     return storeRes as {
       data: SongItem[];
     };
   });
-  const { currentSong: song } = useBaseContext();
-  const currentIndex = useRef(0);
 
-  const songList = useMemo(() => {
-    if (Array.isArray(data?.data) && data?.data.length) {
-      return data?.data;
+  // 下一首
+  const handleNext = () => {
+    const { songList = [] } = store.current;
+    if (store.current.currentIndex + 1 === songList.length) {
+      store.current.currentIndex = 0;
+      run({ clear: true });
+    } else {
+      store.current.currentIndex++;
+      play();
     }
-    return [];
-  }, [data]);
+  };
+  useEvent({ key: "FM_NEXT", event: handleNext });
 
-  useEffect(() => {
-    if (!songList.length) {
+  // 播放第一手
+  const play = () => {
+    const { songList = [] } = store.current;
+    console.log("👴songList", songList);
+    console.log("store.current.currentIndex", store.current.currentIndex);
+    const song = songList[store.current.currentIndex];
+    if (!song) {
       return;
     }
-    const song = songList[currentIndex.current];
-
-    if (song?.id) {
-      api.emit("PLAY", song?.id);
-    }
-  }, [songList, currentIndex]);
-  const handleNext = () => {
-    if (currentIndex.current + 1 === songList.length) {
-    }
+    api.emit("PLAY", song?.id);
   };
 
   return (
     <div className={`${styles["user-radio"]}`}>
-      <Skeleton loading={loading}>
+      <Skeleton loading={loading && store.current.isFirst}>
         {data && (
           <div>
             <div className={`${styles["info"]}`}>

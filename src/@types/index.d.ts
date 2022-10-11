@@ -25,6 +25,7 @@ type ListenerKeys =
   | "maximize"
   | "minimize"
   | "unmaximize"
+  | "FM_NEXT"
   | "LOGIN_SUCCESS"
   | "PLAY"
   | "LOGOUT"

@@ -26,7 +26,8 @@ type BlockKeys = [
   "HOMEPAGE_MUSIC_MLOG",
   "HOMEPAGE_BLOCK_MGC_PLAYLIST",
   "HOMEPAGE_BLOCK_OFFICIAL_PLAYLIST",
-  "HOMEPAGE_BLOCK_HOT_TOPIC"
+  "HOMEPAGE_BLOCK_HOT_TOPIC",
+  "HOMEPAGE_BLOCK_OLD_SUBSCRIBE_ARTIST_NEW"
   // "HOMEPAGE_BLOCK_MGC_PLAYLIST",
 ];
 type homeData = {
@@ -73,10 +74,10 @@ const home = () => {
       HOMEPAGE_BLOCK_MGC_PLAYLIST,
       HOMEPAGE_BLOCK_STYLE_RCMD,
       HOMEPAGE_BLOCK_HOT_TOPIC,
+      HOMEPAGE_BLOCK_OLD_SUBSCRIBE_ARTIST_NEW,
     } = (data as homeData) || {};
 
     const styleSongs: Resource[] = [];
-
     const topics: Resource[] = [];
 
     if (HOMEPAGE_BLOCK_STYLE_RCMD?.creatives?.length) {
@@ -120,23 +121,13 @@ const home = () => {
     <PageWrap className={`${styles["home"]}`}>
       <HomeTabs />
 
-      <Skeleton loading={loading} type='bar' count={5}>
+      <Skeleton loading={loading} type="bar" count={5}>
         <BannerSwiper data={banner} />
         <RecommendSongList {...recommend} />
         <RecommendSongList {...official} />
 
         <HomeSongList {...style} />
         <RecommendSongList {...mgc} />
-        <HomeTopic {...topic} />
-
-        {Object.keys(data || {}).map((key, index) =>
-          data[key].uiElement ? (
-            <h2 key={index}>
-              {data[key].uiElement.subTitle.title}
-              {key}
-            </h2>
-          ) : null
-        )}
       </Skeleton>
     </PageWrap>
   );

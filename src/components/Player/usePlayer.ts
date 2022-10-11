@@ -5,6 +5,7 @@ import { getStore } from "@/common/utils";
 import { useBaseContext } from "@/context/useBaseContent";
 import { useLocalStorage } from "@mantine/hooks";
 import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const usePlayer = () => {
   const {
@@ -17,6 +18,8 @@ const usePlayer = () => {
     _setCurrentTime,
   } = useBaseContext();
   const audioInstance = useRef<HTMLAudioElement>(null);
+
+  const { pathname } = useLocation();
 
   const [playMode, setPlayMode] = useLocalStorage<number>({
     key: "playMode",
@@ -219,6 +222,11 @@ const usePlayer = () => {
   };
 
   const playNext = (count: number) => {
+    if (count === 1 && pathname == `/userRadio`) {
+      api.emit('FM_NEXT')
+      return
+    }
+
     const { playList, currentSong } = store.current;
     if (playList.length <= 1) {
       return;
