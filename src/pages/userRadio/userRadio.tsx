@@ -1,7 +1,9 @@
-import { getUserMF } from "@/api/songList";
+import { fm_trash, getUserMF } from "@/api/songList";
 import to from "@/common/to";
 import { useEvent } from "@/common/use";
-import { getStore, setStorage } from "@/common/utils";
+import { getStore, message, setStorage } from "@/common/utils";
+import Comments from "@/components/Comments";
+import LikeButton from "@/components/Container/LikeButton";
 import Skeleton from "@/components/Container/Skeleton";
 import Icon from "@/components/icon/Icon";
 import Image from "@/components/Image/Image";
@@ -9,6 +11,7 @@ import { Lyric } from "@/components/PlayDetail/SongDetailInfo";
 import { useBaseContext } from "@/context/useBaseContent";
 import { useRequest } from "ahooks";
 import React, { FC, ReactElement, useEffect, useMemo, useRef } from "react";
+import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import styles from "./index.module.less";
 interface IProps {}
@@ -78,8 +81,19 @@ const userRadio: FC<IProps> = (): ReactElement => {
                 <Image src={song?.al?.picUrl} />
 
                 <div className={`${styles["iconBox"]}`}>
-                  <Icon type="like" hoverLight title="喜欢" />
-                  <Icon type="delete" hoverLight title="放入垃圾箱" />
+                  <LikeButton />
+                  <Icon
+                    type="delete"
+                    hoverLight
+                    title="放入垃圾箱"
+                    onClick={async () => {
+                      const res = await fm_trash(song.id);
+                      if (res.code == 200) {
+                        handleNext();
+                        message.success("删除成功");
+                      }
+                    }}
+                  />
                   <Icon
                     type="next"
                     hoverLight
@@ -107,6 +121,7 @@ const userRadio: FC<IProps> = (): ReactElement => {
                 <Lyric />
               </div>
             </div>
+            <Comments type={`music`} id={song.id} />
           </div>
         )}
       </Skeleton>

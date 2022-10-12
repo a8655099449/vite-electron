@@ -22,7 +22,7 @@ const typeMap = {
   download: "icon-download",
   share: "icon-share",
   collect: "icon-folder-add",
-  like: "icon-fabulous",
+  like: "icon-xihuan",
   like2: "icon-24px",
   pause: "icon-pause1",
   empty: "icon-empty",

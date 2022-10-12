@@ -16,7 +16,9 @@ const Logo: FC<IProps> = (): ReactElement => {
       ) : (
         <>
           <img src={logo} alt="" style={{ width: 28 }} />
-          疯狂星期四
+          <span className="bold" style={{
+            fontSize:16
+          }}>Crazy Music</span>
         </>
       )}
     </div>

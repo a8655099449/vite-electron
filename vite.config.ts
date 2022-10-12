@@ -21,32 +21,31 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    // electron({
-    //   main: {
-    //     entry: 'electron/main/index.ts',
-    //     vite: withDebug({
-    //       build: {
-    //         outDir: 'dist/electron/main',
-    //       },
-    //     }),
-    //   },
-    //   preload: {
-    //     input: {
-    //       // You can configure multiple preload scripts here
-    //       index: path.join(__dirname, 'electron/preload/index.ts'),
-    //     },
-    //     vite: {
-    //       build: {
-    //         // For debug
-    //         sourcemap: 'inline',
-    //         outDir: 'dist/electron/preload',
-    //       }
-    //     },
-    //   },
-    //   // Enables use of Node.js API in the Electron-Renderer
-    //   // https://github.com/electron-vite/vite-plugin-electron/tree/main/packages/electron-renderer#electron-renderervite-serve
-    //   renderer: {},
-    // }),
+    electron({
+      main: {
+        entry: 'electron/main/index.ts',
+        vite: withDebug({
+          build: {
+            outDir: 'dist/electron/main',
+          },
+        }),
+      },
+      preload: {
+        input: {
+          // You can configure multiple preload scripts here
+          index: path.join(__dirname, 'electron/preload/index.ts'),
+        },
+        vite: {
+          build: {
+            // For debug
+            sourcemap: 'inline',
+            outDir: 'dist/electron/preload',
+          }
+        },
+      },
+      // Enables use of Node.js API in the Electron-Renderer
+      // https://github.com/electron-vite/vite-plugin-electron/tree/main/packages/electron-renderer#electron-renderervite-serve
+    }),
   ],
   server: {
     host: pkg.env.VITE_DEV_SERVER_HOST,

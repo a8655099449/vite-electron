@@ -39,11 +39,8 @@ const Comments: FC<IProps> = ({ id, type }): ReactElement => {
     };
   }, [comment]);
 
-  console.log("👴2022-10-06 22:50:47 index.tsx line:42", hotComments);
 
   useEffect(() => {
-
-
     _getComment();
   }, [id]);
 

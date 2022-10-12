@@ -77,3 +77,16 @@ export const getUserMF = () =>
   }>({
     url: "/personal_fm",
   });
+// 私人MF垃圾桶
+export const fm_trash = (id: ID) =>
+  request({
+    url: "/fm_trash",
+    params: { id },
+  });
+
+// 获取用户喜欢的音乐
+export const getLikeList = (uid: ID) =>
+  request<{ ids: number[] }>({
+    url: "/likelist",
+    params: { uid },
+  });

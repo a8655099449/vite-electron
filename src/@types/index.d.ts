@@ -11,6 +11,8 @@ type RouteItem = {
   isMenu?: boolean;
 };
 
+type ID = string | number
+
 type APISendKeys = [
   "window-min",
   "window-max",
@@ -54,7 +56,7 @@ type UserProfile = Partial<{
   backgroundUrl: string;
   detailDescription: string;
   avatarImgIdStr: string;
-  userId: number;
+  userId: ID;
   vipType: number;
   nickname: string;
   birthday: number;

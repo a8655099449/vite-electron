@@ -1,3 +1,4 @@
+import { getLikeList } from "@/api/songList";
 import {
   getLoginStatus,
   getUserDetail,
@@ -8,6 +9,7 @@ import { COOKIE_KEY } from "@/common/consts";
 import to from "@/common/to";
 import { setStorage } from "@/common/utils";
 import { useLocalStorage } from "@mantine/hooks";
+import { useRequest } from "ahooks";
 import { useEffect, useState } from "react";
 
 const useProfile = () => {
@@ -34,6 +36,9 @@ const useProfile = () => {
     }
     setUserInfo(res.data.profile);
     _getUserPlayList(res.data.profile.userId);
+    setTimeout(() => {
+      _getUserLikeList();
+    }, 50);
   };
 
   const _getUserPlayList = async (id: any) => {
@@ -46,9 +51,21 @@ const useProfile = () => {
     setUserInfo({});
     localStorage.setItem(COOKIE_KEY, "");
 
-    api.emit('LOGOUT')
-
+    api.emit("LOGOUT");
   };
+  const getUserLikeList = async () => {
+    const [err, res] = await to(getLikeList(userInfo.userId as ID));
+    if (err) {
+      return [];
+    }
+    return res.ids;
+  };
+  const { data: userLikeIds = [], run: _getUserLikeList } = useRequest(
+    getUserLikeList,
+    {
+      manual: true,
+    }
+  );
 
   useEffect(() => {
     api.on("LOGIN_SUCCESS", login);
@@ -60,6 +77,8 @@ const useProfile = () => {
     setUserInfo,
     logout,
     userPlayList,
+    getUserLikeList: _getUserLikeList,
+    userLikeIds,
   };
 };
 
