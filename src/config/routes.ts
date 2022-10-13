@@ -15,6 +15,10 @@ const routes: RouteItem[] = [
     name: "歌单详情",
   },
   {
+    path: "/homePlayListCate",
+    name: "首页-歌单",
+  },
+  {
     path: "/user",
     name: "用户详情",
   },

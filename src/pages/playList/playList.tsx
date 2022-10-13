@@ -4,6 +4,7 @@ import Comments from "@/components/Comments";
 import BaseTabs from "@/components/Container/BaseTabs";
 import Loading from "@/components/Container/Loading";
 import Skeleton from "@/components/Container/Skeleton";
+import { useBaseContext } from "@/context/useBaseContent";
 import { useRequest } from "ahooks";
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import PlayListTable from "./PlayListTable";
@@ -14,6 +15,10 @@ interface IProps {}
 const songList: FC<IProps> = (): ReactElement => {
   const { id } = useQuery();
 
+  const {
+    likeListID, // 我喜欢的歌单列表id
+    userLikeList, // 我喜欢的歌单列表id
+  } = useBaseContext();
   const [tabValue, setTabValue] = useState(`list`);
 
   const {
@@ -37,7 +42,16 @@ const songList: FC<IProps> = (): ReactElement => {
     data: list,
     loading: loading2,
     run: _getSongListAllMusic,
-  } = useRequest(() => getSongListAllMusic(id as string));
+  } = useRequest(async () => {
+    if (id == likeListID && userLikeList.length > 0) {
+      return {
+        songs: userLikeList,
+      };
+    }
+
+    const res = await getSongListAllMusic(id as string);
+    return res;
+  });
   const clickPlayAll = () => {
     api.emit("PLAY_LIST", list?.songs);
   };
@@ -50,9 +64,11 @@ const songList: FC<IProps> = (): ReactElement => {
           clickPlayAll={clickPlayAll}
         />
       </Skeleton>
-      <div style={{
-        margin:'20px 0'
-      }}>
+      <div
+        style={{
+          margin: "20px 0",
+        }}
+      >
         <BaseTabs
           onChange={setTabValue}
           list={[

@@ -4,6 +4,7 @@ import { IMAGE_BANNER } from "@/common/images";
 import to from "@/common/to";
 import { useEvent } from "@/common/use";
 import { getStore, setStorage } from "@/common/utils";
+import BaseTabs from "@/components/Container/BaseTabs";
 import Loading from "@/components/Container/Loading";
 import PageWrap from "@/components/Container/PageWrap";
 import Skeleton from "@/components/Container/Skeleton";
@@ -12,6 +13,7 @@ import Swiper from "@/components/Swiper/Swiper";
 import { Tabs } from "@mantine/core";
 import { useRequest } from "ahooks";
 import React, { useEffect, useMemo } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 // import Swiper from "swiper";
 
 import styles from "./home.module.less";
@@ -133,7 +135,8 @@ const home = () => {
   );
 };
 
-const HomeTabs = () => {
+ export const HomeTabs = () => {
+  const { pathname } = useLocation();
   const list = [
     {
       value: "0",
@@ -148,18 +151,26 @@ const HomeTabs = () => {
       label: "歌单",
     },
   ];
+  const to = useNavigate();
 
   return (
     <div className={`${styles["tabs"]}`}>
-      <Tabs defaultValue={"0"}>
-        <Tabs.List>
-          {list.map((item) => (
-            <Tabs.Tab key={item.label} value={item.value}>
-              {item.label}
-            </Tabs.Tab>
-          ))}
-        </Tabs.List>
-      </Tabs>
+      <BaseTabs
+        list={[
+          {
+            value: "/home",
+            children: "个性推荐",
+          },
+          {
+            value: "/homePlayListCate",
+            children: "歌单",
+          },
+        ]}
+        value={pathname}
+        onChange={(e) => {
+          to(e);
+        }}
+      />
     </div>
   );
 };

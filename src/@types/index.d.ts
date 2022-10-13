@@ -11,7 +11,7 @@ type RouteItem = {
   isMenu?: boolean;
 };
 
-type ID = string | number
+type ID = string | number;
 
 type APISendKeys = [
   "window-min",
@@ -196,3 +196,32 @@ interface BeReplied {
 }
 
 type CommentTypes = "playlist" | "music" | "album" | "video";
+
+/*
+歌单的标签
+*/
+interface PlayListTagItem {
+  playlistTag: PlaylistTag;
+  activity: boolean;
+  hot: boolean;
+  createTime: number;
+  usedCount: number;
+  position: number;
+  category: number;
+  name: string;
+  id: number;
+  type: number;
+}
+
+interface PlaylistTag {
+  id: number;
+  name: string;
+  category: number;
+  usedCount: number;
+  type: number;
+  position: number;
+  createTime: number;
+  highQuality: number;
+  highQualityPos: number;
+  officialPos: number;
+}

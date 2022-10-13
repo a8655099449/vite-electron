@@ -1,16 +1,11 @@
-import { getLikeList } from "@/api/songList";
-import {
-  getLoginStatus,
-  getUserDetail,
-  getUserPlayList,
-  sendLogout,
-} from "@/api/user";
-import { COOKIE_KEY } from "@/common/consts";
+import { getLikeListIds, getSongListAllMusic } from "@/api/songList";
+import { getLoginStatus, getUserPlayList, sendLogout } from "@/api/user";
+import { COOKIE_KEY, USER_LIKE_LIST } from "@/common/consts";
 import to from "@/common/to";
-import { setStorage } from "@/common/utils";
+import { getStore, setStorage } from "@/common/utils";
 import { useLocalStorage } from "@mantine/hooks";
 import { useRequest } from "ahooks";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const useProfile = () => {
   const [userInfo, setUserInfo] = useLocalStorage<UserProfile>({
@@ -25,6 +20,8 @@ const useProfile = () => {
     },
   });
 
+  const [userLikeList, setUserLikeList] = useState<SongItem[]>([]);
+
   const login = async () => {
     if (userInfo.avatarUrl) {
       return;
@@ -37,12 +34,16 @@ const useProfile = () => {
     setUserInfo(res.data.profile);
     _getUserPlayList(res.data.profile.userId);
     setTimeout(() => {
-      _getUserLikeList();
+      _getUserLikeListIds();
     }, 50);
   };
 
   const _getUserPlayList = async (id: any) => {
     const res = await getUserPlayList(id);
+    if (res?.create.length > 0) {
+      getUserLikeList(res?.create[0].id);
+    }
+
     setUserPlayList(res);
   };
 
@@ -53,19 +54,45 @@ const useProfile = () => {
 
     api.emit("LOGOUT");
   };
-  const getUserLikeList = async () => {
-    const [err, res] = await to(getLikeList(userInfo.userId as ID));
+
+  /*
+    获取用户喜欢的歌单
+  */
+  const getUserLikeList = async (id: ID) => {
+    let songs = getStore(USER_LIKE_LIST);
+    if (!songs) {
+      const [err, res] = await to(getSongListAllMusic(id));
+      if (err) {
+        return;
+      }
+      setStorage(USER_LIKE_LIST, res.songs);
+      songs = res.songs;
+    }
+
+    if (songs) {
+      setUserLikeList(songs);
+    }
+
+    // const
+  };
+
+  const getUserLikeListIds = async () => {
+    const [err, res] = await to(getLikeListIds(userInfo.userId as ID));
     if (err) {
       return [];
     }
     return res.ids;
   };
-  const { data: userLikeIds = [], run: _getUserLikeList } = useRequest(
-    getUserLikeList,
+  const { data: userLikeIds = [], run: _getUserLikeListIds } = useRequest(
+    getUserLikeListIds,
     {
       manual: true,
     }
   );
+
+  const likeListID = useMemo(() => {
+    return userPlayList?.create?.[0]?.id;
+  }, [userPlayList]);
 
   useEffect(() => {
     api.on("LOGIN_SUCCESS", login);
@@ -77,8 +104,10 @@ const useProfile = () => {
     setUserInfo,
     logout,
     userPlayList,
-    getUserLikeList: _getUserLikeList,
+    getUserLikeList: _getUserLikeListIds,
+    likeListID,
     userLikeIds,
+    userLikeList,
   };
 };
 

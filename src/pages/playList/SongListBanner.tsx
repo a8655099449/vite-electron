@@ -63,17 +63,16 @@ const SongListBanner: FC<IProps> = ({ data, clickPlayAll }): ReactElement => {
             下载
           </Button>
         </div>
-        <div className={`${styles["item"]} mb-10`}>
-          标签:
-          {
-            // data.tags
-            tags.map((item) => (
+        {tags?.length > 0 && (
+          <div className={`${styles["item"]} mb-10`}>
+            标签:
+            {tags.map((item) => (
               <span className="tag" key={item}>
                 {item}
               </span>
-            ))
-          }
-        </div>
+            ))}
+          </div>
+        )}
         <div className={`${styles["item"]} mb-10`}>
           <span>歌曲：{trackCount}</span>
           <span className={`${styles["play-count"]}`}>
@@ -82,7 +81,7 @@ const SongListBanner: FC<IProps> = ({ data, clickPlayAll }): ReactElement => {
           </span>
         </div>
         <div className={`${styles["item"]} mb-10 text-row-1`}>
-          简介： {description}
+          简介： {description || "暂无简介"}
         </div>
       </div>
     </div>

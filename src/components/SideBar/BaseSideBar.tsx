@@ -8,14 +8,17 @@ import styles from "./sidebar.module.less";
 // @ts-ignore
 import PlayListMenu from "../Container/playListMenu";
 import Icon from "../icon/Icon";
+import { useQuery } from "@/common/use";
 
 interface IProps {}
 const BaseSideBar: FC<IProps> = (): ReactElement => {
   const menus = useMemo(() => {
     return routes.filter(({ isMenu }) => isMenu);
   }, [routes]);
-  const { userInfo, userPlayList } = useBaseContext();
+  const { likeListID } = useBaseContext();
 
+
+  const {id} = useQuery()
 
   return (
     <div className={`${styles["sidebar"]} `}>
@@ -34,6 +37,17 @@ const BaseSideBar: FC<IProps> = (): ReactElement => {
           </NavLink>
         );
       })}
+      <NavLink
+        className={({ isActive }) =>
+          `${styles["menu-icon"]} ${isActive && id ==  likeListID? styles["active"] : ""} hover`
+        }
+        to={`/playList?id=${likeListID}`}
+        key={`我喜欢`}
+        title={`我喜欢`}
+      >
+        <Icon type={`like` as any} size={30} />
+        <div>我喜欢</div>
+      </NavLink>
     </div>
   );
 };

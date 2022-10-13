@@ -53,12 +53,12 @@ const Setting: FC<IProps> = (): ReactElement => {
           切换主题
         </Menu.Item>
         <Menu.Item
-          icon={<IconMoon size={14} />}
+          icon={<Icon size={14} type='browser' />}
           onClick={() => {
             api.send("open-url", "http://localhost:7777");
           }}
         >
-          在浏览器中打开
+          浏览器
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

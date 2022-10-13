@@ -9,6 +9,9 @@
   animation: goTop 0.3s ease-in-out;
   padding-top: 20px;
   overflow-y: scroll;
+  .comment{
+    padding: 20px 40px;
+  }
 }
 @keyframes goTop {
   from {
@@ -26,9 +29,10 @@
 }
 .SongDetailInfo {
   display: flex;
-  margin-top: 50px;
   .left {
     padding-left: 60px;
+    display: flex;
+    align-items: center;
     .song-pic {
       width: 300px;
       height: 300px;
@@ -38,6 +42,7 @@
       position: relative;
       animation: toRotate 20s linear;
       animation-iteration-count: infinite;
+      margin-top: 50px;
 
       &::after {
         position: absolute;
@@ -71,7 +76,6 @@
   height: 300px;
   position: relative;
 
-
   .lyric-item {
     line-height: 40px;
     text-align: center;
@@ -88,5 +92,13 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+.lyric {
+  .head {
+    text-align: center;
+    h2{
+      margin: 10px 0;
+    }
   }
 }

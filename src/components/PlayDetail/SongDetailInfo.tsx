@@ -8,6 +8,7 @@
  */
 import { useBaseContext } from "@/context/useBaseContent";
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import Image from "../Image/Image";
 import styles from "./index.module.less";
 interface IProps {}
@@ -35,7 +36,7 @@ const SongDetailInfo: FC<IProps> = (): ReactElement => {
 
 interface ILyricProps {}
 export const Lyric: FC<ILyricProps> = (): ReactElement => {
-  const { lyric, currentTime } = useBaseContext();
+  const { lyric, currentTime, currentSong } = useBaseContext();
   const ref = useRef({
     isFirst: true,
   });
@@ -76,20 +77,39 @@ export const Lyric: FC<ILyricProps> = (): ReactElement => {
   const wrap = useRef<HTMLDivElement>(null);
   const [finder, setFinder] = useState(0);
   return (
-    <div className={`${styles["lyric-wrap"]}`} ref={wrap}>
-      {lyric.map((item, index) => {
-        return (
-          <div
-            key={index}
-            className={`${styles["lyric-item"]} ${
-              finder == item.time ? styles["active"] : ""
-            }`}
-            data-current_time={item.time}
-          >
-            {item.text}
-          </div>
-        );
-      })}
+    <div className={`${styles["lyric"]}`}>
+      <div className={`${styles["head"]}`}>
+        <h2> {currentSong.name}</h2>
+        <div>
+          <span>
+            专辑：
+            <Link className="link" to={`/artist?id=${currentSong?.al?.id}`}>
+              {currentSong.al?.name}
+            </Link>
+          </span>
+          <span>
+            歌手：
+            <Link className="link" to={`/artist?id=${currentSong.ar?.[0].id}`}>
+              {currentSong.ar?.[0]?.name}
+            </Link>
+          </span>
+        </div>
+      </div>
+      <div className={`${styles["lyric-wrap"]}`} ref={wrap}>
+        {lyric.map((item, index) => {
+          return (
+            <div
+              key={index}
+              className={`${styles["lyric-item"]} ${
+                finder == item.time ? styles["active"] : ""
+              }`}
+              data-current_time={item.time}
+            >
+              {item.text}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

@@ -3,13 +3,23 @@ import { confirm, message } from "@/common/utils";
 import { useBaseContext } from "@/context/useBaseContent";
 import React, { useMemo } from "react";
 import Icon from "../icon/Icon";
-const LikeButton = ({ size = undefined }) => {
+const LikeButton = ({
+  size = undefined,
+  id = undefined,
+}: {
+  id?: number;
+  size?: number;
+}) => {
   const { userLikeIds, currentSong, getUserLikeList } = useBaseContext();
 
-  const isLike = useMemo(
-    () => userLikeIds.includes(currentSong.id),
-    [userLikeIds, currentSong]
-  );
+  const _id = useMemo(() => {
+    if (id) {
+      return id;
+    }
+    return currentSong.id;
+  }, [id, currentSong.id]);
+
+  const isLike = useMemo(() => userLikeIds.includes(_id as number), [userLikeIds, _id]);
 
   return (
     <Icon
@@ -25,7 +35,7 @@ const LikeButton = ({ size = undefined }) => {
         }
 
         const res = await likeMusic({
-          id: currentSong.id,
+          id: _id,
           like: !isLike,
         });
         if (res) {
@@ -35,6 +45,7 @@ const LikeButton = ({ size = undefined }) => {
       }}
       title={isLike ? "取消喜欢" : "喜欢"}
       hoverLight
+      size={size}
     />
   );
 };

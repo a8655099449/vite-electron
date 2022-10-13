@@ -1,3 +1,4 @@
+import LikeButton from "@/components/Container/LikeButton";
 import SongTimeBar from "@/components/Container/SongTimeBar";
 import Icon from "@/components/icon/Icon";
 import React, { FC, ReactElement } from "react";
@@ -22,19 +23,13 @@ const PlayListTable: FC<IProps> = ({ data }): ReactElement => {
         </thead>
         <tbody>
           {data.map((item, index) => (
-            <tr key={item.id}>
+            <tr key={item.id} onDoubleClick={e=>{
+              api.emit('PLAY',item.id)
+            }}>
               <td>{index + 1}</td>
               <td>
-                <Icon type="like" size={18} hoverLight />
-                <Icon type="download" size={18} hoverLight />
-                <Icon
-                  type="play"
-                  size={18}
-                  hoverLight
-                  onClick={(e) => {
-                    api.emit("PLAY", item.id);
-                  }}
-                />
+                <LikeButton  id={item.id as number} />
+
               </td>
               <td>
                 <div className={`song-name text-row-1`}>{item.name}</div>

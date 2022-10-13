@@ -1,6 +1,7 @@
 import { IMAGE_ALBUM } from "@/common/images";
 import { useBaseContext } from "@/context/useBaseContent";
 import React, { FC, ReactElement } from "react";
+import LikeButton from "../Container/LikeButton";
 import Control from "./Control";
 import NotPlayInfo from "./NotPlayInfo";
 import "./player.less";
@@ -36,13 +37,14 @@ const Player: FC<IProps> = (): ReactElement => {
     <div className="player">
       <audio src={currentSongUrl} ref={audioInstance} />
       {currentSong?.name ? (
-        <div className="music-info" onClick={togglePlayDetailVisible}>
-          <div className="image">
+        <div className="music-info" >
+          <div className="image" onClick={togglePlayDetailVisible}>
             <img src={currentSong.al.picUrl} alt="" />
           </div>
           <div className="text-box">
-            <div>{currentSong.name}</div>
-            <div>{currentSong.ar[0].name}</div>
+            <div className="song-name">{currentSong.name}  <LikeButton /></div>
+            <div>{currentSong.ar[0].name}
+            </div>
           </div>
         </div>
       ) : (

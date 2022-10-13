@@ -28,7 +28,7 @@ export const getSongListDetails = (id: string) =>
     url: "/playlist/detail",
     params: { id },
   });
-export const getSongListAllMusic = (id: string) =>
+export const getSongListAllMusic = (id: ID) =>
   request<{
     songs: SongItem[];
   }>({
@@ -85,8 +85,32 @@ export const fm_trash = (id: ID) =>
   });
 
 // 获取用户喜欢的音乐
-export const getLikeList = (uid: ID) =>
+export const getLikeListIds = (uid: ID) =>
   request<{ ids: number[] }>({
     url: "/likelist",
     params: { uid },
+  });
+// 获取用户喜欢的音乐
+export const getPlayListCateHot = (uid: ID) =>
+  request<{ tags: PlayListTagItem[] }>({
+    url: "/playlist/hot",
+  });
+
+// 获取精品歌单
+export const getHighQualityPlayList = ({
+  cat = undefined, // 默认为全部
+  limit = 1,
+  before =undefined,
+}:{
+  cat?:string,
+  limit?:number,
+  before?:number
+} = {}) =>
+  request<{ playlists: SongListItem[] }>({
+    url: "/top/playlist/highquality",
+    params: {
+      cat,
+      limit,
+      before,
+    },
   });

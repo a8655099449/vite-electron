@@ -12,7 +12,7 @@ const PlayListWrap: FC<IPlayListWrapProps> = ({ list = [] }): ReactElement => {
       {list.length === 0 && <Empty  />}
 
       {list.map((item) => (
-        <SongListItem item={item} />
+        <SongListItem item={item} key={item.id} />
       ))}
     </div>
   );

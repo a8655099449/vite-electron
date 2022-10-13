@@ -59,11 +59,10 @@ const userRadio: FC<IProps> = (): ReactElement => {
   };
   useEvent({ key: "FM_NEXT", event: handleNext });
 
-  // 播放第一手
+  // 播放第一首
   const play = () => {
     const { songList = [] } = store.current;
-    console.log("👴songList", songList);
-    console.log("store.current.currentIndex", store.current.currentIndex);
+
     const song = songList[store.current.currentIndex];
     if (!song) {
       return;
@@ -103,21 +102,7 @@ const userRadio: FC<IProps> = (): ReactElement => {
                 </div>
               </div>
               <div className={`${styles["right"]}`}>
-                <h2>{song.name}</h2>
-                <div className={`${styles["album-info"]}`}>
-                  <span>
-                    专辑：
-                    <Link className="link" to={`/artist?id=${song?.al?.id}`}>
-                      {song.al?.name}
-                    </Link>
-                  </span>
-                  <span>
-                    歌手：
-                    <Link className="link" to={`/artist?id=${song.ar?.[0].id}`}>
-                      {song.ar?.[0]?.name}
-                    </Link>
-                  </span>
-                </div>
+
                 <Lyric />
               </div>
             </div>
