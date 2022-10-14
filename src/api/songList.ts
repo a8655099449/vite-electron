@@ -91,7 +91,7 @@ export const getLikeListIds = (uid: ID) =>
     params: { uid },
   });
 // 获取用户喜欢的音乐
-export const getPlayListCateHot = (uid: ID) =>
+export const getPlayListCateHot = () =>
   request<{ tags: PlayListTagItem[] }>({
     url: "/playlist/hot",
   });
@@ -100,11 +100,11 @@ export const getPlayListCateHot = (uid: ID) =>
 export const getHighQualityPlayList = ({
   cat = undefined, // 默认为全部
   limit = 1,
-  before =undefined,
-}:{
-  cat?:string,
-  limit?:number,
-  before?:number
+  before = undefined,
+}: {
+  cat?: string;
+  limit?: number;
+  before?: number;
 } = {}) =>
   request<{ playlists: SongListItem[] }>({
     url: "/top/playlist/highquality",
@@ -113,4 +113,19 @@ export const getHighQualityPlayList = ({
       limit,
       before,
     },
+  });
+
+// 获取用户喜欢的音乐
+export const getHotPlaylistByCate = ({
+  cat,
+  limit = 50,
+  offset = 0,
+}: {
+  cat?: string;
+  limit?: number;
+  offset?: number;
+}) =>
+  request<{ playlists: SongListItem[] }>({
+    url: "/top/playlist",
+    params: { cat, limit, offset },
   });

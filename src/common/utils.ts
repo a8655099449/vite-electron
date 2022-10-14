@@ -63,3 +63,33 @@ export const confirm = ({ title = "确认提示", children = "请确认" } = {})
     });
   });
 };
+
+export const throttle = (func: any, wait = 500) => {
+  let timer: any;
+
+  return () => {
+    if (timer) {
+      return;
+    }
+    timer = setTimeout(() => {
+      func();
+      timer = null;
+    }, wait);
+  };
+};
+
+export function debounce(fn: any, delay = 500) {
+  // timer 是在闭包中的
+  let timer: any = null;
+
+  return function () {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+      // @ts-ignore
+      fn.apply(this, arguments);
+      timer = null;
+    }, delay);
+  };
+}

@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from "react";
+import React, { FC, ReactElement, useEffect, useRef } from "react";
 import styles from "./Skeleton.module.less";
 
 interface SkeletonProps {
@@ -6,16 +6,23 @@ interface SkeletonProps {
   loading: boolean;
   children?: any;
   type?: "bar" | "circle" | "rect";
+  minHeight?: number;
 }
 const Skeleton: FC<SkeletonProps> = ({
   count = 1,
   loading = false,
   children = <></>,
   type = "rect",
+  minHeight,
 }) => {
   if (loading) {
     return (
-      <div className={`${styles["Skeleton"]} ${styles[type]}`}>
+      <div
+        className={`${styles["Skeleton"]} ${styles[type]}`}
+        style={{
+          minHeight,
+        }}
+      >
         {Array(count)
           .fill("")
           .map((_, index) => {
@@ -24,7 +31,8 @@ const Skeleton: FC<SkeletonProps> = ({
       </div>
     );
   }
-  return children;
+
+  return <>{children}</>;
 };
 
 const SkeletonItem = () => {

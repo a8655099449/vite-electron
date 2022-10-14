@@ -35,6 +35,7 @@ const typeMap = {
   video: "icon-shipin",
   radio: "icon-a-tupianyihuifu-10",
   browser: "icon-liulanqi",
+  crown: "icon-huangguan",
 };
 export type IconType = keyof typeof typeMap;
 export interface IconProps extends React.HTMLAttributes<HTMLElement> {

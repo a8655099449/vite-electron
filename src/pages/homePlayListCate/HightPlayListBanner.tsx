@@ -1,20 +1,28 @@
+import Icon from "@/components/icon/Icon";
 import Image from "@/components/Image/Image";
 import React, { FC, ReactElement } from "react";
 
 import styles from "./index.module.less";
 
-interface IProps {}
-const HightPlayListBanner: FC<IProps> = (): ReactElement => {
+interface IProps {
+  data?: SongListItem;
+}
+const HightPlayListBanner: FC<IProps> = ({ data }): ReactElement => {
   return (
     <div className={`${styles["HightPlayListBanner"]}`}>
-      <div className={`${styles["mask"]}`} />
-      <div  className={`${styles['content']}`}>
-        <div className={`${styles['pic']}`}>
-          <Image src="http://p2.music.126.net/NDdtSac66rpsF_jMBh1JMQ==/109951164929306650.jpg" />
+      <div className={`${styles["mask"]}`} style={{
+        backgroundImage:`url(${data?.coverImgUrl})`
+      }} />
+      <div className={`${styles["content"]}`}>
+        <div className={`${styles["pic"]}`}>
+          <Image src={data?.coverImgUrl} />
         </div>
-        <div>
-
-          
+        <div className={`${styles["desc"]}`}>
+          <div className={`${styles["tag"]}`}>
+            <Icon type="crown" />
+            精品歌单
+          </div>
+          <div>{data?.name}</div>
         </div>
       </div>
     </div>

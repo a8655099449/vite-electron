@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
 const parseQuery = <T = any>(s: string = ""): T => {
@@ -28,6 +28,22 @@ type UseEventParams = {
 export const useEvent = ({ key, event }: UseEventParams) => {
   useEffect(() => {
     api.on(key, event);
+
     return () => api.off(key, event);
   }, []);
+};
+
+export const useLayoutToBottom = (event = (n: number) => {}) => {
+  const offset = useRef(0);
+  useEvent({
+    key: "LAYOUT_TO_BOTTOM",
+    event() {
+      offset.current++;
+      event(offset.current);
+    },
+  });
+  const clearOffset = () => {
+    offset.current = 0;
+  };
+  return { clearOffset };
 };

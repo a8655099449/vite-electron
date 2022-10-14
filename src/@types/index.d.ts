@@ -27,11 +27,12 @@ type ListenerKeys =
   | "maximize"
   | "minimize"
   | "unmaximize"
-  | "FM_NEXT"
-  | "LOGIN_SUCCESS"
-  | "PLAY"
-  | "LOGOUT"
-  | "PLAY_LIST";
+  | "FM_NEXT" // 私人FM 下一首歌
+  | "LOGIN_SUCCESS" // 登录
+  | "PLAY" // 播放一首歌，需要传入id
+  | "LOGOUT" //登出
+  | "LAYOUT_TO_BOTTOM" // 页面滚动到底
+  | "PLAY_LIST"; // 播放一个列表，需要传入id
 
 declare module "@loadable/component";
 declare module "qrcode.react";
