@@ -12,13 +12,12 @@ import {
   IconMoon,
 } from "@tabler/icons";
 import Icon from "../icon/Icon";
-import { useBaseContext } from "@/context/useBaseContent";
+import { useStore } from "@/store";
+import { observer } from "mobx-react";
 
 interface IProps {}
 const Setting: FC<IProps> = (): ReactElement => {
-  const [opened, setOpened] = useState(false);
-
-  const { toggleTheme } = useBaseContext();
+  const { toggleTheme } = useStore().setting;
 
   return (
     <Menu
@@ -53,7 +52,7 @@ const Setting: FC<IProps> = (): ReactElement => {
           切换主题
         </Menu.Item>
         <Menu.Item
-          icon={<Icon size={14} type='browser' />}
+          icon={<Icon size={14} type="browser" />}
           onClick={() => {
             api.send("open-url", "http://localhost:7777");
           }}
@@ -65,4 +64,4 @@ const Setting: FC<IProps> = (): ReactElement => {
   );
 };
 
-export default Setting;
+export default observer(Setting);

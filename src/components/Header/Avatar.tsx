@@ -1,7 +1,8 @@
 import { confirm } from "@/common/utils";
-import { useBaseContext } from "@/context/useBaseContent";
+import { useStore } from "@/store";
 import { Button, Menu } from "@mantine/core";
 import { IconOutlet } from "@tabler/icons";
+import { observer } from "mobx-react";
 import React, { FC, ReactElement } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Icon from "../icon/Icon";
@@ -9,7 +10,10 @@ import Image from "../Image/Image";
 
 interface IProps {}
 const Avatar: FC<IProps> = (): ReactElement => {
-  const { toggleLoginVisible, userInfo, logout } = useBaseContext();
+  const { profile, setting } = useStore();
+  const { toggleLoginVisible } = setting;
+  const { userInfo, logout } = profile;
+
   const to = useNavigate();
   const { pathname } = useLocation();
   return (
@@ -67,4 +71,4 @@ const Avatar: FC<IProps> = (): ReactElement => {
   );
 };
 
-export default Avatar;
+export default observer(Avatar);

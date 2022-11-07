@@ -1,5 +1,5 @@
 import Image from "@/components/Image/Image";
-import { useBaseContext } from "@/context/useBaseContent";
+import { useStore } from "@/store";
 import { Button } from "@mantine/core";
 import React, { FC, ReactElement } from "react";
 
@@ -9,7 +9,7 @@ interface IProps {
   profile: UserProfile;
 }
 const UserDetail: FC<IProps> = ({ profile = {} }): ReactElement => {
-  const { userInfo } = useBaseContext();
+  const { userInfo } = useStore().profile;
 
   return (
     <div className={`${styles["user-detail"]}`}>

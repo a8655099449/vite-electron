@@ -4,7 +4,7 @@ import Comments from "@/components/Comments";
 import BaseTabs from "@/components/Container/BaseTabs";
 import Loading from "@/components/Container/Loading";
 import Skeleton from "@/components/Container/Skeleton";
-import { useBaseContext } from "@/context/useBaseContent";
+import { useStore } from "@/store";
 import { useRequest } from "ahooks";
 import React, { FC, ReactElement, useEffect, useState } from "react";
 import PlayListTable from "./PlayListTable";
@@ -18,7 +18,7 @@ const songList: FC<IProps> = (): ReactElement => {
   const {
     likeListID, // 我喜欢的歌单列表id
     userLikeList, // 我喜欢的歌单列表id
-  } = useBaseContext();
+  } = useStore().profile;
   const [tabValue, setTabValue] = useState(`list`);
 
   const {

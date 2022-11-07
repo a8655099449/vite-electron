@@ -1,19 +1,12 @@
-/*
- * @Author: error: git config user.name && git config user.email & please set dead value or install git
- * @Date: 2022-09-28 07:45:09
- * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-29 21:48:36
- * @FilePath: \vite-electron\src\components\PlayDetail\SongDetailInfo.tsx
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
-import { useBaseContext } from "@/context/useBaseContent";
+import { useStore } from "@/store";
+import { observer } from "mobx-react";
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Image from "../Image/Image";
 import styles from "./index.module.less";
 interface IProps {}
 const SongDetailInfo: FC<IProps> = (): ReactElement => {
-  const { isPlay, currentSong } = useBaseContext();
+  const { isPlay, currentSong } = useStore().player;
 
   return (
     <div className={`${styles["SongDetailInfo"]}`}>
@@ -35,8 +28,8 @@ const SongDetailInfo: FC<IProps> = (): ReactElement => {
 };
 
 interface ILyricProps {}
-export const Lyric: FC<ILyricProps> = (): ReactElement => {
-  const { lyric, currentTime, currentSong } = useBaseContext();
+export const Lyric: FC<ILyricProps> = observer(() => {
+  const { lyric, currentTime, currentSong } = useStore().player;
   const ref = useRef({
     isFirst: true,
   });
@@ -112,6 +105,6 @@ export const Lyric: FC<ILyricProps> = (): ReactElement => {
       </div>
     </div>
   );
-};
+});
 
-export default SongDetailInfo;
+export default observer(SongDetailInfo);

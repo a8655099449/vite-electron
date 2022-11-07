@@ -1,6 +1,7 @@
 import { likeMusic } from "@/api/song";
 import { confirm, message } from "@/common/utils";
-import { useBaseContext } from "@/context/useBaseContent";
+import { useStore } from "@/store";
+import { observer } from "mobx-react";
 import React, { useMemo } from "react";
 import Icon from "../icon/Icon";
 const LikeButton = ({
@@ -10,8 +11,9 @@ const LikeButton = ({
   id?: number;
   size?: number;
 }) => {
-  const { userLikeIds, currentSong, getUserLikeList } = useBaseContext();
-
+  const { currentSong } = useStore().player;
+  const { profile } = useStore();
+  const { userLikeIds, getUserLikeList } = profile;
   const _id = useMemo(() => {
     if (id) {
       return id;
@@ -19,7 +21,10 @@ const LikeButton = ({
     return currentSong.id;
   }, [id, currentSong.id]);
 
-  const isLike = useMemo(() => userLikeIds.includes(_id as number), [userLikeIds, _id]);
+  const isLike = useMemo(
+    () => userLikeIds.includes(_id as number),
+    [userLikeIds, _id]
+  );
 
   return (
     <Icon
@@ -50,4 +55,4 @@ const LikeButton = ({
   );
 };
 
-export default LikeButton;
+export default observer(LikeButton);

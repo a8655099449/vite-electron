@@ -67,7 +67,7 @@ export const getUserDetail = (uid: number) =>
   });
 
 // 获取用户歌单
-export const getUserPlayList = async (uid: number) => {
+export const getUserPlayList = async (uid: ID) => {
   const object: UserPlayList = {
     collect: [],
     create: [],

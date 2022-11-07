@@ -1,7 +1,8 @@
 import { MantineProvider, Button } from "@mantine/core";
+import { observer } from "mobx-react";
 import { useMemo, useState } from "react";
 import { Toaster } from "react-hot-toast";
-import { Navigate, Route, Routes ,  } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { ICONFONT_URL } from "./common/consts";
 import Header from "./components/Header";
 import Layout from "./components/Layout/Layout";
@@ -13,14 +14,12 @@ import BaseSideBar from "./components/SideBar/BaseSideBar";
 // import SideBar from "./components/Sidebar/BaseSideBar";
 
 import routes from "./config/routes";
-import BaseContext from "./context/BaseContext";
-import { useBaseContext } from "./context/useBaseContent";
 
-
-
+import { useStore } from "./store";
 
 const App: React.FC = () => {
-  const { theme, playDetailVisible } = useBaseContext();
+  const { theme, playDetailVisible } = useStore().setting;
+
   const mod = import.meta.glob("./pages/**/[a-z[]*.tsx");
   // const
   const components = useMemo(() => {
@@ -32,8 +31,6 @@ const App: React.FC = () => {
       return item;
     });
   }, [routes]);
-
-
 
   return (
     <div className={`main-container ${theme}`}>
@@ -65,4 +62,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default observer(App);

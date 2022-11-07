@@ -1,11 +1,6 @@
-import { getRecommendSongList } from "@/api/songList";
-import to from "@/common/to";
 import SongListItem from "@/components/Container/SongListItem";
-import Icon from "@/components/icon/Icon";
-import { useBaseContext } from "@/context/useBaseContent";
-import { Skeleton } from "@mantine/core";
-import { useRequest } from "ahooks";
-import React, { FC, ReactElement, useMemo } from "react";
+
+import { FC, ReactElement, useMemo } from "react";
 import styles from "./home.module.less";
 
 interface IProps {

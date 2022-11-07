@@ -2,7 +2,7 @@ import { getLyric, getSongDetail, getSongUrl } from "@/api/song";
 import to from "@/common/to";
 import { useEvent } from "@/common/use";
 import { getStore } from "@/common/utils";
-import { useBaseContext } from "@/context/useBaseContent";
+import { useStore } from "@/store";
 import { useLocalStorage } from "@mantine/hooks";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -16,7 +16,7 @@ const usePlayer = () => {
     setLyric,
     currentTime,
     _setCurrentTime,
-  } = useBaseContext();
+  } = useStore().player;
   const audioInstance = useRef<HTMLAudioElement>(null);
 
   const { pathname } = useLocation();
@@ -223,8 +223,8 @@ const usePlayer = () => {
 
   const playNext = (count: number) => {
     if (count === 1 && pathname == `/userRadio`) {
-      api.emit('FM_NEXT')
-      return
+      api.emit("FM_NEXT");
+      return;
     }
 
     const { playList, currentSong } = store.current;

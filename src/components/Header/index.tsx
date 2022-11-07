@@ -1,14 +1,12 @@
-import { useBaseContext } from "@/context/useBaseContent";
-import { Button } from "@mantine/core";
+
+import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Icon, { IconProps, IconType } from "../icon/Icon";
-import Image from "../Image/Image";
 import Avatar from "./Avatar";
 import styles from "./index.module.less";
 import Logo from "./Logo";
 import Setting from "./Setting";
-import { TitleBar } from "./TItleBar";
 export default function Header() {
   return (
     <div className={`${styles["header"]}`}>
@@ -24,11 +22,12 @@ const DragBar = () => {
   return <div className={`${styles["drag"]}`} />;
 };
 
-const HandleWindowBar = () => {
+const HandleWindowBar = observer(() => {
   const keys: IconType[] = ["minus", "full", "close"];
   const [full, setFull] = useState(false);
-  const { toggleLoginVisible, userInfo } = useBaseContext();
+
   const navigate = useNavigate();
+
 
   const handleClick = (key: IconType) => {
     const keyMap: Partial<{
@@ -54,6 +53,7 @@ const HandleWindowBar = () => {
   return (
     <div className={`${styles["HandleWindowBar"]}`}>
       <Avatar />
+
       <Icon
         type="arrow-right"
         style={{
@@ -91,4 +91,4 @@ const HandleWindowBar = () => {
       })}
     </div>
   );
-};
+});

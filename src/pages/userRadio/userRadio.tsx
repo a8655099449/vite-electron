@@ -8,7 +8,7 @@ import Skeleton from "@/components/Container/Skeleton";
 import Icon from "@/components/icon/Icon";
 import Image from "@/components/Image/Image";
 import { Lyric } from "@/components/PlayDetail/SongDetailInfo";
-import { useBaseContext } from "@/context/useBaseContent";
+import { useStore } from "@/store";
 import { useRequest } from "ahooks";
 import React, { FC, ReactElement, useEffect, useMemo, useRef } from "react";
 import { toast } from "react-hot-toast";
@@ -21,7 +21,7 @@ const userRadio: FC<IProps> = (): ReactElement => {
     isFirst: true,
     songList: [] as SongItem[],
   });
-  const { currentSong: song } = useBaseContext();
+  const { currentSong: song } = useStore().player;
 
   const { data, loading, run } = useRequest(async ({ clear = false } = {}) => {
     let storeRes = getStore("userRadio");

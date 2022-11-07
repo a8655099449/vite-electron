@@ -1,6 +1,5 @@
 import routes from "@/config/routes";
-import { useBaseContext } from "@/context/useBaseContent";
-import { Menu } from "@mantine/core";
+
 import React, { FC, ReactElement, useMemo } from "react";
 import { Link, NavLink } from "react-router-dom";
 import styles from "./sidebar.module.less";
@@ -9,13 +8,14 @@ import styles from "./sidebar.module.less";
 import PlayListMenu from "../Container/playListMenu";
 import Icon from "../icon/Icon";
 import { useQuery } from "@/common/use";
+import { useStore } from "@/store";
 
 interface IProps {}
 const BaseSideBar: FC<IProps> = (): ReactElement => {
   const menus = useMemo(() => {
     return routes.filter(({ isMenu }) => isMenu);
   }, [routes]);
-  const { likeListID } = useBaseContext();
+  const { likeListID } = useStore().profile
 
 
   const {id} = useQuery()

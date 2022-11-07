@@ -1,6 +1,5 @@
 import { checkQrLogin, getCreateQr, getLoginQrKey } from "@/api/user";
 import to from "@/common/to";
-import { useBaseContext } from "@/context/useBaseContent";
 import { Button, Modal } from "@mantine/core";
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
 import Image from "../Image/Image";
@@ -13,9 +12,11 @@ import { useLocalStorage } from "@mantine/hooks";
 import { message } from "@/common/utils";
 import FromLogin from "./FromLogin";
 import { COOKIE_KEY } from "@/common/consts";
+import { observer } from "mobx-react";
+import { useStore } from "@/store";
 
 const Login: FC<IProps> = (): ReactElement => {
-  const { loginVisible, toggleLoginVisible } = useBaseContext();
+  const { loginVisible, toggleLoginVisible } = useStore().setting;
   // const
   const [qrCodeSrc, setQrCodeSrc] = useState("");
   const [value, setCookie] = useLocalStorage({
@@ -166,4 +167,4 @@ const Login: FC<IProps> = (): ReactElement => {
   );
 };
 
-export default Login;
+export default observer(Login);

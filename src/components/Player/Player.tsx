@@ -1,6 +1,7 @@
 import { IMAGE_ALBUM } from "@/common/images";
-import { useBaseContext } from "@/context/useBaseContent";
-import React, { FC, ReactElement } from "react";
+import { useStore } from "@/store";
+import { observer } from "mobx-react";
+import  { FC, ReactElement } from "react";
 import LikeButton from "../Container/LikeButton";
 import Control from "./Control";
 import NotPlayInfo from "./NotPlayInfo";
@@ -31,20 +32,21 @@ const Player: FC<IProps> = (): ReactElement => {
     volume,
     changeVolume,
   } = usePlayer();
-  const { togglePlayDetailVisible } = useBaseContext();
+  const { togglePlayDetailVisible } = useStore().setting;
 
   return (
     <div className="player">
       <audio src={currentSongUrl} ref={audioInstance} />
       {currentSong?.name ? (
-        <div className="music-info" >
+        <div className="music-info">
           <div className="image" onClick={togglePlayDetailVisible}>
             <img src={currentSong.al.picUrl} alt="" />
           </div>
           <div className="text-box">
-            <div className="song-name">{currentSong.name}  <LikeButton /></div>
-            <div>{currentSong.ar[0].name}
+            <div className="song-name">
+              {currentSong.name} <LikeButton />
             </div>
+            <div>{currentSong.ar[0].name}</div>
           </div>
         </div>
       ) : (
@@ -101,4 +103,4 @@ const Player: FC<IProps> = (): ReactElement => {
   );
 };
 
-export default Player;
+export default observer(Player);
