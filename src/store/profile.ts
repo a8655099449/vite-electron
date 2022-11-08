@@ -36,7 +36,6 @@ class Profile {
   };
 
   login = async () => {
-    const { userInfo } = this;
     const [err, res] = await to(getLoginStatus());
     if (err || !res?.data?.profile) {
       setStorage("userInfo", {});

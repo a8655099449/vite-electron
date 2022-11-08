@@ -10,6 +10,7 @@ import Image from "@/components/Image/Image";
 import { Lyric } from "@/components/PlayDetail/SongDetailInfo";
 import { useStore } from "@/store";
 import { useRequest } from "ahooks";
+import { observer } from "mobx-react";
 import React, { FC, ReactElement, useEffect, useMemo, useRef } from "react";
 import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
@@ -114,4 +115,4 @@ const userRadio: FC<IProps> = (): ReactElement => {
   );
 };
 
-export default userRadio;
+export default observer(userRadio);

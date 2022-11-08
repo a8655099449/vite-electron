@@ -54,29 +54,33 @@ const homePlayListCate: FC<IProps> = (): ReactElement => {
     run: _getHotPlaylistByCate,
     loading: playListLoading,
   } = useRequest(
-    async ({ cat, offset }) => {
-      const [err, res] = await to(getHotPlaylistByCate({ cat, offset }));
+    async ({ offset  = 0}) => {
+      const [err, res] = await to(
+        getHotPlaylistByCate({ cat:store.current.activeCate, offset: (offset) * 50 })
+      );
+      resetLoading()
       if (err) {
         return;
       }
       const object = arrayToObjectByKey(playList, "id");
+      const newList: SongListItem[] = [];
       if (res.playlists) {
         res.playlists.forEach((item) => {
           if (!object[item.id]) {
-            object[item.id] = item;
+            // object[item.id] = item;
+            newList.push(item);
           }
         });
       }
 
-      const list = Object.values(object);
-      setPlayList(list);
+      setPlayList([...playList, ...newList]);
 
       return res;
     },
     { manual: true }
   );
 
-  const { clearOffset } = useLayoutToBottom((e) => {
+  const { clearOffset  , resetLoading} = useLayoutToBottom((e) => {
     _getHotPlaylistByCate({
       offset: e,
       cat: activeCate,
@@ -86,6 +90,8 @@ const homePlayListCate: FC<IProps> = (): ReactElement => {
   useEffect(() => {
     if (activeCate) {
       getHightPlayList(activeCate);
+
+      store.current.activeCate = activeCate
       _getHotPlaylistByCate({ cat: activeCate });
     }
   }, [activeCate]);

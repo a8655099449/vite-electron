@@ -1,4 +1,5 @@
 @import url("./var.less");
+
 body {
   background-color: #fff;
   font-size: 14px;
@@ -15,9 +16,11 @@ body {
   padding: 0;
   box-sizing: border-box;
 }
+
 button {
   padding: 0 10px;
 }
+
 .drag {
   -webkit-app-region: drag;
 }
@@ -28,13 +31,16 @@ button {
   font-size: 14px;
   color: var(--text-color);
 }
+
 .hover {
   cursor: pointer;
   transition: background-color 0.3s;
+
   &:hover {
     background-color: var(--hover-bg-color);
   }
 }
+
 a {
   text-decoration: none;
   color: inherit;
@@ -44,38 +50,46 @@ a {
 *::-webkit-scrollbar {
   width: 5px;
 }
+
 /* 设置中间的小快 */
 
 *::-webkit-scrollbar-thumb {
   border-radius: 2.5px;
   background-color: #e0e0e0;
 }
+
 /* 设置滚动区背景 */
 *::-webkit-scrollbar-track {
   border-radius: 5px;
   background-color: transparent;
 }
+
 img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 .hover-hightLight {
   cursor: pointer;
   transition: color 0.3s;
+
   &:hover {
     color: var(--primary-color);
   }
 }
+
 .center {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .tooltip {
   position: relative;
   // border-bottom: 1px dotted black;
   cursor: pointer;
+
   &.end {
     &:before {
       right: 0;
@@ -106,36 +120,45 @@ img {
     visibility: visible;
   }
 }
+
 .mb-20 {
   margin-bottom: 20px;
 }
+
 .underline {
   cursor: pointer;
   transition: color 0.3s;
+
   &:hover {
     text-decoration: underline;
     color: var(--primary-color);
   }
 }
+
 .mantine-Password.mantine-Password:focus {
   border-color: #000;
 }
+
 .slick-next.slick-next {
   right: 10px;
 }
+
 .slick-prev.slick-prev {
   left: 10px;
   z-index: 100;
 }
+
 .tag {
   border: 1px solid var(--border-color-1);
   padding: 0 4px;
   margin: 0 5px;
   border-radius: 2px;
 }
+
 .p-20 {
   padding: 20px;
 }
+
 .text-row-1 {
   overflow: hidden;
   white-space: nowrap;
@@ -151,13 +174,16 @@ img {
   -webkit-box-orient: vertical;
   /* autoprefixer: off */
 }
+
 .play-list-table {
   width: 100%;
   margin-top: 30px;
   border-collapse: collapse;
+
   th {
     text-align: left;
   }
+
   line-height: 36px;
 
   tbody {
@@ -165,41 +191,57 @@ img {
       &:nth-child(2n - 1) {
         background-color: var(--bg-color-3);
       }
+
       &:hover {
         background-color: var(--bg-color-2);
       }
     }
   }
+
   .song-name {
     width: 150px;
   }
+
   td,
   th {
     padding: 0 6px;
   }
+
   td {
     &:nth-child(1) {
       width: 40px;
     }
+
     &:nth-child(2) {
       width: 100px;
     }
   }
 }
+
 .link {
   color: var(--link-color);
   cursor: pointer;
+
   &:hover {
     // color: ;
     opacity: 0.9;
   }
 }
+
 .scroll-y {
   overflow-y: scroll;
 }
+
 .text-color-2 {
   color: var(--text-color-2);
 }
-.bold{
+
+.bold {
   font-weight: bold;
+}
+
+li,
+ul,
+ol {
+  list-style: none;
 }

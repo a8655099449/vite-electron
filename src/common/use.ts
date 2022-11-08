@@ -35,15 +35,29 @@ export const useEvent = ({ key, event }: UseEventParams) => {
 
 export const useLayoutToBottom = (event = (n: number) => {}) => {
   const offset = useRef(0);
+
+  const ref = useRef({
+    isLoading: false,
+  });
+
   useEvent({
     key: "LAYOUT_TO_BOTTOM",
     event() {
+      if (ref.current.isLoading) {
+        return;
+      }
       offset.current++;
       event(offset.current);
+      ref.current.isLoading = true;
     },
   });
   const clearOffset = () => {
+    ref.current.isLoading = false;
     offset.current = 0;
   };
-  return { clearOffset };
+  const resetLoading = () => {
+    ref.current.isLoading = false;
+  };
+
+  return { clearOffset , resetLoading };
 };

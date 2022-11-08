@@ -43,7 +43,7 @@ export const loginByPhone = (data: {
 export const getLoginStatus = () =>
   request<{ profile: UserProfile }>({
     url: "/login/status",
-    cacheTime: 60 * 1000 * 60,
+    cacheTime: 0,
   });
 
 // 发送验证码
