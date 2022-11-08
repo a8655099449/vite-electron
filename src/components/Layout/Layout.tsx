@@ -13,7 +13,7 @@ const Layout: FC<IProps> = ({ sideBar, children }): ReactElement => {
   const handleScroll = (e: any) => {
     const { scrollTop, clientHeight, scrollHeight } =
       content.current as HTMLDivElement;
-    if (scrollTop + clientHeight >= scrollHeight) {
+    if (scrollTop + clientHeight + 5 >= scrollHeight) {
       emit();
     }
   };

@@ -3,7 +3,7 @@ import { getLoginStatus, getUserPlayList, sendLogout } from "@/api/user";
 import { COOKIE_KEY, USER_LIKE_LIST } from "@/common/consts";
 import to from "@/common/to";
 import { getStore, setStorage } from "@/common/utils";
-import { makeAutoObservable, computed } from "mobx";
+import { makeAutoObservable, computed, toJS } from "mobx";
 
 class Profile {
   userInfo = {} as UserProfile;
@@ -17,7 +17,9 @@ class Profile {
 
   constructor() {
     makeAutoObservable(this);
-    api.on("LOGIN_SUCCESS", this.login);
+    if (window.api) {
+      window.api.on("LOGIN_SUCCESS", this.login);
+    }
     this.init();
   }
   init = () => {
@@ -35,16 +37,12 @@ class Profile {
 
   login = async () => {
     const { userInfo } = this;
-
-    if (!userInfo.avatarUrl) {
-      return;
-    }
     const [err, res] = await to(getLoginStatus());
     if (err || !res?.data?.profile) {
-      // setStorage)
+      setStorage("userInfo", {});
+      this.userInfo = {}
       return;
     }
-    console.log("👴2022-11-07 23:28:46 profile.ts line:47", res.data.profile);
     this.userInfo = res.data.profile;
     if (this.userInfo.userId) {
       this._getUserPlayList(this.userInfo?.userId);
@@ -54,13 +52,13 @@ class Profile {
   };
 
   _getUserLikeListIds = async () => {
+
     const [err, res] = await to(getLikeListIds(this.userInfo.userId as ID));
 
     if (err) {
       return [];
     }
     this.userLikeIds = res.ids;
-
   };
 
   _getUserPlayList = async (id: ID) => {
@@ -95,8 +93,8 @@ class Profile {
     api.emit("LOGOUT");
   };
   @computed get likeListID() {
-    console.log("👴2022-11-07 23:26:44 profile.ts line:95", this.userLikeIds);
-    return this.userLikeIds[0] || 0;
+
+    return this.userPlayList.create?.[0]?.id || 0;
   }
 }
 

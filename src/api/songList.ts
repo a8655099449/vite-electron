@@ -129,3 +129,12 @@ export const getHotPlaylistByCate = ({
     url: "/top/playlist",
     params: { cat, limit, offset },
   });
+
+// 获取所有排行榜
+export const getTopList = () =>
+  request<{
+    list: SongListItem[];
+  }>({
+    url: "/toplist",
+    cacheTime: 60 * 1000 * 30,
+  });

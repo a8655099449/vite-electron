@@ -5,11 +5,6 @@ const routes: RouteItem[] = [
     isMenu: true,
     icon: "home",
   },
-  // {
-  //   path: "/livePlayer",
-  //   name: "直播",
-  //   isMenu: true,
-  // },
   {
     path: "/playList",
     name: "歌单详情",
@@ -21,6 +16,14 @@ const routes: RouteItem[] = [
   {
     path: "/user",
     name: "用户详情",
+  },
+  {
+    path: "/topList",
+    name: "排行榜",
+  },
+  {
+    path: "/artists",
+    name: "歌手",
   },
   {
     path: "/video",

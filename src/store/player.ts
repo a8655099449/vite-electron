@@ -1,4 +1,4 @@
-import { getStore } from "@/common/utils";
+import { getStore, setStorage } from "@/common/utils";
 import { makeAutoObservable } from "mobx";
 
 class PlayerModel {
@@ -9,10 +9,13 @@ class PlayerModel {
 
   constructor() {
     makeAutoObservable(this);
-    this.init()
+    this.init();
   }
   setIsPlay = (b: boolean) => (this.isPlay = b);
-  setCurrentSong = (s: SongItem) => (this.currentSong = s);
+  setCurrentSong = (s: SongItem) => {
+    this.currentSong = s;
+    setStorage("currentSong", s);
+  };
   setLyric = (l: LyricItem[]) => (this.lyric = l);
 
   _setCurrentTime = (time: number) => {

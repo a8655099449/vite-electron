@@ -5,12 +5,13 @@ import {
 } from "@/api/songList";
 import to from "@/common/to";
 import { useLayoutToBottom } from "@/common/use";
+import { arrayToObjectByKey, getStore } from "@/common/utils";
 import PageWrap from "@/components/Container/PageWrap";
 import PlayListWrap from "@/components/Container/PlayListWrap";
 import Skeleton from "@/components/Container/Skeleton";
 import { useLocalStorage } from "@mantine/hooks";
 import { useRequest } from "ahooks";
-import React, { FC, ReactElement, useEffect, useState } from "react";
+import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
 import { HomeTabs } from "../home/home";
 import HightPlayListBanner from "./HightPlayListBanner";
 import styles from "./index.module.less";
@@ -22,14 +23,19 @@ const homePlayListCate: FC<IProps> = (): ReactElement => {
     if (err) {
       return [];
     }
-
-    setActiveCate(res.tags[0].name);
+    if (!store.current.activeCate) {
+      setActiveCate(res.tags[0].name);
+    }
     return res.tags;
   });
   const [activeCate, setActiveCate] = useLocalStorage({
     defaultValue: "",
     key: "activeCate",
   });
+  const store = useRef({
+    activeCate: getStore("activeCate"),
+  });
+
   const {
     data: hightPlayList,
     loading: hightPlayListLoading,
@@ -53,18 +59,24 @@ const homePlayListCate: FC<IProps> = (): ReactElement => {
       if (err) {
         return;
       }
-      if (!offset) {
-        setPlayList(res.playlists);
-      } else {
-        setPlayList([...playList, ...res.playlists]);
+      const object = arrayToObjectByKey(playList, "id");
+      if (res.playlists) {
+        res.playlists.forEach((item) => {
+          if (!object[item.id]) {
+            object[item.id] = item;
+          }
+        });
       }
+
+      const list = Object.values(object);
+      setPlayList(list);
+
       return res;
     },
     { manual: true }
   );
 
-  useLayoutToBottom((e) => {
-    console.log("👴触底了", e);
+  const { clearOffset } = useLayoutToBottom((e) => {
     _getHotPlaylistByCate({
       offset: e,
       cat: activeCate,
@@ -92,12 +104,13 @@ const homePlayListCate: FC<IProps> = (): ReactElement => {
             <span
               key={item.name}
               className={`${activeCate === item.name ? styles["active"] : ""}`}
-              onClick={(e) => {
+              onClick={() => {
                 if (activeCate === item.name) {
                   return;
                 }
-                setPlayList([])
+                setPlayList([]);
                 setActiveCate(item.name);
+                clearOffset();
               }}
             >
               {item.name}

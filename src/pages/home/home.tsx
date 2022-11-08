@@ -135,22 +135,9 @@ const home = () => {
   );
 };
 
- export const HomeTabs = () => {
+export const HomeTabs = () => {
   const { pathname } = useLocation();
-  const list = [
-    {
-      value: "0",
-      label: "个性推荐",
-    },
-    {
-      value: "1",
-      label: "专属定制",
-    },
-    {
-      value: "2",
-      label: "歌单",
-    },
-  ];
+
   const to = useNavigate();
 
   return (
@@ -164,6 +151,14 @@ const home = () => {
           {
             value: "/homePlayListCate",
             children: "歌单",
+          },
+          {
+            value: "/topList",
+            children: "排行榜",
+          },
+          {
+            value: "/artists",
+            children: "歌手",
           },
         ]}
         value={pathname}

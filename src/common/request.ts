@@ -2,12 +2,14 @@ import axios from "axios";
 
 import type { AxiosRequestConfig } from "axios";
 import { COOKIE_KEY } from "./consts";
-import { message } from "./utils";
-
+import { eqObject, getStore, message, setStorage } from "./utils";
+const CACHE_KEY = `REQUEST_CACHE`;
 // const baseURL = `http://47.107.81.99:3000`;
 const baseURL = `/apis`;
 function request<T = any>(
-  config: AxiosRequestConfig
+  config: AxiosRequestConfig & {
+    cacheTime?: number; // 缓存时间 , 默认都有一分钟的缓存，如果不要缓存则写0
+  }
 ): Promise<
   {
     code: number;
@@ -23,6 +25,54 @@ function request<T = any>(
     method: "get",
     withCredentials: true,
   });
+
+  const { cacheTime = 60 * 1000, url, data = {}, params = {} } = config;
+  const query = { ...data, ...params };
+
+  const saveCache = (data: any) => {
+    if (!cacheTime) {
+      return;
+    }
+    const cacheData: any = getStore(CACHE_KEY) || {};
+    const now = Date.now();
+    cacheData[url as string] = {
+      data,
+      time: cacheTime,
+      saveTime: now,
+      query,
+    };
+    setStorage(CACHE_KEY, cacheData);
+  };
+
+  const getCache = () => {
+    if (!cacheTime) {
+      return false;
+    }
+    const cacheData: any = getStore(CACHE_KEY) || {};
+    const current = cacheData[url as string];
+
+    if (!current) {
+      return false;
+    }
+    const { saveTime, time, data, query: oldQuery = {} } = current;
+    const now = Date.now();
+
+    if (saveTime + time < now) {
+      return false;
+    }
+
+    if (!eqObject(query, oldQuery)) {
+      return false;
+    }
+
+    return data;
+  };
+  if (cacheTime) {
+    const cache = getCache();
+    if (cache) {
+      return Promise.resolve(cache);
+    }
+  }
 
   //  请求拦截
   instance.interceptors.request.use(
@@ -49,13 +99,13 @@ function request<T = any>(
   // ! 响应拦截
   instance.interceptors.response.use(
     (res) => {
+      saveCache(res.data);
       return res.data;
     },
     (err) => {
       if (err?.response?.data?.message) {
         message.error(err?.response?.data?.message);
       }
-
 
       return Promise.reject(err?.response?.data || err);
     }

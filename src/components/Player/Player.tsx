@@ -1,7 +1,8 @@
 import { IMAGE_ALBUM } from "@/common/images";
 import { useStore } from "@/store";
+import { toJS } from "mobx";
 import { observer } from "mobx-react";
-import  { FC, ReactElement } from "react";
+import { FC, ReactElement } from "react";
 import LikeButton from "../Container/LikeButton";
 import Control from "./Control";
 import NotPlayInfo from "./NotPlayInfo";
@@ -13,7 +14,6 @@ interface IProps {}
 
 const Player: FC<IProps> = (): ReactElement => {
   const {
-    currentSong,
     currentSongUrl,
     audioInstance,
     isPlay,
@@ -32,7 +32,10 @@ const Player: FC<IProps> = (): ReactElement => {
     volume,
     changeVolume,
   } = usePlayer();
-  const { togglePlayDetailVisible } = useStore().setting;
+
+  const { setting, player } = useStore();
+  const { currentSong } = player;
+  const { togglePlayDetailVisible } = setting;
 
   return (
     <div className="player">
