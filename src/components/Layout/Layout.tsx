@@ -18,7 +18,7 @@ const Layout: FC<IProps> = ({ sideBar, children }): ReactElement => {
     }
   };
 
-  const emit = debounce(() => {
+  const emit = throttle(() => {
     api.emit("LAYOUT_TO_BOTTOM");
   });
 
