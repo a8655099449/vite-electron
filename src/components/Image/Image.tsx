@@ -9,16 +9,26 @@ import React, {
 import LazyLoad from "react-lazyload";
 interface IProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   round?: boolean;
+  width?: number;
 }
-import loadingImage from "./loadng.gif";
 
-const Image: FC<IProps> = ({ src, style, round, ...rest }): ReactElement => {
-  const [loading, setLoading] = useState(true);
-  const imageRef = useRef<HTMLImageElement>(null);
+const Image: FC<IProps> = ({
+  src,
+  style,
+  round,
+  width,
+  ...rest
+}): ReactElement => {
 
   const _src = useMemo(() => {
-    return src;
-  }, [src]);
+    let param = "";
+
+    if (width) {
+      param = `${src?.indexOf("?") === -1 ? `?` : ""}param=${width}y${width}`;
+    }
+
+    return src + param;
+  }, [src, width]);
 
   if (!src) {
     return <></>;
@@ -27,13 +37,11 @@ const Image: FC<IProps> = ({ src, style, round, ...rest }): ReactElement => {
   return (
     <img
       {...rest}
-      ref={imageRef}
       src={_src}
       style={{
         ...style,
         borderRadius: round ? "50%" : undefined,
       }}
-      onLoad={() => setLoading(false)}
     />
   );
 };

@@ -26,6 +26,10 @@ const routes: RouteItem[] = [
     name: "歌手",
   },
   {
+    path: "/artistDetail",
+    name: "歌手详情",
+  },
+  {
     path: "/video",
     name: "视频",
     isMenu: true,

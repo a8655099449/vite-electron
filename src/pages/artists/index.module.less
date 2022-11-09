@@ -32,10 +32,9 @@
             top: 3px;
             bottom: 3px;
             width: 1px;
-            background-color: #eee;
+            background-color: var(--border-color-1);
             position: absolute;
             left: -10px;
-
           }
         }
 
@@ -55,7 +54,7 @@
   display: flex;
   flex-wrap: wrap;
 
-  &>div {
+  &>.item {
     width: calc((100% - 100px) / 6);
     margin-bottom: 40px;
     .pic{
@@ -65,7 +64,7 @@
     img {
       width: 100%;
       border-radius: 4px;
-      border: 1px solid #eee;
+      border: 1px solid var(--border-color-1);
     }
 
     &:not(:nth-child(6n)) {

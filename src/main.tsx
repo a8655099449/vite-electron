@@ -19,7 +19,6 @@ if (!window.api) {
 }
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <ErrorCatch>
     <ModalsProvider>
       <HashRouter>
         <BaseContext>
@@ -27,7 +26,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </BaseContext>
       </HashRouter>
     </ModalsProvider>
-  </ErrorCatch>
 );
 
 postMessage({ payload: "removeLoading" }, "*");

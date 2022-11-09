@@ -97,7 +97,7 @@ const homePlayListCate: FC<IProps> = (): ReactElement => {
   }, [activeCate]);
 
   return (
-    <PageWrap>
+    <PageWrap title="首页 - 歌单">
       <HomeTabs />
       <Skeleton loading={hightPlayListLoading} minHeight={180}>
         <HightPlayListBanner data={hightPlayList?.playlists[0]} />

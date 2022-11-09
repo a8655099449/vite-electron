@@ -15,10 +15,9 @@ const BaseSideBar: FC<IProps> = (): ReactElement => {
   const menus = useMemo(() => {
     return routes.filter(({ isMenu }) => isMenu);
   }, [routes]);
-  const { likeListID } = useStore().profile
+  const { likeListID, isLogin } = useStore().profile;
 
-
-  const {id} = useQuery()
+  const { id } = useQuery();
 
   return (
     <div className={`${styles["sidebar"]} `}>
@@ -37,17 +36,21 @@ const BaseSideBar: FC<IProps> = (): ReactElement => {
           </NavLink>
         );
       })}
-      <NavLink
-        className={({ isActive }) =>
-          `${styles["menu-icon"]} ${isActive && id ==  likeListID? styles["active"] : ""} hover`
-        }
-        to={`/playList?id=${likeListID}`}
-        key={`我喜欢`}
-        title={`我喜欢`}
-      >
-        <Icon type={`like` as any} size={30} />
-        <div>我喜欢</div>
-      </NavLink>
+      {isLogin && (
+        <NavLink
+          className={({ isActive }) =>
+            `${styles["menu-icon"]} ${
+              isActive && id == likeListID ? styles["active"] : ""
+            } hover`
+          }
+          to={`/playList?id=${likeListID}`}
+          key={`我喜欢`}
+          title={`我喜欢`}
+        >
+          <Icon type={`like` as any} size={30} />
+          <div>我喜欢</div>
+        </NavLink>
+      )}
     </div>
   );
 };

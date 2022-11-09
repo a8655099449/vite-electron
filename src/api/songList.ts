@@ -74,8 +74,10 @@ export const getPlayListSubscribers = ({
 export const getUserMF = () =>
   request<{
     data: SongItem[];
+
   }>({
     url: "/personal_fm",
+    cacheTime:0
   });
 // 私人MF垃圾桶
 export const fm_trash = (id: ID) =>

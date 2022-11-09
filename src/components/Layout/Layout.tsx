@@ -11,13 +11,18 @@ interface IProps {
 const Layout: FC<IProps> = ({ sideBar, children }): ReactElement => {
   const content = useRef<HTMLDivElement>(null);
 
-  const handleScroll = (e: any) => {
-    const { scrollTop, clientHeight, scrollHeight } =
-      content.current as HTMLDivElement;
-    if (scrollTop + clientHeight + 5 >= scrollHeight) {
-      emit();
+  const { run: handleScroll } = useThrottleFn(
+    () => {
+      const { scrollTop, clientHeight, scrollHeight } =
+        content.current as HTMLDivElement;
+      if (scrollTop + clientHeight + 5 >= scrollHeight) {
+        emit();
+      }
+    },
+    {
+      wait: 10,
     }
-  };
+  );
 
   const { run: emit } = useThrottleFn(() => {
     api.emit("LAYOUT_TO_BOTTOM");
@@ -25,6 +30,7 @@ const Layout: FC<IProps> = ({ sideBar, children }): ReactElement => {
 
   useEffect(() => {
     content.current?.addEventListener("scroll", handleScroll);
+    return () => content.current?.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (

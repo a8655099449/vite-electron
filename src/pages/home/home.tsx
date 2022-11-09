@@ -120,7 +120,7 @@ const home = () => {
   }, [data]);
 
   return (
-    <PageWrap className={`${styles["home"]}`}>
+    <PageWrap className={`${styles["home"]}`} title="首页">
       <HomeTabs />
 
       <Skeleton loading={loading} type="bar" count={5}>

@@ -256,4 +256,29 @@ interface Artist {
   fansCount: number;
 }
 
+interface ArtistDetail {
+  videoCount: number;
+  artist: {
+    id: number;
+    cover: string;
+    name: string;
+    transNames: any[];
+    identities: string[];
+    identifyTag?: string[];
+    briefDesc: string;
+    rank?: any;
+    albumSize: number;
+    musicSize: number;
+    mvSize: number;
+  };
+  blacklist: boolean;
+  preferShow: number;
+  showPriMsg: boolean;
+  secondaryExpertIdentiy: SecondaryExpertIdentiy[];
+}
 
+interface SecondaryExpertIdentiy {
+  expertIdentiyId: number;
+  expertIdentiyName: string;
+  expertIdentiyCount: number;
+}

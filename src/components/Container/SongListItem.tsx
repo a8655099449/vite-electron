@@ -20,7 +20,7 @@ const SongListItem: FC<IProps> = ({ item }): ReactElement => {
       }}
     >
       <div>
-        <Image src={item.picUrl || item.coverImgUrl} />
+        <Image src={item.picUrl || item.coverImgUrl} width={150} />
       </div>
 
       <div>{item.name}</div>

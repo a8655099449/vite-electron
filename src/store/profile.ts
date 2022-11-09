@@ -39,7 +39,7 @@ class Profile {
     const [err, res] = await to(getLoginStatus());
     if (err || !res?.data?.profile) {
       setStorage("userInfo", {});
-      this.userInfo = {}
+      this.userInfo = {};
       return;
     }
     this.userInfo = res.data.profile;
@@ -51,7 +51,6 @@ class Profile {
   };
 
   _getUserLikeListIds = async () => {
-
     const [err, res] = await to(getLikeListIds(this.userInfo.userId as ID));
 
     if (err) {
@@ -92,8 +91,10 @@ class Profile {
     api.emit("LOGOUT");
   };
   @computed get likeListID() {
-
     return this.userPlayList.create?.[0]?.id || 0;
+  }
+  @computed get isLogin() {
+    return !!this.userInfo.nickname;
   }
 }
 

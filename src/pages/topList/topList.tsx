@@ -9,7 +9,7 @@ const topList = () => {
   console.log("👴2022-11-08 16:29:58 topList.tsx line:8", data);
 
   return (
-    <PageWrap>
+    <PageWrap title="首页 - 排行榜">
       <HomeTabs />
       <PlayListWrap list={data?.list || []} />
     </PageWrap>
