@@ -17,14 +17,16 @@ const Image: FC<IProps> = ({
   style,
   round,
   width,
+  height,
   ...rest
 }): ReactElement => {
-
   const _src = useMemo(() => {
     let param = "";
 
     if (width) {
-      param = `${src?.indexOf("?") === -1 ? `?` : ""}param=${width}y${width}`;
+      param = `${src?.indexOf("?") === -1 ? `?` : ""}param=${width}y${
+        height ? height : width
+      }`;
     }
 
     return src + param;

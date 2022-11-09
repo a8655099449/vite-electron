@@ -49,3 +49,14 @@ export const getArtistTopSongs = (id: ID) =>
     url: "/artist/top/song",
     params: { id },
   });
+/**
+ * @name 获取歌手描述
+ * @returns
+ */
+export const getArtistMv = (id: ID) =>
+  request<{
+    mvs: MvItem[];
+  }>({
+    url: "/artist/mv",
+    params: { id, limit: 20 },
+  });

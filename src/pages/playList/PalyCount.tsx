@@ -3,7 +3,7 @@ import React, { FC, ReactElement, useMemo } from "react";
 interface IProps {
   count: number;
 }
-const PalyCount: FC<IProps> = ({ count }): ReactElement => {
+const PlayCount: FC<IProps> = ({ count }): ReactElement => {
   const countString = useMemo(() => {
     // 亿级
     if (count > 99999999) {
@@ -20,4 +20,4 @@ const PalyCount: FC<IProps> = ({ count }): ReactElement => {
   return <>{countString}</>;
 };
 
-export default PalyCount;
+export default PlayCount;

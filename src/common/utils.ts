@@ -181,7 +181,9 @@ export function eqObject(a: any, b: any, aStack: any = [], bStack: any = []) {
       if (Object.keys(b).length !== length) return false;
       while (length--) {
         key = keys[length];
-        if (!(b.hasOwnProperty(key) && eqObject(a[key], b[key], aStack, bStack)))
+        if (
+          !(b.hasOwnProperty(key) && eqObject(a[key], b[key], aStack, bStack))
+        )
           return false;
       }
     }
@@ -206,4 +208,20 @@ export function eqObject(a: any, b: any, aStack: any = [], bStack: any = []) {
 
   // 更复杂的对象使用 deepEq 函数进行深度比较
   return deepEq(a, b, aStack, bStack);
+}
+
+export function generateUUID() {
+  var d = new Date().getTime();
+  if (window.performance && typeof window.performance.now === "function") {
+    d += performance.now(); //use high-precision timer if available
+  }
+  var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+    /[xy]/g,
+    function (c) {
+      var r = (d + Math.random() * 16) % 16 | 0;
+      d = Math.floor(d / 16);
+      return (c == "x" ? r : (r & 0x3) | 0x8).toString(16);
+    }
+  );
+  return uuid;
 }

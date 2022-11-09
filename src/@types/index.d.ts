@@ -282,3 +282,21 @@ interface SecondaryExpertIdentiy {
   expertIdentiyName: string;
   expertIdentiyCount: number;
 }
+
+/**
+ * @name mv详情
+ */
+
+interface MvItem {
+  id: number;
+  name: string;
+  status: number;
+  artistName: string;
+  imgurl16v9: string;
+  imgurl: string;
+  artist: Artist;
+  duration: number;
+  playCount: number;
+  publishTime: string;
+  subed: boolean;
+}

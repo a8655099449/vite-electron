@@ -6,7 +6,8 @@ import PageWrap from "@/components/Container/PageWrap";
 import Skeleton from "@/components/Container/Skeleton";
 import Image from "@/components/Image/Image";
 import { useRequest } from "ahooks";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import ArtistMv from "./ArtistMv";
 import ArtistSelection from "./ArtistSelection";
 
 import styles from "./index.module.less";
@@ -26,9 +27,10 @@ const artistDetail = () => {
     run2();
   }, [id]);
   const artist = data?.data?.artist;
-  console.log("👴2022-11-09 17:39:38 artistDetail.tsx line:29", data?.data);
+  const [active, setActive] = useState("MV");
+
   return (
-    <PageWrap>
+    <PageWrap title={`歌手 - ${artist?.name || ""}`}>
       <Skeleton loading={loading}>
         <FlexBetweenContainer
           leftWidth={180}
@@ -55,12 +57,15 @@ const artistDetail = () => {
         <BaseTabs
           list={[
             { children: "精选", value: "精选", content: <ArtistSelection /> },
-            { children: "MV", value: "MV" },
+            { children: "MV", value: "MV", content: <ArtistMv /> },
             { children: "专辑", value: "专辑" },
             { children: "介绍", value: "介绍" },
             { children: "相似歌手", value: "相似歌手" },
           ]}
-          value="精选"
+          value={active}
+          onChange={(e) => {
+            setActive(e);
+          }}
         />
       </Skeleton>
     </PageWrap>
