@@ -240,3 +240,29 @@ ul,
 ol {
   list-style: none;
 }
+.al-item{
+  .al-pic{
+    padding-right: 30px;
+    background: url('https://s2.music.126.net/style/web2/img/coverall.png?36a159d549a769b3f25ea17816baaf1b') no-repeat ;
+
+    background-position:14.5% 74%;
+    background-size: 210%;
+
+  }
+
+
+}
+.cates {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  span {
+    padding: 5px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    &:hover,&.cates-active {
+      color: var(--primary-color);
+      background-color: rgba(236, 65, 65,.1);
+    }
+  }
+}

@@ -10,6 +10,7 @@ import LazyLoad from "react-lazyload";
 interface IProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   round?: boolean;
   width?: number;
+  br?: number;
 }
 
 const Image: FC<IProps> = ({
@@ -18,6 +19,7 @@ const Image: FC<IProps> = ({
   round,
   width,
   height,
+  br,
   ...rest
 }): ReactElement => {
   const _src = useMemo(() => {
@@ -42,7 +44,7 @@ const Image: FC<IProps> = ({
       src={_src}
       style={{
         ...style,
-        borderRadius: round ? "50%" : undefined,
+        borderRadius: round ? "50%" : br ? br : undefined,
       }}
     />
   );

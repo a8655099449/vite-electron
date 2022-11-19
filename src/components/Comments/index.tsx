@@ -39,7 +39,6 @@ const Comments: FC<IProps> = ({ id, type }): ReactElement => {
     };
   }, [comment]);
 
-
   useEffect(() => {
     _getComment();
   }, [id]);
@@ -50,9 +49,11 @@ const Comments: FC<IProps> = ({ id, type }): ReactElement => {
 
   return (
     <Skeleton loading={commentLoading} count={5}>
-      {comments.length ? (
+      {comments.length > 0 ? (
         <div className={`${styles["comment"]}`}>
-          <div className={`${styles["title"]}`}>精彩评论</div>
+          {hotComments.length > 0 && (
+            <div className={`${styles["title"]}`}>精彩评论</div>
+          )}
           {hotComments.map((item) => (
             <CommentItem
               comment={item}

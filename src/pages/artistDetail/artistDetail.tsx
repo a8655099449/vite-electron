@@ -1,3 +1,4 @@
+import ArtistAlbum from "@/pages/artistDetail/ArtistAlbum";
 import { getArtistDesc, getArtistDetail } from "@/api/artists";
 import { useQuery } from "@/common/use";
 import BaseTabs from "@/components/Container/BaseTabs";
@@ -11,6 +12,7 @@ import ArtistMv from "./ArtistMv";
 import ArtistSelection from "./ArtistSelection";
 
 import styles from "./index.module.less";
+import SimiArtist from "./SimiArtist";
 
 const artistDetail = () => {
   const { id } = useQuery();
@@ -22,12 +24,13 @@ const artistDetail = () => {
     manual: true,
   });
 
+
   useEffect(() => {
     run();
     run2();
   }, [id]);
   const artist = data?.data?.artist;
-  const [active, setActive] = useState("MV");
+  const [active, setActive] = useState("精选");
 
   return (
     <PageWrap title={`歌手 - ${artist?.name || ""}`}>
@@ -58,9 +61,30 @@ const artistDetail = () => {
           list={[
             { children: "精选", value: "精选", content: <ArtistSelection /> },
             { children: "MV", value: "MV", content: <ArtistMv /> },
-            { children: "专辑", value: "专辑" },
-            { children: "介绍", value: "介绍" },
-            { children: "相似歌手", value: "相似歌手" },
+            { children: "专辑", value: "专辑", content: <ArtistAlbum /> },
+            {
+              children: "介绍",
+              value: "介绍",
+              content: (
+                <div>
+                  {desc?.introduction.map((item, index) => (
+                    <div key={index} className={`${styles["desc-item"]}`}>
+                      <h2>{item.ti}</h2>
+                      <p
+                        dangerouslySetInnerHTML={{
+                          __html: item.txt,
+                        }}
+                      ></p>
+                    </div>
+                  ))}
+                </div>
+              ),
+            },
+            {
+              children: "相似歌手",
+              value: "相似歌手",
+              content: <SimiArtist />,
+            },
           ]}
           value={active}
           onChange={(e) => {

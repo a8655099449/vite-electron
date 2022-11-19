@@ -3,10 +3,10 @@ import React, { FC, ReactElement } from "react";
 import { Link } from "react-router-dom";
 import styles from "./index.module.less";
 interface IProps {
-  list: Artist[];
+  list?: Artist[];
   loading?: boolean;
 }
-const ArtistList: FC<IProps> = ({ list, loading }): ReactElement => {
+const ArtistList: FC<IProps> = ({ list = [], loading }): ReactElement => {
   return (
     <div>
       <div className={`${styles["ArtistList"]}`}>

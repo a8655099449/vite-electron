@@ -6,7 +6,6 @@ import { HomeTabs } from "../home/home";
 
 const topList = () => {
   const { data } = useRequest(getTopList);
-  console.log("👴2022-11-08 16:29:58 topList.tsx line:8", data);
 
   return (
     <PageWrap title="首页 - 排行榜">

@@ -36,12 +36,14 @@ export const getArtistDetail = (id: ID) =>
  * @returns
  */
 export const getArtistDesc = (id: ID) =>
-  request<ArtistDetail>({
+  request<{
+    introduction: Array<{ ti: string; txt: string }>;
+  }>({
     url: "/artist/desc",
     params: { id },
   });
 /**
- * @name 获取歌手描述
+ * @name 获取歌手50首
  * @returns
  */
 export const getArtistTopSongs = (id: ID) =>
@@ -50,13 +52,33 @@ export const getArtistTopSongs = (id: ID) =>
     params: { id },
   });
 /**
- * @name 获取歌手描述
+ * @name 获取歌手MV
  * @returns
  */
-export const getArtistMv = (id: ID) =>
+export const getArtistMv = (params: any) =>
   request<{
     mvs: MvItem[];
   }>({
     url: "/artist/mv",
-    params: { id, limit: 20 },
+    params,
+  });
+/**
+ * @name 获取歌手专辑
+ */
+export const getArtistAlbum = ({ id, offset }: any) =>
+  request<{
+    hotAlbums: Album[];
+  }>({
+    url: "/artist/album",
+    params: { id, limit: 20, offset },
+  });
+/**
+ * @name 获取相似歌手
+ */
+export const getSimiArtist = (params:any) =>
+  request<{
+    artists: Artist[];
+  }>({
+    url: "/simi/artist",
+    params,
   });

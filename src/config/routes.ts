@@ -36,6 +36,10 @@ const routes: RouteItem[] = [
     icon: "video",
   },
   {
+    path: "/videoDetail",
+    name: "视频详情",
+  },
+  {
     path: "/userRadio",
     name: "私人FM",
     isMenu: true,

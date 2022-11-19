@@ -5,7 +5,7 @@ import Image from "../Image/Image";
 import GridWrap from "./Grid";
 import "./index.less";
 interface IProps {
-  mvs?: MvItem[];
+  mvs?: MvItem[] ;
 }
 const MvList: FC<IProps> = ({ mvs = [] }): ReactElement => {
   return (

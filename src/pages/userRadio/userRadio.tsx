@@ -50,7 +50,6 @@ const userRadio: FC<IProps> = (): ReactElement => {
   // 下一首
   const handleNext = () => {
     const { songList = [] } = store.current;
-    console.log('👴2022-11-09 11:00:32 userRadio.tsx line:53',store.current.currentIndex , songList.length)
     if (store.current.currentIndex + 1 === songList.length) {
       store.current.currentIndex = 0;
       run({ clear: true });

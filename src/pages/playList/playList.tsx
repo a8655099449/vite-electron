@@ -1,4 +1,9 @@
-import { getSongListAllMusic, getSongListDetails } from "@/api/songList";
+import {
+  getSongListAllMusic,
+  getSongListDetails,
+  getSongListMusic,
+} from "@/api/songList";
+import useToBottomRequest from "@/common/hooks/useToBottomRequest";
 import { useQuery } from "@/common/use";
 import Comments from "@/components/Comments";
 import BaseTabs from "@/components/Container/BaseTabs";
@@ -35,25 +40,16 @@ const songList: FC<IProps> = (): ReactElement => {
 
   const run = (id: any) => {
     _getSongListDetails(id);
-    _getSongListAllMusic();
   };
 
-  const {
-    data: list,
-    loading: loading2,
-    run: _getSongListAllMusic,
-  } = useRequest(async () => {
-    if (id == likeListID && userLikeList.length > 0) {
-      return {
-        songs: userLikeList,
-      };
-    }
-
-    const res = await getSongListAllMusic(id as string);
-    return res;
+  const { list, loading: loading2 } = useToBottomRequest({
+    request: getSongListMusic,
+    params: { id },
+    listKey: "songs",
   });
+
   const clickPlayAll = () => {
-    api.emit("PLAY_LIST", list?.songs);
+    api.emit("PLAY_LIST", list);
   };
 
   return (
@@ -76,9 +72,7 @@ const songList: FC<IProps> = (): ReactElement => {
               value: "list",
               children: "歌曲列表",
               content: (
-                <Skeleton loading={loading2} type="bar" count={5}>
-                  <PlayListTable data={list?.songs || []} />
-                </Skeleton>
+                <PlayListTable data={list} />
               ),
             },
             {

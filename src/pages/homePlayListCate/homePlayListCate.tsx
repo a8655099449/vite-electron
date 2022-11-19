@@ -9,6 +9,7 @@ import { arrayToObjectByKey, getStore } from "@/common/utils";
 import PageWrap from "@/components/Container/PageWrap";
 import PlayListWrap from "@/components/Container/PlayListWrap";
 import Skeleton from "@/components/Container/Skeleton";
+import TagsList from "@/components/Container/TagsList";
 import { useLocalStorage } from "@mantine/hooks";
 import { useRequest } from "ahooks";
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
@@ -54,11 +55,14 @@ const homePlayListCate: FC<IProps> = (): ReactElement => {
     run: _getHotPlaylistByCate,
     loading: playListLoading,
   } = useRequest(
-    async ({ offset  = 0}) => {
+    async ({ offset = 0 }) => {
       const [err, res] = await to(
-        getHotPlaylistByCate({ cat:store.current.activeCate, offset: (offset) * 50 })
+        getHotPlaylistByCate({
+          cat: store.current.activeCate,
+          offset: offset * 50,
+        })
       );
-      resetLoading()
+      resetLoading();
       if (err) {
         return;
       }
@@ -80,7 +84,7 @@ const homePlayListCate: FC<IProps> = (): ReactElement => {
     { manual: true }
   );
 
-  const { clearOffset  , resetLoading} = useLayoutToBottom((e) => {
+  const { clearOffset, resetLoading } = useLayoutToBottom((e) => {
     _getHotPlaylistByCate({
       offset: e,
       cat: activeCate,
@@ -91,7 +95,7 @@ const homePlayListCate: FC<IProps> = (): ReactElement => {
     if (activeCate) {
       getHightPlayList(activeCate);
 
-      store.current.activeCate = activeCate
+      store.current.activeCate = activeCate;
       _getHotPlaylistByCate({ cat: activeCate });
     }
   }, [activeCate]);
@@ -102,28 +106,19 @@ const homePlayListCate: FC<IProps> = (): ReactElement => {
       <Skeleton loading={hightPlayListLoading} minHeight={180}>
         <HightPlayListBanner data={hightPlayList?.playlists[0]} />
       </Skeleton>
+      <TagsList
+        list={cates.map(({name})=>({
+          value:name,
+          label:name
+        }))}
+        value={activeCate}
+        onChange={(e) => {
+          setPlayList([]);
+          setActiveCate(e);
+          clearOffset();
+        }}
+      />
 
-      <div className={`${styles["cates"]}`}>
-        <div></div>
-        <div>
-          {cates?.map((item) => (
-            <span
-              key={item.name}
-              className={`${activeCate === item.name ? styles["active"] : ""}`}
-              onClick={() => {
-                if (activeCate === item.name) {
-                  return;
-                }
-                setPlayList([]);
-                setActiveCate(item.name);
-                clearOffset();
-              }}
-            >
-              {item.name}
-            </span>
-          ))}
-        </div>
-      </div>
       <PlayListWrap list={playList || []} loading={playListLoading} />
     </PageWrap>
   );

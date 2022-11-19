@@ -47,7 +47,7 @@ const PlayerRight: FC<IProps> = ({
                 const { top } = rect;
                 const { clientY } = e;
                 let v = 100 - (clientY - top);
-                console.log("👴2022-09-09 18:17:04 PlayerRight.tsx line:44", v);
+      
                 if (v < 0) {
                   setDisabledVolume(true);
                   v = 0;

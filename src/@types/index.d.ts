@@ -300,3 +300,49 @@ interface MvItem {
   publishTime: string;
   subed: boolean;
 }
+
+/**
+ * @name 视频属性
+ */
+
+interface Video {
+  alg: string;
+  scm: string;
+  threadId: string;
+  coverUrl: string;
+  height: number;
+  width: number;
+  title: string;
+  description: string;
+  commentCount: number;
+  shareCount: number;
+  resolutions: Resolution[];
+  creator: UserProfile;
+  urlInfo?: any;
+  videoGroup: VideoGroup[];
+  previewUrl: string;
+  previewDurationms: number;
+  hasRelatedGameAd: boolean;
+  markTypes: number[];
+  relateSong: any[];
+  relatedInfo?: any;
+  videoUserLiveInfo?: any;
+  vid: string;
+  durationms: number;
+  playTime: number;
+  praisedCount: number;
+  praised: boolean;
+  subscribed: boolean;
+}
+
+interface VideoGroup {
+  id: number;
+  name: string;
+  alg?: any;
+}
+
+
+interface Resolution {
+  resolution: number;
+  size: number;
+}

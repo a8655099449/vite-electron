@@ -35,6 +35,13 @@ export const getSongListAllMusic = (id: ID) =>
     url: "/playlist/track/all",
     params: { id, limit: 100 },
   });
+export const getSongListMusic = (params:any) =>
+  request<{
+    songs: SongItem[];
+  }>({
+    url: "/playlist/track/all",
+    params,
+  });
 
 // 获取评论列表
 export const getComment = ({
