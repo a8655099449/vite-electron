@@ -26,10 +26,17 @@ type UseEventParams = {
   event(...e: any[]): void;
 };
 export const useEvent = ({ key, event }: UseEventParams) => {
+  const ref = useRef({
+    destroyed: false,
+  });
+
   useEffect(() => {
     api.on(key, event);
 
-    return () => api.off(key, event);
+    return () => {
+      console.log("👴2023-02-26 14:00:04 use.ts line:33 删除事件");
+      api.off(key, event);
+    };
   }, []);
 };
 
@@ -59,5 +66,5 @@ export const useLayoutToBottom = (event = (n: number) => {}) => {
     ref.current.isLoading = false;
   };
 
-  return { clearOffset , resetLoading };
+  return { clearOffset, resetLoading };
 };

@@ -94,6 +94,7 @@ class Profile {
     return this.userPlayList.create?.[0]?.id || 0;
   }
   @computed get isLogin() {
+    console.log('👴2023-07-15 22:04:10 profile.ts line:97',toJS(this.userInfo))
     return !!this.userInfo.nickname;
   }
 }

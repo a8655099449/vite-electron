@@ -11,7 +11,7 @@ import { useRequest } from "ahooks";
 import { observer } from "mobx-react";
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react";
 
-interface IProps {}
+interface IProps { }
 const video: FC<IProps> = (): ReactElement => {
   const { data: { data = [] } = {} } = useRequest(() => getVideoCategory());
   const [videoList, setVideoList] = useState<Video[]>([]);
@@ -46,7 +46,7 @@ const video: FC<IProps> = (): ReactElement => {
     ref.current.videoGroup = cate;
     run();
   }, [cate]);
-  console.log('👴2022-11-13 16:34:19 video.tsx line:49',videoList)
+  console.log('👴2022-11-13 16:34:19 video.tsx line:49', data)
 
   return (
     <PageWrap title="视频">
@@ -56,7 +56,7 @@ const video: FC<IProps> = (): ReactElement => {
             value: "全部",
             label: "全部",
           },
-          ...data.map((item) => ({
+          ...(data || [])?.map((item) => ({
             value: item.id,
             label: item.name,
           })),

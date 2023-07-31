@@ -7,7 +7,7 @@
  * @FilePath: \tuitui_mini\common\event.js
  */
 
-type Fn = () => {};
+type Fn = any;
 class Event {
   _stores: any = {};
   on(event: string, fn: Fn, ctx: any) {

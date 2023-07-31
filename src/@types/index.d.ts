@@ -51,6 +51,7 @@ type API = {
 };
 
 declare var api: API;
+declare var serverEvent: API;
 type UserProfile = Partial<{
   backgroundImgIdStr: string;
   followed: boolean;

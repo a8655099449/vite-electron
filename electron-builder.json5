@@ -1,6 +1,4 @@
-/**
- * @see https://www.electron.build/configuration/configuration
- */
+
 {
   appId: "com.leon.crazyMusic",
   productName: "crazy-music",
